@@ -11,4 +11,4 @@ Disallow: /assets/guides/
 # files to render each page's header and footer.)
 Disallow: /scripts/
 
-Sitemap: https://jaredcohenrealtor.github.io/sitemap.xml
+Sitemap: https://jaredcohenrealtor.com/sitemap.xml
