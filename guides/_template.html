@@ -49,6 +49,22 @@
   <script src="/assets/js/include.js" defer></script>
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/forms.js" defer></script>
+<!-- Structured data: this guide as an Article by Jared Cohen. Domain rewritten by npm run set-domain. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{GUIDE_TITLE}}",
+    "description": "{{META_DESCRIPTION}}",
+    "datePublished": "{{GUIDE_DATE_ISO}}",
+    "url": "https://jaredcohenrealtor.github.io/guides/{{GUIDE_SLUG}}.html",
+    "mainEntityOfPage": "https://jaredcohenrealtor.github.io/guides/{{GUIDE_SLUG}}.html",
+    "image": "https://jaredcohenrealtor.github.io/assets/images/brand/og-image.jpg",
+    "author": { "@type": "Person", "name": "Jared Cohen", "jobTitle": "REALTOR®", "url": "https://jaredcohenrealtor.github.io/about.html" },
+    "publisher": { "@id": "https://jaredcohenrealtor.github.io/#agent" },
+    "isAccessibleForFree": true
+  }
+  </script>
 </head>
 <body>
   <div data-include="header"></div>

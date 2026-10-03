@@ -36,7 +36,8 @@
 
   function markCurrentLink(root) {
     var here = normalizePath(window.location.pathname);
-    var links = root.querySelectorAll(".site-nav__link");
+    // Menu links, plus the header "Let's talk" button (it IS the Contact page link)
+    var links = root.querySelectorAll(".site-nav__link, .site-nav__cta a");
     for (var i = 0; i < links.length; i++) {
       var linkPath = normalizePath(urlOf(links[i]).pathname);
       // Guide pages live under /guides/ but belong to the "Guides" menu item

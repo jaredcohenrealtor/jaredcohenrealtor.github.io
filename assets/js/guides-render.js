@@ -5,6 +5,8 @@
  *   <div class="grid grid--4" data-guides-list data-limit="4"></div>
  *
  * data-limit is optional (the homepage uses 4; resources.html shows all).
+ * data-heading-level is optional (default 3): the card titles' heading level, so
+ * the outline stays correct (h2 on resources.html, where cards sit under the h1).
  * With fewer guides than the limit, it shows however many exist.
  */
 (function () {
@@ -18,7 +20,7 @@
     year: "numeric", month: "long", day: "numeric", timeZone: "UTC"
   });
 
-  function card(guide) {
+  function card(guide, level) {
     var article = document.createElement("article");
     article.className = "card card--link";
 
@@ -29,7 +31,7 @@
     time.textContent = dateFormat.format(new Date(guide.date + "T00:00:00Z"));
     meta.append("Guide · ", time);
 
-    var title = document.createElement("h3");
+    var title = document.createElement("h" + level);
     title.className = "card__title";
     var link = document.createElement("a");
     link.href = "/guides/" + guide.slug + ".html";
@@ -57,6 +59,7 @@
     var limit = parseInt(lists[i].getAttribute("data-limit"), 10) || guides.length;
     var shown = guides.slice(0, limit);
     lists[i].textContent = "";
-    for (var j = 0; j < shown.length; j++) lists[i].appendChild(card(shown[j]));
+    var level = parseInt(lists[i].getAttribute("data-heading-level"), 10) || 3;
+    for (var j = 0; j < shown.length; j++) lists[i].appendChild(card(shown[j], level));
   }
 })();

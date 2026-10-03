@@ -406,6 +406,9 @@ address { font-style: normal; }
 
 /* Text link with arrow */
 .link-arrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;          /* comfortable tap target */
   font-weight: 600;
   text-decoration: none;
 }
@@ -678,6 +681,7 @@ address { font-style: normal; }
   font-size: 1.25rem;
   font-weight: 600;
   line-height: 1.1;
+  padding-block: var(--space-3);   /* taller tap target, same look */
   text-decoration: none;
   white-space: nowrap;
 }
@@ -767,9 +771,12 @@ address { font-style: normal; }
 
 .site-nav__link:hover { color: var(--royal); }
 
+/* Current page: color + weight + a left bar on phones (never color alone) */
 .site-nav__link[aria-current="page"] {
   color: var(--royal);
   font-weight: 600;
+  box-shadow: inset 4px 0 0 var(--royal);
+  padding-left: var(--space-3);
 }
 
 .site-nav__cta { margin-top: var(--space-4); }
@@ -799,7 +806,10 @@ address { font-style: normal; }
     border-bottom: 2px solid transparent;
   }
 
-  .site-nav__link[aria-current="page"] { border-bottom-color: var(--royal); }
+  .site-nav__cta a[aria-current="page"] { background: var(--navy); }
+
+  /* Desktop swaps the left bar for an underline */
+  .site-nav__link[aria-current="page"] { border-bottom-color: var(--royal); box-shadow: none; padding-left: 0; }
 
   .site-nav__cta { margin-top: 0; }
   .site-nav__cta .btn { width: auto; min-height: 44px; padding-block: var(--space-2); }
@@ -983,7 +993,9 @@ address { font-style: normal; }
   .hero__media img { max-width: none; }
 }
 
-.home-value__fallback { margin-top: var(--space-5); margin-bottom: 0; }
+/* The BoldTrail widget is a fixed 160px tall with ~60px of content; keep the
+   follow-up line close rather than adding more space under it. */
+.home-value__fallback { margin-top: 0; margin-bottom: 0; }
 .guides__more { margin-top: var(--space-6); margin-bottom: 0; }
 
 /* ---- legal pages (fair-housing, privacy, accessibility) ---------------- */
@@ -1019,7 +1031,8 @@ address { font-style: normal; }
 
 /* ---- guides/*.html ---------------------------------------------------- */
 .breadcrumb { margin-bottom: var(--space-5); font-size: var(--text-sm); }
-.breadcrumb ol { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); margin: 0; padding: 0; list-style: none; }
+.breadcrumb ol { display: flex; flex-wrap: wrap; gap: 0 var(--space-2); margin: 0; padding: 0; list-style: none; }
+.breadcrumb a { display: inline-flex; align-items: center; min-height: 44px; }
 .breadcrumb li { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); }
 .breadcrumb li + li::before { content: "›"; color: var(--color-text-muted); }
 .breadcrumb [aria-current="page"] { color: var(--color-text); }
