@@ -28,7 +28,7 @@ const JOBS = [
   { src: "_source/imagesOfMe/IMG_9931.jpg", out: "images/photos/jared-living-room", widths: [400, 800, 1200] },
   { src: "_source/imagesOfMe/IMG_9883.jpg", out: "images/photos/jared-kitchen", widths: [400, 800, 1200], crop: { left: 0.24, top: 0.31, width: 0.597, height: 0.56 } },
   { src: "_source/imagesOfMe/IMG_9891.jpg", out: "images/photos/jared-staircase", widths: [400, 800, 1200] },
-  { src: "_source/imagesOfMe/IMG_9889.jpg", out: "images/photos/jared-staircase-step", widths: [400, 800, 1200] },
+  { src: "_source/imagesOfMe/IMG_9887.jpg", out: "images/photos/jared-welcome", widths: [400, 800, 1200], crop: { left: 0.115, top: 0.31, width: 0.62, height: 0.581 } },
   { src: "_source/imagesOfMe/IMG_9892.jpg", out: "images/photos/jared-desk", widths: [400, 800, 1200] },
   { src: "_source/imagesOfMe/IMG_9896.jpg", out: "images/photos/jared-desk-signing", widths: [400, 800, 1200] },
   { src: "_source/imagesOfMe/IMG_9903.jpg", out: "images/photos/jared-front-door", widths: [400, 800, 1200], quality: 68 },

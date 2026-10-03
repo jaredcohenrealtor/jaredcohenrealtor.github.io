@@ -137,8 +137,7 @@ html {
 .site-footer,
 .section--dark,
 .hero,
-.page-hero,
-.marquee {
+.page-hero {
   --color-focus: var(--white);
 }
 
@@ -246,7 +245,6 @@ address { font-style: normal; }
 @keyframes settle      { from { transform: scale(1.08); } }
 @keyframes arch-rise   { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
 @keyframes fade-in     { from { opacity: 0; } }
-@keyframes marquee     { to { transform: translateX(-50%); } }
 @keyframes reveal-up    { from { opacity: 0; transform: translateY(var(--reveal-distance)); } }
 @keyframes reveal-left  { from { opacity: 0; transform: translateX(calc(-1 * var(--reveal-distance))); } }
 @keyframes reveal-right { from { opacity: 0; transform: translateX(var(--reveal-distance)); } }
@@ -897,96 +895,6 @@ a:hover .link-arrow::after,
   }
 }
 
-/* ---- Town ticker ------------------------------------------------------- */
-/* Decorative (aria-hidden): the real town list is on the page as chips.
-   It only moves once main.js adds .marquee--live and shows the pause button
-   (WCAG 2.2.2); without JS or under reduced motion it stays still. */
-.marquee {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  overflow: hidden;
-  padding-right: var(--gutter);
-  background: var(--royal);
-  color: var(--white);
-}
-
-.marquee__viewport {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  padding-block: var(--space-4);
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
-  mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
-}
-
-.marquee__track {
-  display: flex;
-  width: max-content;
-}
-
-.marquee--live .marquee__track { animation: marquee 80s linear infinite; }
-
-.marquee__track span {
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-heading);
-  font-size: var(--text-xl);
-  font-style: italic;
-  white-space: nowrap;
-}
-
-.marquee__track span::after {
-  content: "";
-  width: 7px;
-  height: 7px;
-  margin-inline: var(--space-6);
-  background: var(--royal-50);
-  transform: rotate(45deg);
-}
-
-.marquee:hover .marquee__track,
-.marquee.is-paused .marquee__track { animation-play-state: paused; }
-
-.marquee__toggle {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid var(--royal-50);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--white);
-  cursor: pointer;
-  transition: background-color var(--transition);
-}
-
-.marquee__toggle:hover { background: rgb(255 255 255 / 0.14); }
-
-/* Pause icon (two bars) / play icon (triangle) */
-.marquee__toggle::before {
-  content: "";
-  width: 10px;
-  height: 12px;
-  border-inline: 3px solid currentColor;
-}
-
-.marquee__toggle[aria-pressed="true"]::before {
-  width: 0;
-  height: 0;
-  margin-left: 3px;
-  border-inline: 0;
-  border-left: 10px solid currentColor;
-  border-block: 6px solid transparent;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee__track { animation: none; }
-}
-
 /* ---- Chips (e.g. service-area towns) ---------------------------------- */
 .chip-list {
   display: flex;
@@ -1016,6 +924,143 @@ a:hover .link-arrow::after,
 
 .section--tint .chip { background: var(--white); }
 .section--tint .chip--primary { background: var(--royal); }
+
+/* Linked chips (each opens that town's live listings in a new tab). The
+   ::before stretches the tap area to 44px without making the chip look bigger. */
+a.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 36px;
+  padding-inline: var(--space-4);
+  text-decoration: none;
+  transition: background-color 250ms var(--ease-out), border-color 250ms var(--ease-out),
+              color 250ms var(--ease-out), transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
+}
+
+a.chip::before { content: ""; position: absolute; inset: -4px 0; }
+
+a.chip:hover {
+  background: var(--royal);
+  border-color: var(--royal);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -8px rgb(12 15 36 / 0.45);
+}
+
+a.chip--primary:hover { background: var(--navy); border-color: var(--navy); }
+a.chip:focus-visible { outline-offset: 3px; }
+
+.chip__icon { font-size: 0.85em; line-height: 1; opacity: 0.75; }
+
+.chip-hint {
+  margin: var(--space-3) 0 var(--space-5);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.section--dark .chip-hint { color: var(--color-dark-muted); }
+
+/* Dark sections make every link white; chips keep their own colors */
+.section--dark a.chip { color: var(--navy); }
+.section--dark a.chip--primary,
+.section--dark a.chip:hover { color: var(--white); }
+
+/* ---- Town tiles (homepage "Homes for sale by town") -------------------- */
+/* Each tile opens that town's live listings. Newton is the featured tile:
+   2 columns on phones (2 + 4 rows), 3 x 3 on tablets, 5 + 5 on desktop. */
+.towns { margin-top: var(--space-8); }
+.towns__title { margin-bottom: var(--space-2); font-size: var(--text-xl); }
+.towns > p { margin-bottom: var(--space-5); }
+
+.town-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));   /* never wider than the screen */
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.town-tiles > :first-child { grid-column: span 2; }
+
+@media (min-width: 40em) {
+  .town-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .town-tiles > :first-child { grid-column: auto; }
+}
+
+@media (min-width: 64em) {
+  .town-tiles { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .town-tiles > :first-child { grid-column: span 2; }
+}
+
+.town-tile {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 8rem;
+  padding: var(--space-4);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  color: var(--navy);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 300ms var(--ease-out), border-color 300ms var(--ease-out),
+              color 300ms var(--ease-out), transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+}
+
+/* A small arch outline at the top right (the site's architecture motif).
+   It's in the normal flow, in its own row, so text can never run into it. */
+.town-tile::before {
+  content: "";
+  flex: none;
+  align-self: flex-end;
+  width: 2rem;
+  height: 2.5rem;
+  margin-bottom: var(--space-3);
+  border: 2px solid var(--royal-20);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+  transition: border-color 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
+
+.town-tile__name {
+  margin-top: auto;   /* name + "Homes for sale" sit at the bottom */
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.town-tile__cta {
+  margin-top: var(--space-1);
+  color: var(--royal);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  transition: color 300ms var(--ease-out);
+}
+
+.town-tile:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--white);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.town-tile:hover .town-tile__cta { color: var(--royal-50); }
+.town-tile:hover::before { border-color: var(--royal-50); transform: translateY(-3px); }
+.town-tile:focus-visible { outline-offset: 3px; }
+
+.town-tile--primary { background: var(--royal); border-color: var(--royal); color: var(--white); }
+.town-tile--primary .town-tile__cta { color: var(--royal-10); }
+.town-tile--primary::before { border-color: var(--royal-50); }
+.town-tile--primary .town-tile__name { font-size: var(--text-xl); }
 
 /* ---- Avatar + profile row (social profile photo) ---------------------- */
 .avatar {
@@ -1659,9 +1704,10 @@ a:hover .link-arrow::after,
 .legal-page__quote { margin: 0; }
 .legal-page__subhead { font-size: var(--text-lg); margin-top: var(--space-7); }
 .legal-page address { margin-top: var(--space-4); }
+.legal-page a { overflow-wrap: anywhere; }
 
 /* ---- about.html ------------------------------------------------------- */
-.about-towns { margin-block: var(--space-5) var(--space-6); }
+.about-towns { margin-top: var(--space-5); }
 
 /* "Who I help": photo bleeds off the right edge on desktop, behind a navy
    fade; on phones it sits above the text */
@@ -1783,6 +1829,7 @@ a:hover .link-arrow::after,
 .contact-details__list { display: grid; gap: var(--space-1); margin: var(--space-4) 0; }
 .contact-details__list dt { color: var(--color-text-muted); font-size: var(--text-sm); }
 .contact-details__list dd { margin: 0 0 var(--space-3); font-size: var(--text-md); overflow-wrap: anywhere; }
+.contact-details__list a { display: inline-flex; align-items: center; min-height: 44px; }
 .contact-details__social-title { font-size: var(--text-md); margin: var(--space-6) 0 var(--space-2); }
 .contact-details__social { margin-left: calc(-1 * var(--space-2)); color: var(--royal); }
 /* the shared .social hover is meant for dark backgrounds */

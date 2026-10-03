@@ -1,7 +1,6 @@
 /*
  * Small shared behaviors for every page: mobile menu, visit tracking,
- * footer year, and motion (header shadow on scroll, reveal-on-scroll,
- * town-ticker pause button).
+ * footer year, and motion (header shadow on scroll, reveal-on-scroll).
  * Uses event delegation, so it works even though the header/footer are
  * inserted later by include.js.
  */
@@ -25,14 +24,6 @@
     }
     // Close the menu after choosing a link (e.g. "/#home-value" on the homepage)
     if (event.target.closest(".site-nav a")) setMenu(false);
-
-    // Town ticker pause/play button
-    var pause = event.target.closest(".marquee__toggle");
-    if (pause) {
-      var paused = pause.getAttribute("aria-pressed") !== "true";
-      pause.setAttribute("aria-pressed", paused ? "true" : "false");
-      pause.closest(".marquee").classList.toggle("is-paused", paused);
-    }
   });
 
   document.addEventListener("keydown", function (event) {
@@ -144,15 +135,4 @@
   watchReveals();
   // The footer arrives later (include.js), and may hold reveal targets too
   document.addEventListener("partials:loaded", watchReveals);
-
-  // Town ticker: start it moving and show its pause button (WCAG 2.2.2).
-  // Without JS or under reduced motion it stays still, with no button.
-  if (!reduceMotion) {
-    var tickers = document.querySelectorAll(".marquee");
-    for (var k = 0; k < tickers.length; k++) {
-      tickers[k].classList.add("marquee--live");
-      var toggle = tickers[k].querySelector(".marquee__toggle");
-      if (toggle) toggle.hidden = false;
-    }
-  }
 })();
