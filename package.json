@@ -9,7 +9,8 @@
     "pdf": "python scripts/optimize-pdf.py",
     "validate": "node scripts/validate.mjs",
     "set-domain": "node scripts/set-domain.mjs",
-    "brand": "node scripts/make-brand-assets.mjs"
+    "brand": "node scripts/make-brand-assets.mjs",
+    "check:verbatim": "node scripts/check-verbatim.mjs"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
