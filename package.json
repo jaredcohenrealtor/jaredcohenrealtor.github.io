@@ -4,7 +4,7 @@
   "description": "Dev-only tooling for the static site. Nothing here is served to visitors.",
   "type": "module",
   "scripts": {
-    "serve": "browser-sync start --server --port 5500 --files \"**/*.html, assets/css/**, assets/js/**, partials/**\" --ignore \"node_modules/**\" --no-notify --no-open",
+    "serve": "browser-sync start --server --port 5500 --files \"**/*.html, assets/css/**, assets/js/**, partials/**\" --ignore \"node_modules/**\" --no-notify --no-open --no-ghost-mode --no-ui",
     "images": "node scripts/optimize-images.mjs",
     "pdf": "python scripts/optimize-pdf.py",
     "validate": "node scripts/validate.mjs",
