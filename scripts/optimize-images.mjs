@@ -18,7 +18,9 @@ const JOBS = [
   // Transparent-background headshot — for placing over brand-colored sections.
   { src: "_source/headshots/headshot-transparent.png", out: "images/headshots/headshot-transparent", widths: [400, 800, 1200] },
   // Footer team/brokerage logo (white background).
-  { src: "_source/logos/castles-unlimited-brokered-by-exp.jpg", out: "images/logos/castles-unlimited-brokered-by-exp", widths: [300, 600] }
+  { src: "_source/logos/castles-unlimited-brokered-by-exp.jpg", out: "images/logos/castles-unlimited-brokered-by-exp", widths: [300, 600] },
+  // Official HUD Equal Housing Opportunity logo (hud.gov/contactus/hudgraphics, fheo100.tif)
+  { src: "_source/legal/equal-housing-opportunity-hud-1in.tif", out: "images/legal/equal-housing-opportunity", widths: [64, 128] }
 ];
 
 const QUALITY = 80;
