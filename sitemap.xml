@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Every indexable page. Add new pages and guides here (the /new-page and /add-guide
+     skills do this). Not listed on purpose: 404.html and the PDFs in /assets/guides/.
+     (The style guide and guide template are local-only, in internal/.)
+     The domain is rewritten by `npm run set-domain`. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://jaredcohenrealtor.com/</loc><lastmod>2026-10-03</lastmod></url>
+  <url><loc>https://jaredcohenrealtor.com/about.html</loc><lastmod>2026-10-03</lastmod></url>
+  <url><loc>https://jaredcohenrealtor.com/listings.html</loc><lastmod>2026-10-03</lastmod></url>
+  <url><loc>https://jaredcohenrealtor.com/resources.html</loc><lastmod>2026-10-03</lastmod></url>
+  <url><loc>https://jaredcohenrealtor.com/guides/newton-transportation-guide.html</loc><lastmod>2026-10-03</lastmod></url>
+  <url><loc>https://jaredcohenrealtor.com/contact.html</loc><lastmod>2026-10-03</lastmod></url>
+  <url><loc>https://jaredcohenrealtor.com/fair-housing.html</loc><lastmod>2026-10-03</lastmod></url>
+  <url><loc>https://jaredcohenrealtor.com/privacy.html</loc><lastmod>2026-10-03</lastmod></url>
+  <url><loc>https://jaredcohenrealtor.com/accessibility.html</loc><lastmod>2026-10-03</lastmod></url>
+</urlset>

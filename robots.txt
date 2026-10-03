@@ -1,0 +1,14 @@
+# Jared Cohen | MA REALTOR® — robots.txt
+# The domain below is rewritten by `npm run set-domain`.
+
+User-agent: *
+# Guide PDFs are unlocked through the form on each guide page; keep the
+# files themselves out of search results (the guide pages ARE indexed).
+Disallow: /assets/guides/
+# Dev-only scripts. (The style guide, guide template and brand-image sources
+# live in the local-only internal/ folder and are never published.)
+# (Don't block /partials/: Google needs those
+# files to render each page's header and footer.)
+Disallow: /scripts/
+
+Sitemap: https://jaredcohenrealtor.com/sitemap.xml
