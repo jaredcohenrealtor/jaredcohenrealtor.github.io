@@ -40,7 +40,7 @@ Always use the server rather than double-clicking an `.html` file, because the s
 ## Publishing
 
 Work happens on the `dev` branch. GitHub Pages publishes only `main`, so merging `dev` into `main` is what makes changes live.
-Legal pages and disclosures need broker review before anything is merged into `main`.
+Merge into `main` only when you're ready to publish.
 
 ## Lead forms
 
