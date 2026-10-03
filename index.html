@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jared Cohen | Newton, MA REALTOR® | Castles Unlimited, eXp Realty</title>
+  <meta name="description" content="Jared Cohen, REALTOR® with the Castles Unlimited team at eXp Realty, helping buyers and sellers in Newton, Needham, Brookline, Waltham and nearby towns.">
+  <link rel="canonical" href="https://jaredcohenrealtor.github.io/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Jared Cohen | MA REALTOR®">
+  <meta property="og:title" content="Jared Cohen | Newton, MA REALTOR®">
+  <meta property="og:description" content="From Newton to the neighborhoods beyond. Local help buying and selling homes in Newton, Needham, Brookline, Waltham and nearby towns.">
+  <meta property="og:url" content="https://jaredcohenrealtor.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO(Phase 5): og:image + twitter:image -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+
+  <script src="/assets/js/include.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/guides-data.js" defer></script>
+  <script src="/assets/js/guides-render.js" defer></script>
+</head>
+<body>
+  <div data-include="header"></div>
+  <noscript>
+    <div class="noscript-fallback">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/listings.html">Search Homes</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/resources.html">Guides</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <p>Jared Cohen, MA REALTOR® · Castles Unlimited team, brokered by eXp Realty · <a href="tel:+16176583035">617&#8209;658&#8209;3035</a> · <a href="mailto:jared.cohen@exprealty.com">jared.cohen@exprealty.com</a></p>
+      <!-- TODO(Phase 3): Equal Housing Opportunity statement, verbatim from the eXp reference site. -->
+    </div>
+  </noscript>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="section hero" aria-labelledby="hero-title">
+      <div class="container split">
+        <div class="hero__text">
+          <span class="eyebrow">REALTOR® · Newton, MA</span>
+          <h1 id="hero-title">From Newton to the neighborhoods beyond — real estate done right.</h1>
+          <p class="lead">Whether you're buying your first home, moving up, or getting ready to sell, I'll help you find your footing in Newton's villages and the towns around them, with care at every step.</p>
+          <div class="btn-group">
+            <a class="btn btn--primary" href="/listings.html">Search homes</a>
+            <a class="btn btn--secondary" href="/contact.html?from=index">Let's talk</a>
+          </div>
+        </div>
+        <div class="hero__media">
+          <img src="/assets/images/headshots/headshot-transparent-800.webp"
+               srcset="/assets/images/headshots/headshot-transparent-400.webp 400w, /assets/images/headshots/headshot-transparent-800.webp 800w, /assets/images/headshots/headshot-transparent-1200.webp 1200w"
+               sizes="(min-width: 40em) 26rem, 100vw" width="800" height="1096"
+               fetchpriority="high" alt="Jared Cohen, REALTOR®">
+        </div>
+      </div>
+    </section>
+
+    <!-- Service area -->
+    <section class="section" aria-labelledby="area-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="area-title">Newton and the neighborhoods beyond</h2>
+          <p>Newton is made up of 13 villages, and each one has its own feel, from its village center to how the morning commute works. I focus on Newton and the neighboring towns, so the advice you get comes from knowing these streets, not from a map of "the Boston area."</p>
+        </div>
+        <ul class="chip-list">
+          <li class="chip chip--primary">Newton</li>
+          <li class="chip">Needham</li>
+          <li class="chip">Brookline</li>
+          <li class="chip">Chestnut Hill</li>
+          <li class="chip">Natick</li>
+          <li class="chip">Waltham</li>
+          <li class="chip">Brighton</li>
+          <li class="chip">Allston</li>
+          <li class="chip">Watertown</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Home value (Seller Valuation widget) -->
+    <section class="section section--tint" id="home-value" aria-labelledby="home-value-title">
+      <div class="container container--narrow">
+        <div class="section__header">
+          <h2 id="home-value-title">What's my home worth?</h2>
+          <p>Thinking about selling? Start with a quick estimate below, then I'm glad to follow up with a local opinion that accounts for your street, your village, and what's selling nearby.</p>
+        </div>
+        <div class="embed" data-embed="seller-valuation"><!-- TODO(Phase 4): BoldTrail Seller Valuation widget, verbatim from docs/boldtrail-embeds.md --></div>
+        <p class="home-value__fallback">Prefer to talk it through? <a href="/contact.html?from=index">Get in touch</a> and we'll go over it together.</p>
+      </div>
+    </section>
+
+    <!-- Featured guides (rendered from guides-data.js) -->
+    <section class="section" aria-labelledby="guides-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="guides-title">Local guides</h2>
+          <p class="text-muted">Free, practical guides to living in and moving around Newton, written to answer the questions buyers and sellers ask me most.</p>
+        </div>
+        <div class="grid grid--4" data-guides-list data-limit="4"></div>
+        <noscript>
+          <p>See every guide on the <a href="/resources.html">guides page</a>.</p>
+        </noscript>
+        <p class="guides__more"><a class="link-arrow" href="/resources.html">See all guides</a></p>
+      </div>
+    </section>
+
+    <!-- About teaser -->
+    <section class="section section--dark" aria-labelledby="about-title">
+      <div class="container split">
+        <div>
+          <!-- TODO(owner): review once the About bio is final -->
+          <span class="eyebrow">About Jared</span>
+          <h2 id="about-title">A local agent who takes the time</h2>
+          <p>I'm Jared Cohen, a REALTOR® on the Castles Unlimited team, brokered by eXp Realty. I know Newton's villages well, and I bring that local knowledge and real care to every client, whether you're buying, selling, or just starting to look.</p>
+          <p><a class="link-arrow" href="/about.html">More about me</a></p>
+        </div>
+        <div>
+          <img class="portrait" src="/assets/images/headshots/headshot-800.webp"
+               srcset="/assets/images/headshots/headshot-400.webp 400w, /assets/images/headshots/headshot-800.webp 800w, /assets/images/headshots/headshot-1200.webp 1200w"
+               sizes="(min-width: 40em) 26rem, 100vw" width="800" height="1067" loading="lazy"
+               alt="Jared Cohen, smiling, in a dark suit and light blue tie">
+        </div>
+      </div>
+    </section>
+
+    <!-- Instagram -->
+    <section class="section" aria-labelledby="instagram-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="instagram-title">Follow along on Instagram</h2>
+          <p class="text-muted">Open houses, new listings, and favorite spots around Newton and the nearby towns.</p>
+        </div>
+        <div data-embed="instagram"><!-- TODO(Phase 4): SnapWidget embed, verbatim from docs/instagram-feed.md --></div>
+        <p><a class="link-arrow" href="https://www.instagram.com/jaredcohenrealtor" target="_blank" rel="noopener">@jaredcohenrealtor on Instagram</a></p>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>

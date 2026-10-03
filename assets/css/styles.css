@@ -942,6 +942,34 @@ address { font-style: normal; }
    Add page-specific rules below, each block labelled with its page.
    ========================================================================= */
 
+/* ---- index.html ------------------------------------------------------- */
+.hero { padding-block: var(--space-6) var(--section-pad); }
+
+/* Transparent headshot on a tinted panel; photo sits on the panel's bottom edge */
+.hero__media {
+  max-width: 26rem;
+  width: 100%;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-6) 0;
+  background: var(--royal-10);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.hero__media img {
+  width: 100%;
+  max-width: 20rem;
+  margin-inline: auto;
+}
+
+@media (min-width: 56em) {
+  .hero { padding-block: var(--space-7); }
+  .hero__media img { max-width: none; }
+}
+
+.home-value__fallback { margin-top: var(--space-5); margin-bottom: 0; }
+.guides__more { margin-top: var(--space-6); margin-bottom: 0; }
+
 /* ---- contact.html ----------------------------------------------------- */
 .contact-layout { align-items: start; }
 .contact-layout > .card { height: auto; }
