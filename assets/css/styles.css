@@ -970,6 +970,9 @@ address { font-style: normal; }
 .home-value__fallback { margin-top: var(--space-5); margin-bottom: 0; }
 .guides__more { margin-top: var(--space-6); margin-bottom: 0; }
 
+/* ---- about.html ------------------------------------------------------- */
+.about-towns { margin-block: var(--space-5) var(--space-6); }
+
 /* ---- listings.html ---------------------------------------------------- */
 /* Reserve space so the page doesn't jump when embeds.js inserts the widget
    (narrow BoldTrail widget is 280x680 below 1000px; wide is 960x300 at >=1000px) */
