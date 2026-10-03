@@ -321,9 +321,9 @@ address { font-style: normal; }
 .section--tint { background: var(--color-surface); }
 .section--grey { background: var(--color-surface-alt); }
 
-/* Minimal "drafting sheet" backdrop: a soft royal wash plus a faint dot grid,
-   strongest in the top-right corner and the lower-left, fading toward the
-   middle so it never sits behind the text at full strength. */
+/* Minimal "drafting sheet" backdrop: a soft royal wash plus a faint dot grid
+   across the whole section, fading out only at the top and bottom edges.
+   The dots are light and tiny, so text on top stays easy to read. */
 .section--pattern {
   position: relative;
   isolation: isolate;
@@ -334,36 +334,17 @@ address { font-style: normal; }
     var(--white);
 }
 
-.section--pattern::before,
-.section--pattern::after {
+.section--pattern::before {
   content: "";
   position: absolute;
+  inset: 0;
   z-index: -1;
-  background-image: radial-gradient(rgb(80 108 170 / 0.4) 1.5px, transparent 1.75px);  /* royal-80 */
+  background-image: radial-gradient(rgb(80 108 170 / 0.3) 1.5px, transparent 1.75px);  /* royal-80 */
   background-size: 22px 22px;
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 85%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 85%, transparent);
   pointer-events: none;
-}
-
-.section--pattern::before {
-  top: 0;
-  right: 0;
-  width: 60%;
-  height: 7rem;   /* phones: only the strip above the heading */
-  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 85% 15%, black 20%, transparent 75%);
-  mask-image: radial-gradient(ellipse 70% 80% at 85% 15%, black 20%, transparent 75%);
-}
-
-@media (min-width: 56em) {
-  .section--pattern::before { width: 70%; height: 70%; }   /* desktop: around the photo */
-}
-
-.section--pattern::after {
-  bottom: 0;
-  left: 0;
-  width: 55%;
-  height: 50%;
-  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 10% 90%, black 15%, transparent 70%);
-  mask-image: radial-gradient(ellipse 70% 80% at 10% 90%, black 15%, transparent 70%);
 }
 
 .section--dark {
