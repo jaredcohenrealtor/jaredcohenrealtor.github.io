@@ -21,13 +21,15 @@
   --navy: #0c0f24;
   --navy-80: #31303f;
   --navy-50: #686672;
-  --navy-20: #b5b3b9;   /* backgrounds/borders only — fails AA as text */
-  --navy-10: #d4d3d6;   /* backgrounds/borders only */
+  /* Light tints: backgrounds/borders on light areas. As TEXT they're allowed
+     only on navy or royal backgrounds, where they pass AA (owner-approved). */
+  --navy-20: #b5b3b9;   /* text OK on navy (9.1:1); never text on white */
+  --navy-10: #d4d3d6;
   --royal: #19469d;
   --royal-80: #506caa;
-  --royal-50: #91a3c9;  /* backgrounds/borders/text-on-navy only */
-  --royal-20: #d3dae9;  /* backgrounds/borders only */
-  --royal-10: #e9edf4;  /* backgrounds/borders only */
+  --royal-50: #91a3c9;  /* text OK on navy (7.5:1); never text on white */
+  --royal-20: #d3dae9;
+  --royal-10: #e9edf4;  /* text OK on royal (7.4:1); never text on white */
   --grey-dark: #58595b;
   --grey-light: #e2e3e4;
   --black: #000000;
