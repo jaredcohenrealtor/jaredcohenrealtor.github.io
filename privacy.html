@@ -31,6 +31,16 @@
 
   <script src="/assets/js/include.js" defer></script>
   <script src="/assets/js/main.js" defer></script>
+  <!-- Microsoft Clarity Web Analytics -->
+  <!-- [html-validate-disable-next script-type] -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "yrnmoawl4c");
+  </script>
+  <!-- End Microsoft Clarity Web Analytics -->
 </head>
 <body>
   <div data-include="header"></div>
@@ -57,8 +67,7 @@
              (collected 2026-10-03; raw copy in docs/legal/privacy.md).
              It was written for castlesunlimited.com and is kept as-is per CLAUDE.md.
              Do not edit wording. Broker review required before launch.
-             TODO(Phase 6): add the analytics-disclosure line (Cloudflare Web Analytics +
-             Microsoft Clarity) when the tracking snippets go live. -->
+             Analytics disclosure: added below as a separate, clearly marked section. -->
         <p>Welcome to castlesunlimited.com a service of Castles Unlimited, Inc. Please read this Privacy Policy Agreement; by using this service, you agree to its terms.</p>
         <p>The Web is an evolving medium; we may change the terms of this Agreement from time to time. By continuing to use the service after we post notice of any such changes, you agree to accept the new terms.</p>
         <p>By registering with castlesunlimited.com or by using the service, you agree that we may use and disclose, as we see fit, consistent with applicable law, any information you provide, or that we obtain concerning your use of the service.</p>
@@ -66,10 +75,20 @@
         <p>Be aware that this is not an e-commerce secure Web site, as such castlesunlimited.com and Castles Unlimited, Inc. do not accept liability for damages incurred through the collection and use of customer data, including credit card fraud or misuse.</p>
         <p>If you disagree with this privacy policy, please bring to our attention in writing any information that you believe to be inaccurate or that you wish to have removed. Please send e-mail to our Webmaster or you may send your request via US Postal Service to:</p>
         <address>Director of Online Services<br>Castles Unlimited, Inc.<br>837 Beacon Street<br>Newton, MA 02459</address>
+
+        <!-- SITE ADDITION (not part of the copied Castles Unlimited policy above):
+             analytics disclosure required by CLAUDE.md now that tracking is live.
+             Drafted 2026-10-03; included in the broker review packet (item 7). -->
+        <h2 class="legal-page__subhead">Website analytics</h2>
+        <p>This website uses Cloudflare Web Analytics, which collects aggregate traffic statistics without cookies, and Microsoft Clarity, which uses cookies to record how visitors interact with pages (for example clicks, scrolling and page views) so the site can be improved. Microsoft's privacy statement is at <a href="https://privacy.microsoft.com/privacystatement" rel="noopener" target="_blank">https://privacy.microsoft.com/privacystatement</a>.</p>
       </div>
     </section>
   </main>
 
   <div data-include="footer"></div>
+  <!-- Cloudflare Web Analytics -->
+  <!-- [html-validate-disable-next attr-quotes] -->
+  <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "26ccc91a1e8141cc93ede8a4a50b27a5"}'></script>
+  <!-- End Cloudflare Web Analytics -->
 </body>
 </html>

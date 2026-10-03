@@ -1002,6 +1002,7 @@ address { font-style: normal; }
 .legal-page h1 { font-size: var(--text-2xl); }
 .legal-page__eho { width: 96px; margin-top: var(--space-6); }
 .legal-page__quote { margin: 0; }
+.legal-page__subhead { font-size: var(--text-lg); margin-top: var(--space-7); }
 .legal-page address { margin-top: var(--space-4); }
 
 /* ---- about.html ------------------------------------------------------- */
