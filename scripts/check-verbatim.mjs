@@ -10,11 +10,13 @@
 //      docs/instagram-feed.md appears on listings.html / index.html. The only
 //      allowed additions are title="…" and loading="lazy" (owner-approved).
 //   2. Analytics: every code line of docs/analytics.md appears exactly once on
-//      every page except styleguide.html.
+//      every published page. (The style guide and guide template live in the
+//      local-only internal/ folder and aren't checked.)
 //   3. Consent text: each form's consent label equals docs/consent-text.md.
-//   4. Legal text: fair-housing.html, privacy.html and the footer's MLSPIN block
-//      match docs/legal/*.md (accessibility.html: everything but the phone number,
-//      which the owner changed on purpose).
+//   4. Legal text: fair-housing.html, accessibility.html and the footer's MLSPIN
+//      block match docs/legal/*.md word for word. privacy.html is ADAPTED from the
+//      Castles Unlimited policy (owner's choice 2026-10-03), so instead it must name
+//      the site's current address (site.config.json) and never castlesunlimited.com.
 //   5. No unclosed <!-- comments in any page or partial. (An unclosed comment once
 //      hid the whole privacy policy, and html-validate does not catch it.)
 
@@ -55,7 +57,7 @@ console.log("Analytics");
 if (has("docs/analytics.md")) {
   const lines = read("docs/analytics.md").split("\n").map((l) => l.trim()).filter((l) => l && !l.startsWith("<!--"));
   let bad = 0;
-  for (const p of pages.filter((f) => f !== "styleguide.html")) {
+  for (const p of pages) {
     const body = read(p).split("\n").map((l) => l.trim());
     for (const l of lines) if (!body.includes(l)) { bad++; fail(`${p}: missing "${l.slice(0, 50)}"`); }
     const html = read(p);
@@ -63,15 +65,14 @@ if (has("docs/analytics.md")) {
       bad++; fail(`${p}: each snippet should appear exactly once`);
     }
   }
-  if (!bad) ok(`both snippets verbatim, once each, on ${pages.length - 1} pages`);
+  if (!bad) ok(`both snippets verbatim, once each, on ${pages.length} pages`);
 } else skip("docs/analytics.md missing");
 
 // 3. Consent text --------------------------------------------------------
 console.log("Consent text");
 if (has("docs/consent-text.md")) {
   const src = text(read("docs/consent-text.md"));
-  // styleguide.html shows a demo checkbox with placeholder text on purpose
-  for (const p of pages.filter((f) => f !== "styleguide.html")) {
+  for (const p of pages) {
     const m = read(p).match(/<label class="checkbox__label" for="[^"]*consent[^"]*">([\s\S]*?)<\/label>/);
     if (!m) continue;
     text(m[1]) === src ? ok(p) : fail(`${p}: consent label differs from docs/consent-text.md`);
@@ -81,8 +82,7 @@ if (has("docs/consent-text.md")) {
 // 4. Legal text ----------------------------------------------------------
 console.log("Legal text");
 const legal = [
-  ["docs/legal/fair-housing.md", "fair-housing.html", /Broker review required before launch\. -->([\s\S]*?)<img/],
-  ["docs/legal/privacy.md", "privacy.html", /clearly marked section\. -->([\s\S]*?)<!-- SITE ADDITION/]
+  ["docs/legal/fair-housing.md", "fair-housing.html", /Broker review required before launch\. -->([\s\S]*?)<img/]
 ];
 for (const [src, page, re] of legal) {
   if (!has(src)) { skip(src + " missing"); continue; }
@@ -91,11 +91,22 @@ for (const [src, page, re] of legal) {
   text(m[1]) === mdBody(read(src)) ? ok(page) : fail(`${page}: differs from ${src}`);
 }
 if (has("docs/legal/accessibility.md")) {
-  const src = mdBody(read("docs/legal/accessibility.md")).replace(/ --- /, " ").replace("617-658-3035", "617-733-8280");
+  const src = mdBody(read("docs/legal/accessibility.md")).replace(/ --- /, " ");
   const m = read("accessibility.html").match(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/);
-  m && text(m[1]).replace(/ \./g, ".") === src.replace(/ \./g, ".") ? ok("accessibility.html (owner-approved phone change only)")
+  m && text(m[1]).replace(/ \./g, ".") === src.replace(/ \./g, ".") ? ok("accessibility.html")
     : fail("accessibility.html: differs from docs/legal/accessibility.md");
 } else skip("docs/legal/accessibility.md missing");
+{
+  // privacy.html is adapted, not verbatim: it must show the site's CURRENT address
+  // (rewritten by `npm run set-domain`) so a domain change can't leave it stale.
+  const cfg = JSON.parse(read("site.config.json"));
+  const domain = (cfg.appliedDomain || cfg.domain).replace(/\/+$/, "");
+  const html = read("privacy.html");
+  const names = html.includes(`href="${domain}/">${domain}</a>`);
+  const stray = text(html).includes("castlesunlimited.com");
+  names && !stray ? ok(`privacy.html (adapted) names ${domain}`)
+    : fail(`privacy.html: should link and show ${domain}, and not mention castlesunlimited.com`);
+}
 if (has("docs/legal/mls-disclaimer.md")) {
   const src = mdBody(read("docs/legal/mls-disclaimer.md")).split("Other MLS boards")[0].replace(/ Last Update:.*$/, "").trim();
   const m = read("partials/footer.html").match(/<div class="mls-disclaimer">\s*<h2[^>]*>[^<]*<\/h2>([\s\S]*?)<\/div>/);
