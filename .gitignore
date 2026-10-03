@@ -13,3 +13,6 @@ assets/_source/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Playwright MCP screenshots/logs
+.playwright-mcp/
