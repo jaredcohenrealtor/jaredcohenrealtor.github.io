@@ -26,7 +26,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/styles.css">
 
   <script src="/assets/js/include.js" defer></script>
@@ -64,50 +64,67 @@
   </noscript>
 
   <main id="main">
-    <section class="section" aria-labelledby="about-title">
-      <div class="container split">
-        <div>
+    <section class="hero" aria-labelledby="about-title">
+      <div class="container hero__inner">
+        <div class="hero__text">
           <span class="eyebrow">About</span>
           <h1 id="about-title">Hi, I'm Jared</h1>
           <p class="lead">I'm a REALTOR® on the Castles Unlimited team, brokered by eXp Realty, and Newton is my home.</p>
           <p>After college at Northeastern, I moved to the Newton area and have called it home ever since. When I'm not working, you'll find me at the local YMCA, trying out the restaurants and shops around town, or at one of the community events that make this place feel like a neighborhood.</p>
           <div class="btn-group">
-            <a class="btn btn--primary" href="/contact.html?from=about">Let's talk</a>
-            <a class="btn btn--secondary" href="/listings.html">Search homes</a>
+            <a class="btn btn--light" href="/contact.html?from=about">Let's talk</a>
+            <a class="btn btn--ghost-light" href="/listings.html">Search homes</a>
           </div>
         </div>
-        <img class="portrait" src="/assets/images/headshots/headshot-800.webp"
-             srcset="/assets/images/headshots/headshot-400.webp 400w, /assets/images/headshots/headshot-800.webp 800w, /assets/images/headshots/headshot-1200.webp 1200w"
-             sizes="(min-width: 56em) 26rem, (min-width: 40em) 26rem, 100vw"
-             width="800" height="1067" fetchpriority="high"
-             alt="Jared Cohen, REALTOR®, smiling in a dark suit and light blue tie">
+        <div class="hero__media">
+          <div class="arch">
+            <img src="/assets/images/photos/jared-kitchen-800.webp"
+                 srcset="/assets/images/photos/jared-kitchen-400.webp 400w, /assets/images/photos/jared-kitchen-800.webp 800w, /assets/images/photos/jared-kitchen-1200.webp 1200w"
+                 sizes="(min-width: 56em) 28rem, 22rem" width="800" height="1000"
+                 fetchpriority="high" alt="Jared Cohen, REALTOR®, smiling and leaning on a kitchen island"
+                 style="--arch-pos: 50% 50%">
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section section--tint" aria-labelledby="why-title">
-      <div class="container container--narrow">
-        <h2 id="why-title">Why real estate</h2>
-        <p>What I love most about this work is the people. Every client comes with their own story and their own goals, and helping each of them find the right fit is what makes the job rewarding.</p>
-        <p>I'm also a big fan of architecture, so getting to walk through all kinds of homes and buildings across Newton and the surrounding towns never gets old.</p>
+    <section class="section" aria-labelledby="why-title">
+      <div class="container split split--media-left">
+        <div data-reveal>
+          <span class="eyebrow">What drives me</span>
+          <h2 id="why-title">Why real estate</h2>
+          <p>What I love most about this work is the people. Every client comes with their own story and their own goals, and helping each of them find the right fit is what makes the job rewarding.</p>
+          <p>I'm also a big fan of architecture, so getting to walk through all kinds of homes and buildings across Newton and the surrounding towns never gets old.</p>
+        </div>
+        <div class="frame frame--arch frame--narrow" data-reveal="left">
+          <img src="/assets/images/photos/jared-staircase-step-800.webp"
+               srcset="/assets/images/photos/jared-staircase-step-400.webp 400w, /assets/images/photos/jared-staircase-step-800.webp 800w, /assets/images/photos/jared-staircase-step-1200.webp 1200w"
+               sizes="(min-width: 28rem) 26rem, 100vw" width="800" height="1067" loading="lazy"
+               alt="Jared standing on the first steps of a curved wooden staircase">
+        </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="how-title">
+    <section class="section section--tint" aria-labelledby="how-title">
       <div class="container">
-        <div class="section__header">
+        <div class="section__header" data-reveal>
+          <span class="eyebrow">Working together</span>
           <h2 id="how-title">How I work</h2>
           <p class="text-muted">Buying or selling a home is a big decision. Here's what you can count on when we work together.</p>
         </div>
-        <div class="grid grid--3">
-          <article class="card">
+        <div class="grid grid--3" data-reveal-stagger>
+          <article class="card card--accent">
+            <span class="card__num" aria-hidden="true">01</span>
             <h3 class="card__title">A personal connection</h3>
             <p class="card__body">I get to know you and what you need from your next move, so we can work through every challenge together.</p>
           </article>
-          <article class="card">
+          <article class="card card--accent">
+            <span class="card__num" aria-hidden="true">02</span>
             <h3 class="card__title">Every step explained</h3>
             <p class="card__body">I'll make sure you feel heard and understand each part of the process, so nothing about your purchase or sale catches you off guard.</p>
           </article>
-          <article class="card">
+          <article class="card card--accent">
+            <span class="card__num" aria-hidden="true">03</span>
             <h3 class="card__title">You stay in control</h3>
             <p class="card__body">With clear information at every stage, the decisions about your future stay in your hands.</p>
           </article>
@@ -115,25 +132,34 @@
       </div>
     </section>
 
-    <section class="section section--dark" aria-labelledby="who-title">
-      <div class="container container--narrow">
-        <span class="eyebrow">Who I help</span>
-        <h2 id="who-title">From first-time buyers to longtime residents</h2>
-        <p>Whether you're buying your first home or you've lived here for years and are ready for a change, I'm glad to help you figure out what comes next, in Newton and the neighborhoods beyond.</p>
-        <ul class="chip-list about-towns">
-          <li class="chip chip--primary">Newton</li>
-          <li class="chip">Needham</li>
-          <li class="chip">Brookline</li>
-          <li class="chip">Chestnut Hill</li>
-          <li class="chip">Natick</li>
-          <li class="chip">Waltham</li>
-          <li class="chip">Brighton</li>
-          <li class="chip">Allston</li>
-          <li class="chip">Watertown</li>
-        </ul>
-        <div class="btn-group">
-          <a class="btn btn--light" href="/contact.html?from=about">Let's talk</a>
-          <a class="btn btn--ghost-light" href="/resources.html">Browse local guides</a>
+    <section class="section section--dark bleed" aria-labelledby="who-title">
+      <div class="bleed__media">
+        <img src="/assets/images/photos/jared-front-door-800.webp"
+             srcset="/assets/images/photos/jared-front-door-400.webp 400w, /assets/images/photos/jared-front-door-800.webp 800w, /assets/images/photos/jared-front-door-1200.webp 1200w"
+             sizes="(min-width: 56em) 50vw, 100vw" width="800" height="1067" loading="lazy"
+             alt="Jared reviewing a folder outside the front door of a brick colonial home"
+             style="--bleed-pos: 50% 42%">
+      </div>
+      <div class="container">
+        <div class="bleed__content" data-reveal>
+          <span class="eyebrow">Who I help</span>
+          <h2 id="who-title">From first-time buyers to longtime residents</h2>
+          <p>Whether you're buying your first home or you've lived here for years and are ready for a change, I'm glad to help you figure out what comes next, in Newton and the neighborhoods beyond.</p>
+          <ul class="chip-list about-towns" data-reveal-stagger>
+            <li class="chip chip--primary">Newton</li>
+            <li class="chip">Needham</li>
+            <li class="chip">Brookline</li>
+            <li class="chip">Chestnut Hill</li>
+            <li class="chip">Natick</li>
+            <li class="chip">Waltham</li>
+            <li class="chip">Brighton</li>
+            <li class="chip">Allston</li>
+            <li class="chip">Watertown</li>
+          </ul>
+          <div class="btn-group">
+            <a class="btn btn--light" href="/contact.html?from=about">Let's talk</a>
+            <a class="btn btn--ghost-light" href="/resources.html">Browse local guides</a>
+          </div>
         </div>
       </div>
     </section>

@@ -26,7 +26,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/styles.css">
 
   <script src="/assets/js/include.js" defer></script>
@@ -110,96 +110,172 @@
   </noscript>
 
   <main id="main">
-    <!-- Hero -->
-    <section class="section hero" aria-labelledby="hero-title">
-      <div class="container split">
+    <!-- Hero: navy, tagline (exact wording; "done right." is only styled), arch photo -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__inner">
         <div class="hero__text">
           <span class="eyebrow">REALTOR® · Newton, MA</span>
-          <h1 id="hero-title">From Newton to the neighborhoods beyond — real estate done right.</h1>
+          <h1 id="hero-title">From Newton to the neighborhoods beyond — real estate <em>done right.</em></h1>
           <p class="lead">Whether you're buying your first home, moving up, or getting ready to sell, I'll help you find your footing in Newton's villages and the towns around them, with care at every step.</p>
           <div class="btn-group">
-            <a class="btn btn--primary" href="/listings.html">Search homes</a>
-            <a class="btn btn--secondary" href="/contact.html?from=index">Let's talk</a>
+            <a class="btn btn--light" href="/listings.html">Search homes</a>
+            <a class="btn btn--ghost-light" href="/contact.html?from=index">Let's talk</a>
           </div>
         </div>
         <div class="hero__media">
-          <img src="/assets/images/headshots/headshot-transparent-800.webp"
-               srcset="/assets/images/headshots/headshot-transparent-400.webp 400w, /assets/images/headshots/headshot-transparent-800.webp 800w, /assets/images/headshots/headshot-transparent-1200.webp 1200w"
-               sizes="(min-width: 40em) 26rem, 100vw" width="800" height="1096"
-               fetchpriority="high" alt="Jared Cohen, REALTOR®">
+          <div class="arch">
+            <img src="/assets/images/photos/jared-living-room-800.webp"
+                 srcset="/assets/images/photos/jared-living-room-400.webp 400w, /assets/images/photos/jared-living-room-800.webp 800w, /assets/images/photos/jared-living-room-1200.webp 1200w"
+                 sizes="(min-width: 56em) 28rem, 22rem" width="800" height="1067"
+                 fetchpriority="high" alt="Jared Cohen, REALTOR®, smiling in a dark suit in a bright living room">
+          </div>
+          <p class="hero__badge"><strong>Jared Cohen, REALTOR®</strong><span>Castles Unlimited team, brokered by eXp Realty</span></p>
         </div>
       </div>
     </section>
 
+    <!-- Town ticker: decorative, hidden from screen readers (the real list is the chips below) -->
+    <div class="marquee">
+      <div class="marquee__viewport" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Newton</span><span>Needham</span><span>Brookline</span><span>Chestnut Hill</span><span>Natick</span><span>Waltham</span><span>Brighton</span><span>Allston</span><span>Watertown</span>
+          <span>Newton</span><span>Needham</span><span>Brookline</span><span>Chestnut Hill</span><span>Natick</span><span>Waltham</span><span>Brighton</span><span>Allston</span><span>Watertown</span>
+          <span>Newton</span><span>Needham</span><span>Brookline</span><span>Chestnut Hill</span><span>Natick</span><span>Waltham</span><span>Brighton</span><span>Allston</span><span>Watertown</span>
+          <span>Newton</span><span>Needham</span><span>Brookline</span><span>Chestnut Hill</span><span>Natick</span><span>Waltham</span><span>Brighton</span><span>Allston</span><span>Watertown</span>
+        </div>
+      </div>
+      <button class="marquee__toggle" type="button" aria-pressed="false" hidden><span class="visually-hidden">Pause the moving list of towns</span></button>
+    </div>
+
     <!-- Service area -->
     <section class="section" aria-labelledby="area-title">
-      <div class="container">
-        <div class="section__header">
+      <div class="container split">
+        <div data-reveal>
+          <span class="eyebrow">Where I work</span>
           <h2 id="area-title">Newton and the neighborhoods beyond</h2>
           <p>Newton is made up of 13 villages, and each one has its own feel, from its village center to how the morning commute works. I focus on Newton and the neighboring towns, so the advice you get comes from knowing these streets, not from a map of "the Boston area."</p>
+          <ul class="chip-list" data-reveal-stagger>
+            <li class="chip chip--primary">Newton</li>
+            <li class="chip">Needham</li>
+            <li class="chip">Brookline</li>
+            <li class="chip">Chestnut Hill</li>
+            <li class="chip">Natick</li>
+            <li class="chip">Waltham</li>
+            <li class="chip">Brighton</li>
+            <li class="chip">Allston</li>
+            <li class="chip">Watertown</li>
+          </ul>
         </div>
-        <ul class="chip-list">
-          <li class="chip chip--primary">Newton</li>
-          <li class="chip">Needham</li>
-          <li class="chip">Brookline</li>
-          <li class="chip">Chestnut Hill</li>
-          <li class="chip">Natick</li>
-          <li class="chip">Waltham</li>
-          <li class="chip">Brighton</li>
-          <li class="chip">Allston</li>
-          <li class="chip">Watertown</li>
-        </ul>
+        <div class="frame" data-reveal="right">
+          <img src="/assets/images/photos/jared-brick-house-800.webp"
+               srcset="/assets/images/photos/jared-brick-house-400.webp 400w, /assets/images/photos/jared-brick-house-800.webp 800w, /assets/images/photos/jared-brick-house-1200.webp 1200w"
+               sizes="(min-width: 56em) 34rem, 100vw" width="800" height="1067" loading="lazy"
+               alt="Jared standing on the brick walkway of a brick colonial home"
+               style="--frame-pos: 50% 58%">
+        </div>
+      </div>
+    </section>
+
+    <!-- How I can help: photo cards. The two house photos are stock (Pexels): mood only,
+         never captioned as a listing, a sale, or a town. -->
+    <section class="section section--tint" aria-labelledby="help-title">
+      <div class="container">
+        <div class="section__header" data-reveal>
+          <span class="eyebrow">How I can help</span>
+          <h2 id="help-title">Wherever you're starting from</h2>
+          <p class="text-muted">Whether you're buying, selling, or still deciding, here's a good place to begin.</p>
+        </div>
+        <div class="photo-cards" data-reveal-stagger>
+          <article class="photo-card">
+            <img class="photo-card__img" src="/assets/images/places/stock-colonial-autumn-800.webp"
+                 srcset="/assets/images/places/stock-colonial-autumn-400.webp 400w, /assets/images/places/stock-colonial-autumn-800.webp 800w, /assets/images/places/stock-colonial-autumn-1200.webp 1200w"
+                 sizes="(min-width: 52em) 40rem, (min-width: 32rem) 100vw, 32rem" width="800" height="600" loading="lazy" alt=""
+                 style="--photo-pos: 70% 50%">
+            <h3 class="photo-card__title"><a href="/listings.html">Buying a home</a></h3>
+            <p class="photo-card__text">Tell me how you want to live day to day, and I'll help you find the village, the street, and the house that fit.</p>
+            <span class="photo-card__cta link-arrow" aria-hidden="true">Search homes</span>
+          </article>
+          <article class="photo-card">
+            <img class="photo-card__img" src="/assets/images/places/stock-white-colonial-640.webp"
+                 srcset="/assets/images/places/stock-white-colonial-640.webp 640w, /assets/images/places/stock-white-colonial-1280.webp 1280w"
+                 sizes="(min-width: 52em) 45rem, (min-width: 36rem) 100vw, 36rem" width="640" height="426" loading="lazy" alt="">
+            <h3 class="photo-card__title"><a href="#home-value">Selling your home</a></h3>
+            <p class="photo-card__text">Start with a quick estimate of your home's value, then we'll talk through pricing, timing, and getting ready for market.</p>
+            <span class="photo-card__cta link-arrow" aria-hidden="true">What's my home worth?</span>
+          </article>
+          <article class="photo-card">
+            <img class="photo-card__img" src="/assets/images/photos/jared-desk-800.webp"
+                 srcset="/assets/images/photos/jared-desk-400.webp 400w, /assets/images/photos/jared-desk-800.webp 800w, /assets/images/photos/jared-desk-1200.webp 1200w"
+                 sizes="(min-width: 52em) 24rem, 100vw" width="800" height="1067" loading="lazy" alt=""
+                 style="--photo-pos: 60% 40%">
+            <h3 class="photo-card__title"><a href="/resources.html">Local guides</a></h3>
+            <p class="photo-card__text">Free, practical guides to living in and getting around Newton and the nearby towns.</p>
+            <span class="photo-card__cta link-arrow" aria-hidden="true">Browse guides</span>
+          </article>
+        </div>
       </div>
     </section>
 
     <!-- Home value (Seller Valuation widget) -->
-    <section class="section section--tint" id="home-value" aria-labelledby="home-value-title">
-      <div class="container container--narrow">
-        <div class="section__header">
+    <section class="section" id="home-value" aria-labelledby="home-value-title">
+      <div class="container split split--media-left">
+        <div data-reveal>
+          <span class="eyebrow">For sellers</span>
           <h2 id="home-value-title">What's my home worth?</h2>
           <p>Thinking about selling? Start with a quick estimate below, then I'm glad to follow up with a local opinion that accounts for your street, your village, and what's selling nearby.</p>
+          <div class="embed-card home-value__card">
+            <div class="embed" data-embed="seller-valuation">
+              <!-- BoldTrail widget: copied VERBATIM from docs/boldtrail-embeds.md. It submits straight
+                   to BoldTrail, not through the Worker. Only additions (owner-approved 2026-10-03):
+                   title (screen readers) and loading="lazy" (it's below the fold). -->
+              <!-- Seller Valuation Widget -->
+              <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
+              <iframe style="width:100%; height:160px;" src="https://jaredcohen.exprealty.com/sellembed.php" allowtransparency="true" frameBorder="0" title="Home value estimate" loading="lazy"> </iframe>
+            </div>
+          </div>
+          <p class="home-value__fallback">Prefer to talk it through? <a href="/contact.html?from=index">Get in touch</a> and we'll go over it together.</p>
         </div>
-        <div class="embed" data-embed="seller-valuation">
-          <!-- BoldTrail widget: copied VERBATIM from docs/boldtrail-embeds.md. It submits straight
-               to BoldTrail, not through the Worker. Only additions (owner-approved 2026-10-03):
-               title (screen readers) and loading="lazy" (it's below the fold). -->
-          <!-- Seller Valuation Widget -->
-          <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
-          <iframe style="width:100%; height:160px;" src="https://jaredcohen.exprealty.com/sellembed.php" allowtransparency="true" frameBorder="0" title="Home value estimate" loading="lazy"> </iframe>
+        <div class="frame frame--arch frame--narrow" data-reveal="left">
+          <img src="/assets/images/photos/jared-staircase-800.webp"
+               srcset="/assets/images/photos/jared-staircase-400.webp 400w, /assets/images/photos/jared-staircase-800.webp 800w, /assets/images/photos/jared-staircase-1200.webp 1200w"
+               sizes="(min-width: 28rem) 26rem, 100vw" width="800" height="1067" loading="lazy"
+               alt="Jared in a front hall, gesturing toward a curved staircase">
         </div>
-        <p class="home-value__fallback">Prefer to talk it through? <a href="/contact.html?from=index">Get in touch</a> and we'll go over it together.</p>
       </div>
     </section>
 
     <!-- Featured guides (rendered from guides-data.js) -->
-    <section class="section" aria-labelledby="guides-title">
-      <div class="container">
-        <div class="section__header">
+    <section class="section section--tint" aria-labelledby="guides-title">
+      <div class="container guides-feature">
+        <div class="section__header" data-reveal>
+          <span class="eyebrow">Free resources</span>
           <h2 id="guides-title">Local guides</h2>
           <p class="text-muted">Free, practical guides to living in and moving around Newton, covering the questions that come up when you're buying, selling, or settling in.</p>
+          <p class="guides__more"><a class="link-arrow" href="/resources.html">See all guides</a></p>
         </div>
-        <div class="grid grid--4" data-guides-list data-limit="4"></div>
-        <noscript>
-          <p>See every guide on the <a href="/resources.html">guides page</a>.</p>
-        </noscript>
-        <p class="guides__more"><a class="link-arrow" href="/resources.html">See all guides</a></p>
+        <div>
+          <div class="guides-feature__list" data-guides-list data-limit="4" data-reveal-stagger></div>
+          <noscript>
+            <p>See every guide on the <a href="/resources.html">guides page</a>.</p>
+          </noscript>
+        </div>
       </div>
     </section>
 
     <!-- About teaser -->
     <section class="section section--dark" aria-labelledby="about-title">
       <div class="container split">
-        <div>
+        <div data-reveal>
           <span class="eyebrow">About Jared</span>
-          <h2 id="about-title">A local agent who takes the time</h2>
+          <h2 id="about-title">A local agent who <em>takes the time</em></h2>
           <p>I'm Jared Cohen, a REALTOR® on the Castles Unlimited team, brokered by eXp Realty. Newton has been my home since college at Northeastern, and I'd love to help you find your place here too, whether you're buying, selling, or just starting to look.</p>
           <p><a class="link-arrow" href="/about.html">More about me</a></p>
         </div>
-        <div>
-          <img class="portrait" src="/assets/images/headshots/headshot-800.webp"
-               srcset="/assets/images/headshots/headshot-400.webp 400w, /assets/images/headshots/headshot-800.webp 800w, /assets/images/headshots/headshot-1200.webp 1200w"
-               sizes="(min-width: 40em) 26rem, 100vw" width="800" height="1067" loading="lazy"
-               alt="Jared Cohen, smiling, in a dark suit and light blue tie">
+        <div class="cutout-arch" data-reveal="zoom">
+          <img src="/assets/images/photos/jared-cutout-folder-400.webp"
+               srcset="/assets/images/photos/jared-cutout-folder-400.webp 400w, /assets/images/photos/jared-cutout-folder-800.webp 800w"
+               sizes="10rem" width="400" height="1070" loading="lazy"
+               alt="Jared Cohen smiling, holding a leather folder">
         </div>
       </div>
     </section>
@@ -207,7 +283,8 @@
     <!-- Instagram -->
     <section class="section" aria-labelledby="instagram-title">
       <div class="container">
-        <div class="section__header">
+        <div class="section__header" data-reveal>
+          <span class="eyebrow">On social</span>
           <h2 id="instagram-title">Follow along on Instagram</h2>
           <p class="text-muted">Check out my Instagram for my latest open houses, real estate tips, and community events around Newton and the nearby towns.</p>
         </div>
@@ -219,7 +296,11 @@
           <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr] -->
           <iframe src="https://snapwidget.com/embed/1131613" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden;  width:100%; " title="Instagram Posts" loading="lazy"></iframe>
         </div>
-        <p><a class="link-arrow" href="https://www.instagram.com/jaredcohenrealtor" target="_blank" rel="noopener">@jaredcohenrealtor on Instagram</a></p>
+        <!-- The older headshot is Jared's social-media profile photo, so it appears here (owner's choice 2026-10-03) -->
+        <a class="profile-link instagram__profile" href="https://www.instagram.com/jaredcohenrealtor" target="_blank" rel="noopener">
+          <img class="avatar" src="/assets/images/headshots/headshot-400.webp" width="400" height="533" loading="lazy" alt="">
+          <span class="profile-link__text"><strong>@jaredcohenrealtor</strong> <span class="link-arrow">on Instagram</span></span>
+        </a>
       </div>
     </section>
   </main>

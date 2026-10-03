@@ -2,10 +2,10 @@
    Jared Cohen | MA REALTOR® — site stylesheet (the only stylesheet)
    Mobile-first: base styles target phones; @media (min-width) adds desktop.
 
-   1. Tokens       — colors, fonts, spacing. Change the look here.
-   2. Base         — element defaults
+   1. Tokens       — colors, fonts, spacing, motion. Change the look here.
+   2. Base         — element defaults, keyframes, reduced motion
    3. Layout       — containers, sections, grids
-   4. Components   — buttons, cards, forms, alerts, chips
+   4. Components   — buttons, cards, photo frames, heroes, forms, alerts, chips
    5. Header/footer
    6. Per-page     — styles used by a single page (labelled by page)
    ========================================================================= */
@@ -15,6 +15,8 @@
    1. TOKENS
    Palette = eXp Realty brand colors, exact hex values (see CLAUDE.md).
    Don't add colors outside this palette without discussing first.
+   (Transparent versions of palette colors, e.g. navy at 80% for photo
+   overlays, are fine: they're the same colors.)
    ========================================================================= */
 :root {
   /* Brand palette */
@@ -64,6 +66,7 @@
   --text-xl: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
   --text-2xl: clamp(1.875rem, 1.45rem + 1.9vw, 2.75rem);
   --text-3xl: clamp(2.125rem, 1.5rem + 2.9vw, 3.5rem);
+  --text-display: clamp(2.375rem, 1.5rem + 3.9vw, 4.25rem);  /* hero h1s */
 
   --leading-tight: 1.2;
   --leading-normal: 1.6;
@@ -77,7 +80,7 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4rem;
-  --section-pad: clamp(3rem, 2rem + 4vw, 5.5rem);
+  --section-pad: clamp(3.5rem, 2rem + 5vw, 7rem);
 
   /* Layout */
   --container: 72rem;          /* 1152px */
@@ -89,9 +92,19 @@
   --radius: 4px;
   --radius-lg: 8px;
   --radius-btn: var(--radius);   /* button corners only (e.g. 999px = pill) */
+  /* Arch-topped frame (a nod to Newton's architecture). The 40% only makes a
+     true half-circle on a 4:5 box, so .arch / .frame--arch fix that ratio. */
+  --radius-arch: 50% 50% var(--radius-lg) var(--radius-lg) / 40% 40% var(--radius-lg) var(--radius-lg);
   --shadow-sm: 0 1px 2px rgb(12 15 36 / 0.08);
   --shadow-md: 0 6px 20px rgb(12 15 36 / 0.10);
+  --shadow-lg: 0 24px 48px -16px rgb(12 15 36 / 0.32);
   --transition: 150ms ease;
+
+  /* Motion. Every animation switches off for visitors who ask their device
+     to reduce motion (see Base). */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --reveal-duration: 850ms;
+  --reveal-distance: 1.75rem;
 }
 
 @media (min-width: 48em) {
@@ -119,19 +132,14 @@ html {
   scroll-padding-top: calc(var(--header-h) + var(--space-4));
 }
 
-/* On navy/royal backgrounds a blue focus ring would be invisible */
+/* On navy/royal backgrounds and photos a blue focus ring would be invisible */
 .footer-cta,
 .site-footer,
-.section--dark {
+.section--dark,
+.hero,
+.page-hero,
+.marquee {
   --color-focus: var(--white);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
 }
 
 body {
@@ -158,6 +166,9 @@ h1 { font-size: var(--text-3xl); }
 h2 { font-size: var(--text-2xl); }
 h3 { font-size: var(--text-lg); }
 h4 { font-size: var(--text-md); font-family: var(--font-body); font-weight: 600; }
+
+/* Italic accent words in headings (Playfair italic is loaded on every page) */
+h1 em, h2 em { font-style: italic; font-weight: 600; }
 
 p, ul, ol, dl, figure, blockquote {
   margin: 0 0 var(--space-4);
@@ -230,6 +241,66 @@ address { font-style: normal; }
   color: var(--white);
 }
 
+/* ---- Keyframes (shared by components below) --------------------------- */
+@keyframes rise        { from { opacity: 0; transform: translateY(1.25rem); } }
+@keyframes settle      { from { transform: scale(1.08); } }
+@keyframes arch-rise   { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes fade-in     { from { opacity: 0; } }
+@keyframes marquee     { to { transform: translateX(-50%); } }
+@keyframes reveal-up    { from { opacity: 0; transform: translateY(var(--reveal-distance)); } }
+@keyframes reveal-left  { from { opacity: 0; transform: translateX(calc(-1 * var(--reveal-distance))); } }
+@keyframes reveal-right { from { opacity: 0; transform: translateX(var(--reveal-distance)); } }
+@keyframes reveal-zoom  { from { opacity: 0; transform: scale(0.94); } }
+
+/* ---- Reveal on scroll (driven by main.js) ------------------------------ */
+/* Mark an element data-reveal (="left" | "right" | "zoom"; default slides
+   up), or mark a list data-reveal-stagger so its children follow one after
+   another. Nothing is hidden until main.js adds .reveal-ready to <html>, and
+   it never does without IntersectionObserver or under reduced motion, so
+   content can't get stuck invisible. Elements already on screen at load get
+   .reveal-skip and simply appear. */
+.reveal-ready [data-reveal]:not(.is-revealed),
+.reveal-ready [data-reveal-stagger]:not(.is-revealed) > * {
+  opacity: 0;
+}
+
+/* "backwards" fill: once finished, the element's own hover transforms apply */
+.reveal-ready [data-reveal].is-revealed,
+.reveal-ready [data-reveal-stagger].is-revealed > * {
+  animation: reveal-up var(--reveal-duration) var(--ease-out) backwards;
+}
+
+.reveal-ready [data-reveal="left"].is-revealed  { animation-name: reveal-left; }
+.reveal-ready [data-reveal="right"].is-revealed { animation-name: reveal-right; }
+.reveal-ready [data-reveal="zoom"].is-revealed  { animation-name: reveal-zoom; }
+
+.reveal-ready [data-reveal-stagger].is-revealed > :nth-child(2) { animation-delay: 90ms; }
+.reveal-ready [data-reveal-stagger].is-revealed > :nth-child(3) { animation-delay: 180ms; }
+.reveal-ready [data-reveal-stagger].is-revealed > :nth-child(4) { animation-delay: 270ms; }
+.reveal-ready [data-reveal-stagger].is-revealed > :nth-child(5) { animation-delay: 360ms; }
+.reveal-ready [data-reveal-stagger].is-revealed > :nth-child(6) { animation-delay: 420ms; }
+.reveal-ready [data-reveal-stagger].is-revealed > :nth-child(7) { animation-delay: 480ms; }
+.reveal-ready [data-reveal-stagger].is-revealed > :nth-child(8) { animation-delay: 540ms; }
+.reveal-ready [data-reveal-stagger].is-revealed > :nth-child(n+9) { animation-delay: 600ms; }
+
+.reveal-ready .reveal-skip,
+.reveal-ready .reveal-skip > * { animation: none !important; }
+
+@media print {
+  [data-reveal], [data-reveal-stagger] > * { opacity: 1 !important; animation: none !important; }
+}
+
+/* ---- Reduced motion: switch every animation and transition off --------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 
 /* =========================================================================
    3. LAYOUT
@@ -265,8 +336,10 @@ address { font-style: normal; }
 
 .section__header {
   max-width: var(--container-narrow);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-7);
 }
+
+.section__header > :last-child { margin-bottom: 0; }
 
 .section__header--center {
   margin-inline: auto;
@@ -291,16 +364,18 @@ address { font-style: normal; }
   .grid--4 { grid-template-columns: repeat(4, 1fr); }
 }
 
-/* Two-column split (text + media), stacks on phones */
+/* Two-column split (text + media), stacks on phones in source order.
+   .split--media-left: on desktop the LAST child (the media) moves to the
+   left, so phones still read the text first. */
 .split {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-7);
   align-items: center;
 }
 
 @media (min-width: 56em) {
   .split { grid-template-columns: 1fr 1fr; gap: var(--space-8); }
-  .split--media-first > :first-child { order: -1; }
+  .split--media-left > :last-child { order: -1; }
 }
 
 .stack > * + * { margin-top: var(--space-4); }
@@ -310,15 +385,26 @@ address { font-style: normal; }
 .text-muted { color: var(--color-text-muted); }
 .lead { font-size: var(--text-md); color: var(--color-text-muted); }
 
+/* Small caps label with a short rule in front of it */
 .eyebrow {
   display: block;
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
   color: var(--royal);
   font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 1.75rem;
+  height: 2px;
+  margin-right: 0.75em;
+  vertical-align: middle;
+  background: currentColor;
 }
 
 .section--dark .eyebrow { color: var(--royal-50); }
@@ -345,8 +431,12 @@ address { font-style: normal; }
   text-align: center;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition),
+              transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
 }
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: none; }
 
 .btn--primary {
   background: var(--royal);
@@ -356,6 +446,7 @@ address { font-style: normal; }
 .btn--primary:hover {
   background: var(--navy);
   color: var(--white);
+  box-shadow: 0 10px 20px -8px rgb(12 15 36 / 0.45);
 }
 
 .btn--secondary {
@@ -378,6 +469,7 @@ address { font-style: normal; }
 .btn--light:hover {
   background: var(--royal-10);
   color: var(--navy);
+  box-shadow: 0 10px 24px -8px rgb(0 0 0 / 0.5);
 }
 
 .btn--ghost-light {
@@ -397,6 +489,7 @@ address { font-style: normal; }
 .btn[aria-disabled="true"] {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .btn-group {
@@ -405,7 +498,7 @@ address { font-style: normal; }
   gap: var(--space-3);
 }
 
-/* Text link with arrow */
+/* Text link with an arrow that nudges forward on hover */
 .link-arrow {
   display: inline-flex;
   align-items: center;
@@ -415,10 +508,16 @@ address { font-style: normal; }
 }
 
 .link-arrow::after {
-  content: " →";
+  content: "→";
+  margin-left: 0.4em;
+  transition: transform 250ms var(--ease-out);
 }
 
 .link-arrow:hover { text-decoration: underline; }
+.link-arrow:hover::after,
+a:hover .link-arrow::after,
+.card--link:hover .link-arrow::after,
+.photo-card:hover .link-arrow::after { transform: translateX(4px); }
 
 /* ---- Cards ------------------------------------------------------------ */
 .card {
@@ -448,15 +547,445 @@ address { font-style: normal; }
   text-decoration: none;
 }
 
-/* Makes the whole card clickable via its title link */
-.card--link { position: relative; transition: box-shadow var(--transition), border-color var(--transition); }
+/* Makes the whole card clickable via its title link; lifts on hover */
+.card--link {
+  position: relative;
+  transition: box-shadow 300ms var(--ease-out), border-color 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
 .card--link .card__title a::after { content: ""; position: absolute; inset: 0; }
-.card--link:hover { box-shadow: var(--shadow-md); border-color: var(--royal-50); }
+.card--link:hover { box-shadow: var(--shadow-lg); border-color: var(--royal-50); transform: translateY(-4px); }
 .card--link:has(a:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 .card--link .card__title a:focus-visible { outline: none; }
 
 .card__body { flex: 1; color: var(--color-text-muted); }
-.card__footer { margin-top: var(--space-4); }
+.card__footer { margin-top: var(--space-4); margin-bottom: 0; }
+
+/* Photo across the top of a card (guide cards); zooms gently on hover */
+.card__media {
+  margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-5);
+  overflow: hidden;
+  border-radius: calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0;
+  background: var(--royal-20);
+}
+
+.card__media img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+.card--link:hover .card__media img { transform: scale(1.05); }
+
+/* Numbered card (e.g. "How I work" steps) */
+.card--accent { border-top: 3px solid var(--royal); }
+
+.card__num {
+  display: block;
+  margin-bottom: var(--space-4);
+  color: var(--royal);
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-style: italic;
+  line-height: 1;
+}
+
+/* ---- Photo card: full-bleed photo with text over a navy fade ----------- */
+/* The title link covers the whole card. Text sits over the darkest part of
+   the fade, so white text stays well above AA on any photo. */
+.photo-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 24rem;
+  padding: var(--space-5);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--navy);
+  color: var(--white);
+  box-shadow: var(--shadow-md);
+  transition: transform 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
+}
+
+.photo-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg,
+    rgb(12 15 36 / 0.05) 0%,
+    rgb(12 15 36 / 0.25) 35%,
+    rgb(12 15 36 / 0.82) 60%,
+    rgb(12 15 36 / 0.95) 100%);
+}
+
+.photo-card__img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--photo-pos, 50% 50%);
+  transition: transform 1000ms var(--ease-out);
+}
+
+.photo-card__title {
+  margin-bottom: var(--space-2);
+  color: var(--white);
+  font-size: var(--text-xl);
+}
+
+.photo-card__title a { color: inherit; text-decoration: none; }
+.photo-card__title a::after { content: ""; position: absolute; inset: 0; }
+.photo-card__title a:focus-visible { outline: none; }
+.photo-card:has(a:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+
+.photo-card__text { margin-bottom: var(--space-2); color: var(--royal-10); }
+.photo-card__cta { color: var(--white); }
+
+.photo-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.photo-card:hover .photo-card__img { transform: scale(1.06); }
+
+.photo-cards {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 52em) {
+  .photo-cards { grid-template-columns: repeat(3, 1fr); }
+  .photo-card { min-height: 30rem; }
+}
+
+/* ---- Photo frames ----------------------------------------------------- */
+/* .frame: a rounded photo with a tinted block offset behind it (kept inside
+   the frame's own box, so it never pushes the page sideways).
+   --frame-ratio sets the shape (default 4:3), --frame-pos the crop.
+   .frame--arch: arch top, always 4:5. Optional figcaption. */
+.frame {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+  padding: 0 var(--space-4) var(--space-4) 0;
+}
+
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: var(--space-6) 0 0 var(--space-6);
+  z-index: -1;
+  border-radius: var(--radius-lg);
+  background: var(--royal-20);
+}
+
+.frame img {
+  width: 100%;
+  aspect-ratio: var(--frame-ratio, 4 / 3);
+  object-fit: cover;
+  object-position: var(--frame-pos, 50% 50%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.frame--portrait { --frame-ratio: 4 / 5; }
+.frame--arch { --frame-ratio: 4 / 5; }
+.frame--arch img,
+.frame--arch::before { border-radius: var(--radius-arch); }
+
+.frame--narrow { max-width: 26rem; margin-inline: auto; }
+
+.section--tint .frame::before { background: var(--royal-20); }
+.section--dark .frame::before { background: var(--royal); }
+
+.frame__caption {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ---- Cut-out on an arch (transparent photo standing in a doorway) ------ */
+.cutout-arch {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 20rem);
+  aspect-ratio: 4 / 5;
+  margin-inline: auto;
+}
+
+.cutout-arch::before {
+  content: "";
+  position: absolute;
+  inset: 16% 0 0;
+  z-index: -1;
+  border-radius: 50% 50% var(--radius-lg) var(--radius-lg) / 48% 48% var(--radius-lg) var(--radius-lg);
+  background: var(--royal);
+}
+
+.cutout-arch img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: auto;
+  max-width: none;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+/* ---- Hero: navy split with an arch photo ------------------------------ */
+/* Used at the top of Home, About and Contact. The photo stands on the
+   bottom edge. .hero--compact hides the photo on phones (Contact, so the
+   form comes sooner). Everything fades/rises in once on load. */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-top: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  background:
+    radial-gradient(48rem 30rem at 92% -5%, rgb(25 70 157 / 0.65), transparent 70%),
+    radial-gradient(32rem 22rem at -5% 105%, rgb(25 70 157 / 0.3), transparent 70%),
+    var(--navy);
+  color: var(--royal-10);
+}
+
+.hero__inner {
+  display: grid;
+  gap: var(--space-7);
+  align-items: end;
+}
+
+.hero h1 {
+  margin-bottom: var(--space-5);
+  color: var(--white);
+  font-size: var(--text-display);
+  line-height: 1.1;
+}
+
+.hero h1 em { color: var(--royal-50); }
+.hero .eyebrow { color: var(--royal-50); }
+.hero .lead { color: var(--royal-10); }
+.hero .btn-group { margin-top: var(--space-6); }
+
+.hero__text > * { animation: rise 900ms var(--ease-out) both; }
+.hero__text > :nth-child(2) { animation-delay: 100ms; }
+.hero__text > :nth-child(3) { animation-delay: 200ms; }
+.hero__text > :nth-child(4) { animation-delay: 300ms; }
+.hero__text > :nth-child(n+5) { animation-delay: 400ms; }
+
+.hero__media {
+  position: relative;
+  width: min(100% - 2rem, 22rem);
+  margin-inline: auto;
+}
+
+/* Thin outline arch offset behind the photo (it stays inside the hero's
+   1rem side margin on phones, and spreads further on desktop) */
+.hero__media::before {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--space-3)) calc(-1 * var(--space-3)) 0 var(--space-3);
+  border: 1px solid var(--royal-50);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+  opacity: 0.6;
+  animation: fade-in 1.4s ease 600ms both;
+}
+
+.arch {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 50% 50% 0 0 / 40% 40% 0 0;
+  background: var(--royal-80);
+}
+
+.arch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--arch-pos, 50% 25%);
+}
+
+.hero .arch { animation: arch-rise 1.2s var(--ease-out) 150ms both; }
+.hero .arch img { animation: settle 1.8s var(--ease-out) 150ms both; }
+
+/* Small white card overlapping the photo */
+.hero__badge {
+  position: absolute;
+  left: calc(-1 * var(--space-4));
+  bottom: var(--space-6);
+  display: grid;
+  gap: 2px;
+  max-width: 15rem;
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--royal);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  box-shadow: var(--shadow-lg);
+  animation: rise 800ms var(--ease-out) 1s both;
+}
+
+.hero__badge strong {
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+}
+
+.hero--compact { padding-bottom: var(--space-7); }
+.hero--compact .hero__media { display: none; }
+
+@media (min-width: 56em) {
+  .hero__inner { grid-template-columns: 1.15fr 0.85fr; gap: var(--space-8); }
+  .hero__text { align-self: center; padding-bottom: clamp(3rem, 2rem + 4vw, 6rem); }
+  .hero__media { width: 100%; max-width: 28rem; margin-right: 0; }
+  .hero__media::before { inset: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) 0 var(--space-5); }
+  .hero__badge { left: calc(-1 * var(--space-7)); }
+
+  .hero--compact { padding-bottom: 0; }
+  .hero--compact .hero__media { display: block; max-width: 22rem; }
+}
+
+/* ---- Page hero: headline over a photo (Search Homes, Guides) ----------- */
+/* The photo is decorative (alt=""), dimmed with navy so text passes AA. */
+.page-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: clamp(3.5rem, 2.5rem + 5vw, 7rem);
+  background: var(--navy);
+  color: var(--royal-10);
+}
+
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(12 15 36 / 0.8);
+}
+
+.page-hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--bg-pos, 50% 50%);
+  animation: settle 2s var(--ease-out) both;
+}
+
+.page-hero h1 { margin-bottom: var(--space-3); color: var(--white); }
+.page-hero .eyebrow { color: var(--royal-50); }
+.page-hero .lead { max-width: 40rem; margin-bottom: 0; color: var(--royal-10); }
+
+.page-hero__inner > * { animation: rise 900ms var(--ease-out) both; }
+.page-hero__inner > :nth-child(2) { animation-delay: 100ms; }
+.page-hero__inner > :nth-child(n+3) { animation-delay: 200ms; }
+
+/* Extra room underneath for a card that overlaps the hero (listings) */
+.page-hero--overlap { padding-bottom: calc(clamp(3.5rem, 2.5rem + 5vw, 7rem) + var(--space-8)); }
+
+@media (min-width: 48em) {
+  .page-hero::before {
+    background: linear-gradient(90deg, rgb(12 15 36 / 0.94) 0%, rgb(12 15 36 / 0.8) 50%, rgb(12 15 36 / 0.4) 100%);
+  }
+}
+
+/* ---- Town ticker ------------------------------------------------------- */
+/* Decorative (aria-hidden): the real town list is on the page as chips.
+   It only moves once main.js adds .marquee--live and shows the pause button
+   (WCAG 2.2.2); without JS or under reduced motion it stays still. */
+.marquee {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  overflow: hidden;
+  padding-right: var(--gutter);
+  background: var(--royal);
+  color: var(--white);
+}
+
+.marquee__viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding-block: var(--space-4);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+}
+
+.marquee--live .marquee__track { animation: marquee 80s linear infinite; }
+
+.marquee__track span {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.marquee__track span::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-inline: var(--space-6);
+  background: var(--royal-50);
+  transform: rotate(45deg);
+}
+
+.marquee:hover .marquee__track,
+.marquee.is-paused .marquee__track { animation-play-state: paused; }
+
+.marquee__toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--royal-50);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.marquee__toggle:hover { background: rgb(255 255 255 / 0.14); }
+
+/* Pause icon (two bars) / play icon (triangle) */
+.marquee__toggle::before {
+  content: "";
+  width: 10px;
+  height: 12px;
+  border-inline: 3px solid currentColor;
+}
+
+.marquee__toggle[aria-pressed="true"]::before {
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-inline: 0;
+  border-left: 10px solid currentColor;
+  border-block: 6px solid transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+}
 
 /* ---- Chips (e.g. service-area towns) ---------------------------------- */
 .chip-list {
@@ -484,6 +1013,55 @@ address { font-style: normal; }
   border-color: var(--royal);
   color: var(--white);
 }
+
+.section--tint .chip { background: var(--white); }
+.section--tint .chip--primary { background: var(--royal); }
+
+/* ---- Avatar + profile row (social profile photo) ---------------------- */
+.avatar {
+  flex-shrink: 0;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 15%;
+  box-shadow: 0 0 0 3px var(--white), 0 0 0 5px var(--royal-20);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Linked profile chip, e.g. the Instagram handle */
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-2) var(--space-5) var(--space-2) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 300ms var(--ease-out), transform 300ms var(--ease-out), border-color 300ms var(--ease-out);
+}
+
+.profile-link:hover {
+  color: var(--navy);
+  border-color: var(--royal-50);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.profile-link .avatar { width: 3.5rem; height: 3.5rem; }
+
+/* Handle on top, "on Instagram →" beneath it */
+.profile-link__text { display: grid; line-height: 1.3; }
+.profile-link__text .link-arrow { min-height: 0; color: var(--royal); font-size: var(--text-sm); }
 
 /* ---- Forms ------------------------------------------------------------ */
 .form { display: grid; gap: var(--space-4); }
@@ -522,7 +1100,12 @@ address { font-style: normal; }
   color: var(--navy);
   font: inherit;
   font-size: max(16px, var(--text-base));  /* prevents iOS zoom on focus */
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
+
+.field__input:hover,
+.field__select:hover,
+.field__textarea:hover { border-color: var(--navy); }
 
 .field__textarea { min-height: 8rem; resize: vertical; }
 
@@ -592,6 +1175,7 @@ address { font-style: normal; }
   border-radius: var(--radius);
   background: var(--royal-10);
   color: var(--navy);
+  animation: rise 500ms var(--ease-out) both;
 }
 
 .alert--success { border-left-color: var(--royal); }
@@ -626,6 +1210,15 @@ address { font-style: normal; }
   border: 0;
 }
 
+/* White card that holds an embed (search widget, home-value widget) */
+.embed-card {
+  position: relative;
+  padding: var(--space-5) 0;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--shadow-lg);
+}
+
 /* ---- Social icons ----------------------------------------------------- */
 .social {
   display: flex;
@@ -643,10 +1236,10 @@ address { font-style: normal; }
   height: 44px;
   border-radius: 50%;
   color: inherit;
-  transition: background-color var(--transition);
+  transition: background-color var(--transition), transform 250ms var(--ease-out);
 }
 
-.social a:hover { background: rgb(255 255 255 / 0.12); color: inherit; }
+.social a:hover { background: rgb(255 255 255 / 0.12); color: inherit; transform: translateY(-2px); }
 .social svg { width: 20px; height: 20px; fill: currentColor; }
 
 
@@ -663,6 +1256,17 @@ address { font-style: normal; }
   z-index: 100;
   background: var(--white);
   border-bottom: 1px solid var(--color-border);
+  transition: box-shadow 300ms ease, background-color 300ms ease, border-color 300ms ease;
+  animation: fade-in 500ms ease both;
+}
+
+/* main.js adds .is-scrolled once the page moves */
+.site-header.is-scrolled {
+  border-bottom-color: transparent;
+  background: rgb(255 255 255 / 0.94);
+  box-shadow: 0 8px 24px -12px rgb(12 15 36 / 0.25);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  backdrop-filter: saturate(1.4) blur(10px);
 }
 
 .site-header__inner {
@@ -727,7 +1331,7 @@ address { font-style: normal; }
   height: 2px;
   background: currentColor;
   border-radius: 2px;
-  transition: transform var(--transition), opacity var(--transition);
+  transition: transform 250ms var(--ease-out), opacity var(--transition), background-color var(--transition);
 }
 
 .nav-toggle__bars { position: relative; }
@@ -740,9 +1344,9 @@ address { font-style: normal; }
 .nav-toggle[aria-expanded="true"] .nav-toggle__bars::before { transform: translateY(7px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] .nav-toggle__bars::after { transform: translateY(-7px) rotate(-45deg); }
 
-/* Mobile nav: a panel under the header */
+/* Mobile nav: a panel under the header that slides down. visibility (not
+   display) hides it, so it can animate and closed links stay unfocusable. */
 .site-nav {
-  display: none;
   position: absolute;
   top: 100%;
   left: 0;
@@ -751,9 +1355,18 @@ address { font-style: normal; }
   background: var(--white);
   border-bottom: 1px solid var(--color-border);
   box-shadow: var(--shadow-md);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-0.75rem);
+  transition: opacity 200ms ease, transform 300ms var(--ease-out), visibility 0s linear 300ms;
 }
 
-.site-nav.is-open { display: block; }
+.site-nav.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+}
 
 .site-nav__list {
   margin: 0;
@@ -795,6 +1408,10 @@ address { font-style: normal; }
     border: 0;
     box-shadow: none;
     background: none;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .site-nav__list {
@@ -802,15 +1419,36 @@ address { font-style: normal; }
     gap: var(--space-5);
   }
 
+  /* Desktop: an underline that grows from the left on hover; it stays on
+     for the current page */
   .site-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     padding: var(--space-2) 0;
-    border-bottom: 2px solid transparent;
+    border-bottom: 0;
   }
+
+  .site-nav__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2px;
+    height: 2px;
+    background: var(--royal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 300ms var(--ease-out);
+  }
+
+  .site-nav__link:hover::after,
+  .site-nav__link[aria-current="page"]::after { transform: scaleX(1); }
 
   .site-nav__cta a[aria-current="page"] { background: var(--navy); }
 
-  /* Desktop swaps the left bar for an underline */
-  .site-nav__link[aria-current="page"] { border-bottom-color: var(--royal); box-shadow: none; padding-left: 0; }
+  .site-nav__link[aria-current="page"] { box-shadow: none; padding-left: 0; }
 
   .site-nav__cta { margin-top: 0; }
   .site-nav__cta .btn { width: auto; min-height: 44px; padding-block: var(--space-2); }
@@ -818,8 +1456,11 @@ address { font-style: normal; }
 
 /* ---- Footer ----------------------------------------------------------- */
 .footer-cta {
+  position: relative;
   padding-block: var(--space-7);
-  background: var(--royal);
+  background:
+    radial-gradient(36rem 18rem at 85% 120%, rgb(12 15 36 / 0.45), transparent 70%),
+    var(--royal);
   color: var(--white);
 }
 
@@ -832,12 +1473,36 @@ address { font-style: normal; }
 .footer-cta h2 { margin-bottom: var(--space-2); color: var(--white); font-size: var(--text-xl); }
 .footer-cta p { margin: 0; color: var(--royal-10); }
 
+/* Cut-out of Jared peeking over the band (desktop only, decorative) */
+.footer-cta__person { display: none; }
+
 @media (min-width: 48em) {
   .footer-cta__inner { grid-template-columns: 1fr auto; gap: var(--space-6); }
 }
 
+@media (min-width: 64em) {
+  .footer-cta__inner { padding-right: 17rem; }
+
+  .footer-cta__person {
+    display: block;
+    position: absolute;
+    right: max(var(--gutter), calc((100% - var(--container)) / 2));
+    bottom: 0;
+    width: 15rem;
+    height: calc(100% + 3.5rem);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .footer-cta__person img { width: 100%; }
+
+  /* A page that ends with a .bleed photo (About) already shows Jared there */
+  body:has(main > .bleed:last-child) .footer-cta__person { display: none; }
+  body:has(main > .bleed:last-child) .footer-cta__inner { padding-right: 0; }
+}
+
 .site-footer {
-  padding-block: var(--space-7) var(--space-5);
+  padding-block: var(--space-8) var(--space-5);
   background: var(--navy);
   color: var(--color-dark-muted);
   font-size: var(--text-sm);
@@ -970,34 +1635,23 @@ address { font-style: normal; }
    ========================================================================= */
 
 /* ---- index.html ------------------------------------------------------- */
-.hero { padding-block: var(--space-6) var(--section-pad); }
+/* Home value: the BoldTrail widget is a fixed 160px tall with ~60px of
+   content; keep the follow-up line close rather than adding more space. */
+.home-value__card { margin-block: var(--space-5) var(--space-4); padding: var(--space-4) var(--space-4) 0; }
+.home-value__fallback { margin-bottom: 0; }
 
-/* Transparent headshot on a tinted panel; photo sits on the panel's bottom edge */
-.hero__media {
-  max-width: 26rem;
-  width: 100%;
-  margin-inline: auto;
-  padding: var(--space-6) var(--space-6) 0;
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-
-.hero__media img {
-  width: 100%;
-  max-width: 20rem;
-  margin-inline: auto;
-}
+/* Local guides: intro on the left, cards on the right; one guide fills the
+   column, more share it */
+.guides-feature { display: grid; gap: var(--space-6); align-items: start; }
+.guides-feature .section__header { margin-bottom: 0; }
+.guides-feature__list { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.guides__more { margin-top: var(--space-4); margin-bottom: 0; }
 
 @media (min-width: 56em) {
-  .hero { padding-block: var(--space-7); }
-  .hero__media img { max-width: none; }
+  .guides-feature { grid-template-columns: 2fr 3fr; gap: var(--space-8); }
 }
 
-/* The BoldTrail widget is a fixed 160px tall with ~60px of content; keep the
-   follow-up line close rather than adding more space under it. */
-.home-value__fallback { margin-top: 0; margin-bottom: 0; }
-.guides__more { margin-top: var(--space-6); margin-bottom: 0; }
+.instagram__profile { margin-top: var(--space-5); }
 
 /* ---- legal pages (fair-housing, privacy, accessibility) ---------------- */
 .legal-page h1 { font-size: var(--text-2xl); }
@@ -1009,7 +1663,45 @@ address { font-style: normal; }
 /* ---- about.html ------------------------------------------------------- */
 .about-towns { margin-block: var(--space-5) var(--space-6); }
 
+/* "Who I help": photo bleeds off the right edge on desktop, behind a navy
+   fade; on phones it sits above the text */
+.bleed { position: relative; isolation: isolate; overflow: hidden; }
+
+.bleed__media {
+  margin: calc(-1 * var(--section-pad)) 0 var(--space-7);
+}
+
+.bleed__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: var(--bleed-pos, 50% 50%);
+}
+
+@media (min-width: 56em) {
+  .bleed__media {
+    position: absolute;
+    inset: 0 0 0 50%;
+    z-index: -1;
+    margin: 0;
+  }
+
+  .bleed__media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--navy) 0%, rgb(12 15 36 / 0.4) 30%, rgb(12 15 36 / 0) 60%);
+  }
+
+  .bleed__media img { height: 100%; aspect-ratio: auto; }
+  .bleed__content { width: 50%; padding-right: var(--space-8); }
+}
+
 /* ---- listings.html ---------------------------------------------------- */
+/* The widget card overlaps the bottom of the photo hero */
+.listings-search { padding-top: 0; }
+.listings-search .embed-card { margin-top: calc(-1 * var(--space-8)); }
+
 /* Reserve space so the page doesn't jump when embeds.js inserts the widget
    (narrow BoldTrail widget is 280x680 below 1000px; wide is 960x300 at >=1000px) */
 .embed--search { min-height: 680px; }
@@ -1018,8 +1710,7 @@ address { font-style: normal; }
 }
 
 .embed-fallback {
-  margin-top: var(--space-4);
-  margin-bottom: 0;
+  margin: var(--space-4) var(--space-5) 0;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
   text-align: center;
@@ -1029,6 +1720,32 @@ address { font-style: normal; }
   max-width: var(--container-narrow);
   margin-top: var(--space-5);
   margin-bottom: var(--space-4);
+}
+
+/* ---- resources.html --------------------------------------------------- */
+/* While there's only one guide, show it as a wide card: photo left, text right */
+@media (min-width: 48em) {
+  .guides-grid > .card:only-child {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-rows: auto auto 1fr auto;
+    column-gap: var(--space-6);
+    max-width: 60rem;
+  }
+
+  .guides-grid > .card:only-child > * { grid-column: 2; }
+
+  .guides-grid > .card:only-child .card__media {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    margin: calc(-1 * var(--space-5)) 0 calc(-1 * var(--space-5)) calc(-1 * var(--space-5));
+    border-radius: calc(var(--radius-lg) - 1px) 0 0 calc(var(--radius-lg) - 1px);
+  }
+
+  .guides-grid > .card:only-child .card__media img { height: 100%; min-height: 18rem; aspect-ratio: auto; }
+  .guides-grid > .card:only-child .card__eyebrow { margin-top: var(--space-4); }
+  .guides-grid > .card:only-child .card__title { font-size: var(--text-xl); }
 }
 
 /* ---- guides/*.html ---------------------------------------------------- */
@@ -1044,19 +1761,24 @@ address { font-style: normal; }
 .guide-layout__subhead { font-size: var(--text-lg); margin: var(--space-6) 0 var(--space-3); }
 .guide-contents { padding-left: 1.25rem; }
 .guide-contents li + li { margin-top: var(--space-2); }
+.guide-contents li::marker { color: var(--royal); }
 
-.guide-gate { height: auto; }
+.guide-gate { height: auto; border-top: 3px solid var(--royal); box-shadow: var(--shadow-lg); }
 .guide-gate__heading { font-size: var(--text-xl); margin-bottom: var(--space-2); }
 .guide-gate__note { margin: 0; font-size: var(--text-sm); }
-.guide-unlock { display: grid; gap: var(--space-4); justify-items: start; }
+.guide-unlock { display: grid; gap: var(--space-4); justify-items: start; animation: rise 600ms var(--ease-out) both; }
 
 .guide-next__links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin: 0; }
 
 /* ---- contact.html ----------------------------------------------------- */
 .contact-layout { align-items: start; }
 .contact-layout > .card { height: auto; }
+.contact-layout__form { box-shadow: var(--shadow-lg); border-top: 3px solid var(--royal); }
 @media (min-width: 56em) { .contact-layout { grid-template-columns: 3fr 2fr; } }
 .contact-layout__heading { font-size: var(--text-xl); margin-bottom: var(--space-2); }
+.contact-person { margin-block: var(--space-4); }
+.contact-person p { margin: 0; line-height: 1.45; }
+.contact-person strong { font-family: var(--font-heading); font-size: var(--text-md); }
 .contact-details { font-style: normal; }
 .contact-details__list { display: grid; gap: var(--space-1); margin: var(--space-4) 0; }
 .contact-details__list dt { color: var(--color-text-muted); font-size: var(--text-sm); }
@@ -1065,6 +1787,10 @@ address { font-style: normal; }
 .contact-details__social { margin-left: calc(-1 * var(--space-2)); color: var(--royal); }
 /* the shared .social hover is meant for dark backgrounds */
 .contact-details__social a:hover { background: var(--royal-10); color: var(--navy); }
+
+/* ---- 404.html --------------------------------------------------------- */
+.not-found .cutout-arch { width: min(100%, 16rem); }
+@media (min-width: 56em) { .not-found .cutout-arch { width: min(100%, 20rem); } }
 
 /* ---- styleguide.html -------------------------------------------------- */
 .sg-swatches {
@@ -1088,3 +1814,4 @@ address { font-style: normal; }
 .sg-swatch__meta code { color: var(--color-text-muted); }
 
 .sg-block + .sg-block { margin-top: var(--space-8); }
+.sg-demo-hero { border-radius: var(--radius-lg); }

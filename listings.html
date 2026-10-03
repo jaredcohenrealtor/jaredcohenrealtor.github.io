@@ -26,7 +26,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/styles.css">
 
   <script src="/assets/js/include.js" defer></script>
@@ -65,54 +65,72 @@
   </noscript>
 
   <main id="main">
-    <section class="section listings-search" aria-labelledby="listings-title">
+    <!-- Photo hero. The photo is Jared's own shot of a staged living room: decorative
+         only (alt=""), never presented as a listing. -->
+    <section class="page-hero page-hero--overlap" aria-labelledby="listings-title">
+      <img class="page-hero__bg" src="/assets/images/places/staged-living-room-1280.webp"
+           srcset="/assets/images/places/staged-living-room-640.webp 640w, /assets/images/places/staged-living-room-1280.webp 1280w, /assets/images/places/staged-living-room-1920.webp 1920w"
+           sizes="(max-width: 48em) 160vw, 100vw" width="1280" height="960" fetchpriority="high" alt=""
+           style="--bg-pos: 50% 60%">
+      <div class="container page-hero__inner">
+        <span class="eyebrow">Search Homes</span>
+        <h1 id="listings-title">Search homes</h1>
+        <p class="lead">Browse everything currently on the market in Newton and the surrounding towns. When something catches your eye, or you have questions about a neighborhood, reach out and I'll be glad to help, including setting up showings.</p>
+      </div>
+    </section>
+
+    <section class="section listings-search" aria-label="Property search">
       <div class="container">
-        <div class="section__header">
-          <span class="eyebrow">Search Homes</span>
-          <h1 id="listings-title">Search homes</h1>
-          <p class="lead">Browse everything currently on the market in Newton and the surrounding towns. When something catches your eye, or you have questions about a neighborhood, reach out and I'll be glad to help, including setting up showings.</p>
+        <div class="embed-card">
+          <!-- embeds.js copies ONE of the two templates below into this slot:
+               the wide widget at 1000px+ screen width, the narrow one below that. -->
+          <div class="embed embed--search" data-embed="property-search"></div>
+
+          <!-- BoldTrail widgets: copied VERBATIM from docs/boldtrail-embeds.md.
+               Only addition (owner-approved 2026-10-03): a title attribute for screen readers. -->
+          <template id="embed-search-narrow">
+            <!-- Property Search Widget -->
+            <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
+            <iframe style="width:280px; height:680px;" src="https://jaredcohen.exprealty.com/embed.php" allowtransparency="true" frameBorder="0" title="Property search"> </iframe>
+          </template>
+          <template id="embed-search-wide">
+            <!-- Website/Search Widget -->
+            <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
+            <iframe style="width: 960px; height:300px;" src="https://jaredcohen.exprealty.com/wide.php" allowtransparency="true" frameBorder="0" title="Property search"> </iframe>
+          </template>
+          <p class="embed-fallback">Search not loading? Browse all listings on my <a href="https://jaredcohen.exprealty.com/" rel="noopener" target="_blank">full search site</a>, or <a href="/contact.html?from=listings">get in touch</a>.</p>
         </div>
-
-        <!-- embeds.js copies ONE of the two templates below into this slot:
-             the wide widget at 1000px+ screen width, the narrow one below that. -->
-        <div class="embed embed--search" data-embed="property-search"></div>
-
-        <!-- BoldTrail widgets: copied VERBATIM from docs/boldtrail-embeds.md.
-             Only addition (owner-approved 2026-10-03): a title attribute for screen readers. -->
-        <template id="embed-search-narrow">
-          <!-- Property Search Widget -->
-          <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
-          <iframe style="width:280px; height:680px;" src="https://jaredcohen.exprealty.com/embed.php" allowtransparency="true" frameBorder="0" title="Property search"> </iframe>
-        </template>
-        <template id="embed-search-wide">
-          <!-- Website/Search Widget -->
-          <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
-          <iframe style="width: 960px; height:300px;" src="https://jaredcohen.exprealty.com/wide.php" allowtransparency="true" frameBorder="0" title="Property search"> </iframe>
-        </template>
-        <p class="embed-fallback">Search not loading? Browse all listings on my <a href="https://jaredcohen.exprealty.com/" rel="noopener" target="_blank">full search site</a>, or <a href="/contact.html?from=listings">get in touch</a>.</p>
       </div>
     </section>
 
     <section class="section section--tint" aria-labelledby="towns-title">
-      <div class="container">
-        <div class="section__header">
+      <div class="container split">
+        <div data-reveal>
+          <span class="eyebrow">Where I work</span>
           <h2 id="towns-title">Looking in a specific town?</h2>
           <p>I focus on Newton and the towns around it, so I can tell you how a street, a village, or a school district actually feels day to day.</p>
+          <ul class="chip-list" data-reveal-stagger>
+            <li class="chip chip--primary">Newton</li>
+            <li class="chip">Needham</li>
+            <li class="chip">Brookline</li>
+            <li class="chip">Chestnut Hill</li>
+            <li class="chip">Natick</li>
+            <li class="chip">Waltham</li>
+            <li class="chip">Brighton</li>
+            <li class="chip">Allston</li>
+            <li class="chip">Watertown</li>
+          </ul>
+          <p class="listings-towns__cta-text">Ask me about new listings as they come up, or about homes that may be coming to market soon. I'm happy to keep an eye out for what fits your search.</p>
+          <div class="btn-group">
+            <a class="btn btn--primary" href="/contact.html?from=listings">Let's talk</a>
+          </div>
         </div>
-        <ul class="chip-list">
-          <li class="chip chip--primary">Newton</li>
-          <li class="chip">Needham</li>
-          <li class="chip">Brookline</li>
-          <li class="chip">Chestnut Hill</li>
-          <li class="chip">Natick</li>
-          <li class="chip">Waltham</li>
-          <li class="chip">Brighton</li>
-          <li class="chip">Allston</li>
-          <li class="chip">Watertown</li>
-        </ul>
-        <p class="listings-towns__cta-text">Ask me about new listings as they come up, or about homes that may be coming to market soon. I'm happy to keep an eye out for what fits your search.</p>
-        <div class="btn-group">
-          <a class="btn btn--primary" href="/contact.html?from=listings">Let's talk</a>
+        <div class="frame frame--arch frame--narrow" data-reveal="right">
+          <img src="/assets/images/photos/jared-desk-800.webp"
+               srcset="/assets/images/photos/jared-desk-400.webp 400w, /assets/images/photos/jared-desk-800.webp 800w, /assets/images/photos/jared-desk-1200.webp 1200w"
+               sizes="(min-width: 28rem) 26rem, 100vw" width="800" height="1067" loading="lazy"
+               alt="Jared smiling at a desk in a bright home office"
+               style="--frame-pos: 62% 50%">
         </div>
       </div>
     </section>

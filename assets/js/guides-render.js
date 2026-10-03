@@ -8,6 +8,8 @@
  * data-heading-level is optional (default 3): the card titles' heading level, so
  * the outline stays correct (h2 on resources.html, where cards sit under the h1).
  * With fewer guides than the limit, it shows however many exist.
+ * A guide with an `image` gets a photo across the top of its card
+ * (decorative, so alt="": the title link already says where it goes).
  */
 (function () {
   "use strict";
@@ -20,9 +22,27 @@
     year: "numeric", month: "long", day: "numeric", timeZone: "UTC"
   });
 
+  function media(guide) {
+    var base = "/assets/images/" + guide.image;
+    var wrap = document.createElement("div");
+    wrap.className = "card__media";
+    var img = document.createElement("img");
+    img.src = base + "-800.webp";
+    img.srcset = base + "-400.webp 400w, " + base + "-800.webp 800w";
+    img.sizes = "(min-width: 56em) 41rem, 100vw";
+    img.width = 800;
+    img.height = 500;
+    img.alt = "";
+    img.loading = "lazy";
+    img.decoding = "async";
+    wrap.appendChild(img);
+    return wrap;
+  }
+
   function card(guide, level) {
     var article = document.createElement("article");
     article.className = "card card--link";
+    if (guide.image) article.appendChild(media(guide));
 
     var meta = document.createElement("p");
     meta.className = "card__eyebrow";

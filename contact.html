@@ -26,7 +26,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/styles.css">
 
   <script src="/assets/js/include.js" defer></script>
@@ -65,18 +65,30 @@
   </noscript>
 
   <main id="main">
-    <section class="section section--tint" aria-labelledby="contact-title">
-      <div class="container">
-        <span class="eyebrow">Contact</span>
-        <h1 id="contact-title">Let's talk</h1>
-        <p class="lead">Whether you're thinking about buying, getting ready to sell, or just have questions about Newton and the nearby towns, I'd be glad to hear from you. Send a message below, or call or email me directly.</p>
+    <!-- Hero: the photo shows on desktop only (hero--compact), so phones reach the form sooner -->
+    <section class="hero hero--compact" aria-labelledby="contact-title">
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <span class="eyebrow">Contact</span>
+          <h1 id="contact-title">Let's talk</h1>
+          <p class="lead">Whether you're thinking about buying, getting ready to sell, or just have questions about Newton and the nearby towns, I'd be glad to hear from you. Send a message below, or call or email me directly.</p>
+        </div>
+        <div class="hero__media">
+          <div class="arch">
+            <img src="/assets/images/photos/jared-folder-800.webp"
+                 srcset="/assets/images/photos/jared-folder-400.webp 400w, /assets/images/photos/jared-folder-800.webp 800w, /assets/images/photos/jared-folder-1200.webp 1200w"
+                 sizes="22rem" width="800" height="1067" loading="lazy"
+                 alt="Jared Cohen smiling and holding a leather folder in a living room"
+                 style="--arch-pos: 50% 20%">
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="section" aria-label="Contact form and details">
       <div class="container">
         <div class="split contact-layout">
-          <div class="card contact-layout__form">
+          <div class="card contact-layout__form" data-reveal>
             <h2 id="contact-form-title" class="contact-layout__heading">Send a message</h2>
             <p class="text-muted">All fields are required unless marked optional.</p>
             <form class="form" id="contact-form" data-lead-form="contact" aria-labelledby="contact-form-title" novalidate>
@@ -126,8 +138,13 @@
             </form>
           </div>
 
-          <aside class="card contact-layout__details" aria-labelledby="contact-direct-title">
+          <aside class="card contact-layout__details" aria-labelledby="contact-direct-title" data-reveal>
             <h2 id="contact-direct-title" class="contact-layout__heading">Prefer to call or email?</h2>
+            <!-- The older headshot is Jared's social-media profile photo (owner's choice 2026-10-03) -->
+            <div class="profile contact-person">
+              <img class="avatar" src="/assets/images/headshots/headshot-400.webp" width="400" height="533" loading="lazy" alt="">
+              <p><strong>Jared Cohen, REALTOR®</strong><br><span class="text-muted">Castles Unlimited team, brokered by eXp Realty</span></p>
+            </div>
             <address class="contact-details">
               <dl class="contact-details__list">
                 <dt>Phone</dt>
@@ -139,7 +156,6 @@
                 <dd>Castles Unlimited, Inc.<br>837 Beacon Street<br>Newton, MA 02459</dd>
               </dl>
             </address>
-            <p class="text-muted">Castles Unlimited team, brokered by eXp Realty</p>
 
             <h3 class="contact-details__social-title">Follow along</h3>
             <ul class="social contact-details__social">

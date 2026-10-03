@@ -26,7 +26,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/styles.css">
 
   <script src="/assets/js/include.js" defer></script>
@@ -66,15 +66,22 @@
   </noscript>
 
   <main id="main">
-    <section class="section" aria-labelledby="guides-title">
-      <div class="container">
-        <header class="section__header">
-          <span class="eyebrow">Free local guides</span>
-          <h1 id="guides-title">Guides</h1>
-          <p class="lead">Practical, plain-English guides to buying, selling, and living in Newton and the towns around it. Each one is free. Open a guide's page to download the full PDF.</p>
-        </header>
+    <!-- Photo hero: Jared's own panorama of a staged kitchen; decorative only (alt=""). -->
+    <section class="page-hero" aria-labelledby="guides-title">
+      <img class="page-hero__bg" src="/assets/images/places/staged-kitchen-panorama-1600.webp"
+           srcset="/assets/images/places/staged-kitchen-panorama-800.webp 800w, /assets/images/places/staged-kitchen-panorama-1600.webp 1600w, /assets/images/places/staged-kitchen-panorama-2400.webp 2400w"
+           sizes="(max-width: 48em) 250vw, 100vw" width="1600" height="495" fetchpriority="high" alt=""
+           style="--bg-pos: 62% 50%">
+      <div class="container page-hero__inner">
+        <span class="eyebrow">Free local guides</span>
+        <h1 id="guides-title">Guides</h1>
+        <p class="lead">Practical, plain-English guides to buying, selling, and living in Newton and the towns around it. Each one is free. Open a guide's page to download the full PDF.</p>
+      </div>
+    </section>
 
-        <div class="grid grid--3" data-guides-list data-heading-level="2"></div>
+    <section class="section" aria-label="All guides">
+      <div class="container">
+        <div class="grid grid--3 guides-grid" data-guides-list data-heading-level="2" data-reveal-stagger></div>
         <noscript>
           <!-- Plain guide links for visitors and crawlers without JavaScript.
                Title + URL only (everything else lives in guides-data.js).
@@ -88,9 +95,19 @@
     </section>
 
     <section class="section section--tint" aria-labelledby="suggest-title">
-      <div class="container container--narrow text-center">
-        <h2 id="suggest-title">Have a topic in mind?</h2>
-        <p>If there's something about Newton or a nearby town you'd like a guide on, a village, a school question, or a step in the buying or selling process, <a href="/contact.html?from=resources">let me know</a>.</p>
+      <div class="container split split--media-left">
+        <div data-reveal>
+          <span class="eyebrow">Suggestions welcome</span>
+          <h2 id="suggest-title">Have a topic in mind?</h2>
+          <p>If there's something about Newton or a nearby town you'd like a guide on, a village, a school question, or a step in the buying or selling process, <a href="/contact.html?from=resources">let me know</a>.</p>
+        </div>
+        <div class="frame frame--arch frame--narrow" data-reveal="left">
+          <img src="/assets/images/photos/jared-desk-signing-800.webp"
+               srcset="/assets/images/photos/jared-desk-signing-400.webp 400w, /assets/images/photos/jared-desk-signing-800.webp 800w, /assets/images/photos/jared-desk-signing-1200.webp 1200w"
+               sizes="(min-width: 28rem) 26rem, 100vw" width="800" height="1067" loading="lazy"
+               alt="Jared writing in a leather folder at a desk"
+               style="--frame-pos: 62% 50%">
+        </div>
       </div>
     </section>
   </main>

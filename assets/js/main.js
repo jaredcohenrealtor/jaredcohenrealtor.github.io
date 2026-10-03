@@ -1,5 +1,7 @@
 /*
- * Small shared behaviors for every page.
+ * Small shared behaviors for every page: mobile menu, visit tracking,
+ * footer year, and motion (header shadow on scroll, reveal-on-scroll,
+ * town-ticker pause button).
  * Uses event delegation, so it works even though the header/footer are
  * inserted later by include.js.
  */
@@ -23,6 +25,14 @@
     }
     // Close the menu after choosing a link (e.g. "/#home-value" on the homepage)
     if (event.target.closest(".site-nav a")) setMenu(false);
+
+    // Town ticker pause/play button
+    var pause = event.target.closest(".marquee__toggle");
+    if (pause) {
+      var paused = pause.getAttribute("aria-pressed") !== "true";
+      pause.setAttribute("aria-pressed", paused ? "true" : "false");
+      pause.closest(".marquee").classList.toggle("is-paused", paused);
+    }
   });
 
   document.addEventListener("keydown", function (event) {
@@ -78,4 +88,71 @@
     var spans = document.querySelectorAll("[data-year]");
     for (var i = 0; i < spans.length; i++) spans[i].textContent = year;
   });
+
+  // ---- Motion --------------------------------------------------------------
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Header: a soft shadow once the page has scrolled
+  var scrollQueued = false;
+  function updateHeader() {
+    scrollQueued = false;
+    var header = document.querySelector(".site-header");
+    if (header) header.classList.toggle("is-scrolled", window.scrollY > 8);
+  }
+  window.addEventListener("scroll", function () {
+    if (scrollQueued) return;
+    scrollQueued = true;
+    window.requestAnimationFrame(updateHeader);
+  }, { passive: true });
+  document.addEventListener("partials:loaded", updateHeader);
+
+  // Reveal on scroll: elements marked data-reveal (or the children of
+  // data-reveal-stagger) fade in as they come into view; the CSS is in
+  // styles.css → "Reveal on scroll". Nothing is hidden unless this runs, and
+  // never under reduced motion, so content can't get stuck invisible.
+  var REVEAL = "[data-reveal], [data-reveal-stagger]";
+  var revealer = null;
+
+  function watchReveals() {
+    var els = document.querySelectorAll(REVEAL);
+    for (var i = 0; i < els.length; i++) {
+      if (els[i].classList.contains("is-revealed") || els[i].hasAttribute("data-reveal-watched")) continue;
+      if (!revealer) { els[i].classList.add("is-revealed"); continue; }
+      els[i].setAttribute("data-reveal-watched", "");
+      revealer.observe(els[i]);
+    }
+  }
+
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    revealer = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].isIntersecting) continue;
+        entries[i].target.classList.add("is-revealed");
+        revealer.unobserve(entries[i].target);
+      }
+    }, { rootMargin: "0px 0px -8% 0px" });
+
+    // Already on screen at load: show straight away, without animating
+    var initial = document.querySelectorAll(REVEAL);
+    for (var j = 0; j < initial.length; j++) {
+      if (initial[j].getBoundingClientRect().top < window.innerHeight) {
+        initial[j].classList.add("is-revealed", "reveal-skip");
+      }
+    }
+    document.documentElement.classList.add("reveal-ready");
+  }
+  watchReveals();
+  // The footer arrives later (include.js), and may hold reveal targets too
+  document.addEventListener("partials:loaded", watchReveals);
+
+  // Town ticker: start it moving and show its pause button (WCAG 2.2.2).
+  // Without JS or under reduced motion it stays still, with no button.
+  if (!reduceMotion) {
+    var tickers = document.querySelectorAll(".marquee");
+    for (var k = 0; k < tickers.length; k++) {
+      tickers[k].classList.add("marquee--live");
+      var toggle = tickers[k].querySelector(".marquee__toggle");
+      if (toggle) toggle.hidden = false;
+    }
+  }
 })();
