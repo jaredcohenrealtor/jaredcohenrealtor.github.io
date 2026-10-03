@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "browser-sync start --server --port 5500 --files \"**/*.html, assets/css/**, assets/js/**, partials/**\" --ignore \"node_modules/**\" --no-notify --no-open --no-ghost-mode --no-ui",
     "images": "node scripts/optimize-images.mjs",
-    "pdf": "python scripts/optimize-pdf.py",
+    "pdf": "python -X utf8 scripts/optimize-pdf.py",
     "validate": "node scripts/validate.mjs",
     "set-domain": "node scripts/set-domain.mjs",
     "brand": "node scripts/make-brand-assets.mjs",

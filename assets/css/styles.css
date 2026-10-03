@@ -88,6 +88,7 @@
   /* Shape & depth */
   --radius: 4px;
   --radius-lg: 8px;
+  --radius-btn: var(--radius);   /* button corners only (e.g. 999px = pill) */
   --shadow-sm: 0 1px 2px rgb(12 15 36 / 0.08);
   --shadow-md: 0 6px 20px rgb(12 15 36 / 0.10);
   --transition: 150ms ease;
@@ -336,7 +337,7 @@ address { font-style: normal; }
   min-height: 48px;                 /* comfortable tap target */
   padding: var(--space-3) var(--space-5);
   border: 2px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--radius-btn);
   font-family: var(--font-body);
   font-size: var(--text-base);
   font-weight: 600;
@@ -977,7 +978,7 @@ address { font-style: normal; }
   width: 100%;
   margin-inline: auto;
   padding: var(--space-6) var(--space-6) 0;
-  background: var(--royal-10);
+  background: var(--color-surface);
   border-radius: var(--radius-lg);
   overflow: hidden;
 }
