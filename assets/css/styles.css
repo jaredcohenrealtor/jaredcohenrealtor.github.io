@@ -195,6 +195,9 @@ hr {
 
 address { font-style: normal; }
 
+/* The hidden attribute always wins, even over display:grid/flex classes */
+[hidden] { display: none !important; }
+
 /* In-page jumps (e.g. /#home-value) land below the sticky header */
 [id] { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
 
@@ -1031,7 +1034,6 @@ address { font-style: normal; }
 .guide-gate__heading { font-size: var(--text-xl); margin-bottom: var(--space-2); }
 .guide-gate__note { margin: 0; font-size: var(--text-sm); }
 .guide-unlock { display: grid; gap: var(--space-4); justify-items: start; }
-.guide-unlock[hidden] { display: none; }   /* display:grid would otherwise override [hidden] */
 
 .guide-next__links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin: 0; }
 

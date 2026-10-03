@@ -115,11 +115,21 @@
   }
 
   // ---- Payload -----------------------------------------------------------
+  // The page on this site the visitor was on just before this one, if any
+  function previousPage() {
+    try {
+      var ref = new URL(document.referrer);
+      if (ref.host !== window.location.host) return "";
+      var file = ref.pathname.split("/").pop().replace(/\.html$/, "") || "index";
+      return pageName(ref.pathname.indexOf("/guides/") === 0 ? "guide-" + file : file);
+    } catch (e) { return ""; }
+  }
+
   function contextBlock(extraLines) {
     var visit = visitInfo();
     var from = new URLSearchParams(window.location.search).get("from");
     var lines = ["---", "Submitted from: " + window.location.origin + window.location.pathname];
-    lines.push("Came from: " + (from ? pageName(from) : "direct"));
+    lines.push("Came from: " + (from ? pageName(from) : (previousPage() || "direct")));
     lines.push("Found the site via: " + (visit.referrer || "direct") +
       (visit.landing ? " (landed on " + visit.landing + ")" : ""));
     if (visit.utm) lines.push("Campaign: " + visit.utm);
@@ -193,6 +203,8 @@
     if (!unlock) return;
     form.hidden = true;
     unlock.hidden = false;
+    var intro = form.parentNode.querySelector("[data-gate-intro]");
+    if (intro) intro.hidden = true;
     if (moveFocus) {
       var link = unlock.querySelector("a");
       if (link) link.focus();
