@@ -5,9 +5,10 @@ User-agent: *
 # Guide PDFs are unlocked through the form on each guide page; keep the
 # files themselves out of search results (the guide pages ARE indexed).
 Disallow: /assets/guides/
-# Dev-only and internal files. (Don't block /partials/: Google needs those
+# Dev-only files. (styleguide.html is kept out of search by its own noindex tag;
+# blocking it here would stop Google from seeing that tag.)
+# (Don't block /partials/: Google needs those
 # files to render each page's header and footer.)
 Disallow: /scripts/
-Disallow: /styleguide.html
 
 Sitemap: https://jaredcohenrealtor.github.io/sitemap.xml
