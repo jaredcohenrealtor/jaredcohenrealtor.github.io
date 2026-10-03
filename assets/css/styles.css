@@ -321,17 +321,24 @@ address { font-style: normal; }
 .section--tint { background: var(--color-surface); }
 .section--grey { background: var(--color-surface-alt); }
 
-/* Minimal "drafting sheet" backdrop: a soft royal wash plus a faint dot grid
-   across the whole section, fading out only at the top and bottom edges.
-   The dots are light and tiny, so text on top stays easy to read. */
+/* Minimal "drafting sheet" backdrop: a faint dot grid across the whole
+   section, fading out at the top and bottom edges AND behind text: each text
+   block gets a soft white halo (background + feathered shadow) that hides
+   the dots under the words. Keep the section background plain white so the
+   halos blend in invisibly. */
 .section--pattern {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background:
-    radial-gradient(48rem 28rem at 100% 0%, var(--royal-10), transparent 70%),
-    radial-gradient(36rem 22rem at 0% 100%, var(--royal-10), transparent 70%),
-    var(--white);
+  background: var(--white);
+}
+
+.section--pattern .split > :first-child,
+.section--pattern .towns > :not(.town-tiles) {
+  width: fit-content;
+  max-width: 100%;
+  background: var(--white);
+  box-shadow: 0 0 1.5rem 1.25rem var(--white);
 }
 
 .section--pattern::before {
@@ -825,26 +832,16 @@ a:hover .link-arrow::after,
 
 .hero h1 em { color: var(--royal-50); }
 
-/* The first part of the tagline, shown small above the big words (same h1) */
+/* "From Newton to the neighborhoods beyond", above the big words (same h1) */
 .hero__kicker {
   display: block;
   margin-bottom: var(--space-4);
   color: var(--royal-50);
   font-family: var(--font-body);
-  font-size: var(--text-md);
+  font-size: clamp(1.25rem, 1.05rem + 1vw, 1.625rem);   /* one line on desktop */
   font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 1.4;
-}
-
-.hero__kicker::before {
-  content: "";
-  display: inline-block;
-  width: 1.75rem;
-  height: 2px;
-  margin-right: 0.75em;
-  vertical-align: middle;
-  background: currentColor;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
 }
 .hero .eyebrow { color: var(--royal-50); }
 .hero .lead { color: var(--royal-10); }
