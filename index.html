@@ -91,7 +91,14 @@
           <h2 id="home-value-title">What's my home worth?</h2>
           <p>Thinking about selling? Start with a quick estimate below, then I'm glad to follow up with a local opinion that accounts for your street, your village, and what's selling nearby.</p>
         </div>
-        <div class="embed" data-embed="seller-valuation"><!-- TODO(Phase 4): BoldTrail Seller Valuation widget, verbatim from docs/boldtrail-embeds.md --></div>
+        <div class="embed" data-embed="seller-valuation">
+          <!-- BoldTrail widget: copied VERBATIM from docs/boldtrail-embeds.md. It submits straight
+               to BoldTrail, not through the Worker. Only additions (owner-approved 2026-10-03):
+               title (screen readers) and loading="lazy" (it's below the fold). -->
+          <!-- Seller Valuation Widget -->
+          <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
+          <iframe style="width:100%; height:160px;" src="https://jaredcohen.exprealty.com/sellembed.php" allowtransparency="true" frameBorder="0" title="Home value estimate" loading="lazy"> </iframe>
+        </div>
         <p class="home-value__fallback">Prefer to talk it through? <a href="/contact.html?from=index">Get in touch</a> and we'll go over it together.</p>
       </div>
     </section>
@@ -136,7 +143,14 @@
           <h2 id="instagram-title">Follow along on Instagram</h2>
           <p class="text-muted">Check out my Instagram for my latest open houses, real estate tips, and community events around Newton and the nearby towns.</p>
         </div>
-        <div data-embed="instagram"><!-- TODO(Phase 4): SnapWidget embed, verbatim from docs/instagram-feed.md --></div>
+        <div data-embed="instagram">
+          <!-- SnapWidget embed: copied VERBATIM from docs/instagram-feed.md.
+               Only addition (owner-approved 2026-10-03): loading="lazy" (it's below the fold). -->
+          <!-- SnapWidget -->
+          <script src="https://snapwidget.com/js/snapwidget.js"></script>
+          <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr] -->
+          <iframe src="https://snapwidget.com/embed/1131613" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden;  width:100%; " title="Instagram Posts" loading="lazy"></iframe>
+        </div>
         <p><a class="link-arrow" href="https://www.instagram.com/jaredcohenrealtor" target="_blank" rel="noopener">@jaredcohenrealtor on Instagram</a></p>
       </div>
     </section>

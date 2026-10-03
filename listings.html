@@ -49,10 +49,22 @@
           <p class="lead">Browse everything currently on the market in Newton and the surrounding towns. When something catches your eye, or you have questions about a neighborhood, reach out and I'll be glad to help, including setting up showings.</p>
         </div>
 
-        <div class="embed embed--search" data-embed="property-search">
-          <!-- TODO(Phase 4): embeds.js inserts the wide (≥1000px) or narrow BoldTrail
-               search widget from the <template>s below, copied verbatim from docs/boldtrail-embeds.md -->
-        </div>
+        <!-- embeds.js copies ONE of the two templates below into this slot:
+             the wide widget at 1000px+ screen width, the narrow one below that. -->
+        <div class="embed embed--search" data-embed="property-search"></div>
+
+        <!-- BoldTrail widgets: copied VERBATIM from docs/boldtrail-embeds.md.
+             Only addition (owner-approved 2026-10-03): a title attribute for screen readers. -->
+        <template id="embed-search-narrow">
+          <!-- Property Search Widget -->
+          <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
+          <iframe style="width:280px; height:680px;" src="https://jaredcohen.exprealty.com/embed.php" allowtransparency="true" frameBorder="0" title="Property search"> </iframe>
+        </template>
+        <template id="embed-search-wide">
+          <!-- Website/Search Widget -->
+          <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
+          <iframe style="width: 960px; height:300px;" src="https://jaredcohen.exprealty.com/wide.php" allowtransparency="true" frameBorder="0" title="Property search"> </iframe>
+        </template>
         <p class="embed-fallback">Search not loading? Browse all listings on my <a href="https://jaredcohen.exprealty.com/" rel="noopener" target="_blank">full search site</a>, or <a href="/contact.html?from=listings">get in touch</a>.</p>
       </div>
     </section>
