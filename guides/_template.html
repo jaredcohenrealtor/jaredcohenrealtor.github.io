@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--
+  GUIDE PAGE TEMPLATE. Not a real page (noindex; not in the sitemap).
+  Use the /add-guide skill, which copies this file to /guides/<slug>.html and
+  fills in every placeholder:
+    {{GUIDE_TITLE}}         guide title, exactly as in guides-data.js
+    {{GUIDE_SLUG}}          kebab-case slug = page file name = PDF file name
+    {{GUIDE_DATE_ISO}}      date PRINTED IN THE GUIDE, YYYY-MM-DD
+    {{GUIDE_DATE_LONG}}     same date written out, e.g. September 28, 2026
+    {{GUIDE_DESCRIPTION}}   2-3 sentences: who it's for and why (intro lead)
+    {{META_DESCRIPTION}}    unique meta/OG description, under ~160 chars,
+                            naming Newton or the relevant town
+    {{WHATS_INSIDE_ITEMS}}  one <li> per real section of the PDF
+  Then: delete the robots noindex meta and this comment, resolve the
+  TODO(add-guide) comments, keep the title under ~65 characters, and keep
+  the consent label verbatim from docs/consent-text.md.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{GUIDE_TITLE}} (Free PDF) | Jared Cohen, REALTOR®</title>
+  <meta name="robots" content="noindex">
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <link rel="canonical" href="https://jaredcohenrealtor.github.io/guides/{{GUIDE_SLUG}}.html">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Jared Cohen | MA REALTOR®">
+  <meta property="og:title" content="{{GUIDE_TITLE}} (Free PDF)">
+  <meta property="og:description" content="{{META_DESCRIPTION}}">
+  <meta property="og:url" content="https://jaredcohenrealtor.github.io/guides/{{GUIDE_SLUG}}.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO(Phase 5): og:image + twitter:image -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+
+  <script src="/assets/js/include.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/forms.js" defer></script>
+</head>
+<body>
+  <div data-include="header"></div>
+  <noscript>
+    <div class="noscript-fallback">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/listings.html">Search Homes</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/resources.html">Guides</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <p>Jared Cohen, MA REALTOR® · Castles Unlimited team, brokered by eXp Realty · <a href="tel:+16176583035">617&#8209;658&#8209;3035</a> · <a href="mailto:jared.cohen@exprealty.com">jared.cohen@exprealty.com</a></p>
+      <!-- TODO(Phase 3): Equal Housing Opportunity statement, verbatim from the eXp reference site. -->
+    </div>
+  </noscript>
+
+  <main id="main">
+    <section class="section guide-intro" aria-labelledby="guide-title">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/resources.html">Guides</a></li>
+            <li><span aria-current="page">{{GUIDE_TITLE}}</span></li>
+          </ol>
+        </nav>
+
+        <div class="split guide-layout">
+          <div class="guide-layout__text">
+            <span class="eyebrow">Free guide · <time datetime="{{GUIDE_DATE_ISO}}">{{GUIDE_DATE_LONG}}</time></span>
+            <h1 id="guide-title">{{GUIDE_TITLE}}</h1>
+            <p class="lead">{{GUIDE_DESCRIPTION}}</p>
+            <h2 class="guide-layout__subhead">What's inside</h2>
+            <ul class="guide-contents">
+              {{WHATS_INSIDE_ITEMS}}
+            </ul>
+          </div>
+
+          <div class="card guide-gate">
+            <h2 id="guide-form-title" class="guide-gate__heading">Get the free guide</h2>
+            <p class="text-muted">Enter your details and the download link appears right away.</p>
+            <form class="form" id="guide-form" data-lead-form="guide" data-guide-title="{{GUIDE_TITLE}}" data-guide-pdf="/assets/guides/{{GUIDE_SLUG}}.pdf" aria-labelledby="guide-form-title" novalidate>
+              <p class="text-muted guide-gate__note">All fields are required.</p>
+              <div class="form__row form__row--2">
+                <div class="field">
+                  <label class="field__label" for="guide-first">First name</label>
+                  <input class="field__input" id="guide-first" name="first_name" type="text" autocomplete="given-name" required>
+                </div>
+                <div class="field">
+                  <label class="field__label" for="guide-last">Last name</label>
+                  <input class="field__input" id="guide-last" name="last_name" type="text" autocomplete="family-name" required>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field__label" for="guide-email">Email</label>
+                <input class="field__input" id="guide-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label class="field__label" for="guide-phone">Phone</label>
+                <input class="field__input" id="guide-phone" name="cell_phone_1" type="tel" autocomplete="tel" required>
+              </div>
+              <div class="checkbox">
+                <input type="checkbox" name="consent" id="guide-consent" required>
+                <label class="checkbox__label" for="guide-consent">By proceeding, I am electronically signing and consenting to receive marketing communications (about real estate brokerage services and one or more properties that I may buy, sell, or rent), that may be delivered to me via email, telephone and/or text messaging (using "automated technology" such as an automatic telephone dialing system, and/or an artificial or prerecorded voice), from eXp Realty® and its independent contractor real estate professionals using the contact information I provided. Your consent is not a condition of purchase and you may revoke it at any time by replying to any of our texts to opt-out, unsubscribing via email, or contacting us directly at the email or telephone number listed on this website.</label>
+              </div>
+              <div class="hp-field" aria-hidden="true"><label for="guide-website">Website</label><input id="guide-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+              <input type="hidden" name="form_started" value="">
+              <div>
+                <button class="btn btn--primary" type="submit">Get the guide</button>
+              </div>
+              <div class="form-status" role="status" aria-live="polite"></div>
+            </form>
+            <div class="guide-unlock" data-guide-unlock hidden>
+              <p>Thanks, your guide is ready. If you have any questions about what's in it, I'm happy to help.</p>
+              <a class="btn btn--primary" href="/assets/guides/{{GUIDE_SLUG}}.pdf" download>Download the PDF</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint" aria-labelledby="guide-next-title">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="guide-next-title">Have a question? <!-- TODO(add-guide): tailor to the guide topic --></h2>
+          <p class="lead">If you're weighing a move to Newton or a nearby town, I'm glad to talk it through. <!-- TODO(add-guide): one or two sentences tying the guide topic to a conversation --></p>
+        </div>
+        <p class="guide-next__links">
+          <a class="btn btn--primary" href="/contact.html?from=guide-{{GUIDE_SLUG}}">Let's talk</a>
+          <a class="link-arrow" href="/resources.html">More guides</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>
