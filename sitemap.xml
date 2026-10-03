@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Every indexable page. Add new pages and guides here (the /new-page and /add-guide
-     skills do this). Not listed on purpose: 404.html, styleguide.html,
-     guides/_template.html, and the PDFs in /assets/guides/.
+     skills do this). Not listed on purpose: 404.html and the PDFs in /assets/guides/.
+     (The style guide and guide template are local-only, in internal/.)
      The domain is rewritten by `npm run set-domain`. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://jaredcohenrealtor.github.io/</loc><lastmod>2026-10-03</lastmod></url>

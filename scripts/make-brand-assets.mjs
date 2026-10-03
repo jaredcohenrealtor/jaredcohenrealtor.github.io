@@ -1,5 +1,5 @@
 // Builds the favicon set and the social share image from the sources in
-// assets/_source/brand/ (made from scripts/brand/*.html, see the comments there).
+// assets/_source/brand/ (made from internal/brand/*.html, see the comments there).
 // Dev-only — run with: npm run brand
 //
 // Outputs:

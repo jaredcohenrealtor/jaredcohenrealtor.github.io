@@ -36,6 +36,7 @@ Always use the server rather than double-clicking an `.html` file, because the s
 - `assets/images/`: optimized WebP images (generated, don't hand-edit)
 - `assets/guides/`: optimized guide PDFs
 - `assets/_source/`: original full-size files. Not committed or published.
+- `internal/`: the style guide (http://localhost:5500/internal/styleguide.html), the guide template and the favicon/share-image sources. Local only: not committed or published.
 - `scripts/`: dev-only helpers (image/PDF optimization, validation, domain switch)
 
 ## Publishing

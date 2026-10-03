@@ -3,6 +3,10 @@ docs
 .claude
 .mcp.json
 
+# Internal-only pages (style guide, guide template, brand image sources): served
+# by the local preview at /internal/ but never committed, so never published.
+internal/
+
 # Dev tooling
 node_modules/
 
