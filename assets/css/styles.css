@@ -970,6 +970,28 @@ address { font-style: normal; }
 .home-value__fallback { margin-top: var(--space-5); margin-bottom: 0; }
 .guides__more { margin-top: var(--space-6); margin-bottom: 0; }
 
+/* ---- listings.html ---------------------------------------------------- */
+/* Reserve space so the page doesn't jump when embeds.js inserts the widget
+   (narrow BoldTrail widget is 280x680 below 1000px; wide is 960x300 at >=1000px) */
+.embed--search { min-height: 680px; }
+@media (min-width: 62.5em) { /* 1000px, must match embeds.js breakpoint */
+  .embed--search { min-height: 300px; }
+}
+
+.embed-fallback {
+  margin-top: var(--space-4);
+  margin-bottom: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.listings-towns__cta-text {
+  max-width: var(--container-narrow);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
 /* ---- contact.html ----------------------------------------------------- */
 .contact-layout { align-items: start; }
 .contact-layout > .card { height: auto; }
