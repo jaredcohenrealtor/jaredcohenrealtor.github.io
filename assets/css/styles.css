@@ -596,6 +596,9 @@ address { font-style: normal; }
 
 .alert :last-child { margin-bottom: 0; }
 
+/* Form status region: takes no space until forms.js puts a message in it */
+.form-status:empty { display: none; }
+
 /* ---- Media ------------------------------------------------------------ */
 .portrait {
   width: 100%;
@@ -938,6 +941,20 @@ address { font-style: normal; }
    6. PER-PAGE
    Add page-specific rules below, each block labelled with its page.
    ========================================================================= */
+
+/* ---- contact.html ----------------------------------------------------- */
+.contact-layout { align-items: start; }
+.contact-layout > .card { height: auto; }
+@media (min-width: 56em) { .contact-layout { grid-template-columns: 3fr 2fr; } }
+.contact-layout__heading { font-size: var(--text-xl); margin-bottom: var(--space-2); }
+.contact-details { font-style: normal; }
+.contact-details__list { display: grid; gap: var(--space-1); margin: var(--space-4) 0; }
+.contact-details__list dt { color: var(--color-text-muted); font-size: var(--text-sm); }
+.contact-details__list dd { margin: 0 0 var(--space-3); font-size: var(--text-md); overflow-wrap: anywhere; }
+.contact-details__social-title { font-size: var(--text-md); margin: var(--space-6) 0 var(--space-2); }
+.contact-details__social { margin-left: calc(-1 * var(--space-2)); color: var(--royal); }
+/* the shared .social hover is meant for dark backgrounds */
+.contact-details__social a:hover { background: var(--royal-10); color: var(--navy); }
 
 /* ---- styleguide.html -------------------------------------------------- */
 .sg-swatches {
