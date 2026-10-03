@@ -48,6 +48,30 @@
   var onChange = function (e) { if (e.matches) setMenu(false); };
   if (desktop.addEventListener) desktop.addEventListener("change", onChange);
 
+  // ---- Remember how this visit started (for lead-source details) ---------
+  // On the first page of a browser session, note the external referrer, the
+  // landing page, and any utm_ campaign tags. forms.js adds them to the lead's
+  // note so it's clear where the lead came from. Kept in sessionStorage only.
+  try {
+    if (!sessionStorage.getItem("jc-visit")) {
+      var ref = "";
+      if (document.referrer) {
+        var refUrl = new URL(document.referrer);
+        if (refUrl.host !== window.location.host) ref = refUrl.host.replace(/^www\./, "");
+      }
+      var params = new URLSearchParams(window.location.search);
+      var utm = ["utm_source", "utm_medium", "utm_campaign"]
+        .filter(function (k) { return params.get(k); })
+        .map(function (k) { return k.replace("utm_", "") + ": " + params.get(k); })
+        .join(", ");
+      sessionStorage.setItem("jc-visit", JSON.stringify({
+        referrer: ref || "direct",
+        landing: window.location.pathname,
+        utm: utm
+      }));
+    }
+  } catch (e) { /* storage unavailable: forms still work without it */ }
+
   // ---- Current year in the footer ----------------------------------------
   document.addEventListener("partials:loaded", function () {
     var year = String(new Date().getFullYear());
