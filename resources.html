@@ -61,7 +61,13 @@
 
         <div class="grid grid--3" data-guides-list></div>
         <noscript>
-          <p>The guide list needs JavaScript to display. If it's turned off, <a href="/contact.html?from=resources">get in touch</a> and I'll send you any guide directly.</p>
+          <!-- Plain guide links for visitors and crawlers without JavaScript.
+               Title + URL only (everything else lives in guides-data.js).
+               Keep in sync with guides-data.js; /add-guide adds a line here. -->
+          <ul class="guide-links" data-guide-links>
+            <li><a href="/guides/newton-transportation-guide.html">Newton Transportation Guide</a></li>
+          </ul>
+          <p>Questions about any guide? <a href="/contact.html?from=resources">Get in touch</a>.</p>
         </noscript>
       </div>
     </section>
