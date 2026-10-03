@@ -34,6 +34,15 @@
     }
   });
 
+  // Close the menu when keyboard focus leaves the header, so the open panel
+  // never covers whatever is focused next
+  document.addEventListener("focusout", function (event) {
+    var header = event.target.closest && event.target.closest(".site-header");
+    if (!header) return;
+    if (event.relatedTarget && header.contains(event.relatedTarget)) return;
+    if (document.querySelector('.nav-toggle[aria-expanded="true"]')) setMenu(false);
+  });
+
   // Reset the menu when growing to the desktop layout
   var desktop = window.matchMedia("(min-width: 60em)");
   var onChange = function (e) { if (e.matches) setMenu(false); };

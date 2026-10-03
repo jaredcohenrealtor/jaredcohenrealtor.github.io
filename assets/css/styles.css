@@ -112,6 +112,15 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Keyboard focus and in-page jumps never land under the sticky header */
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+}
+
+/* On navy/royal backgrounds a blue focus ring would be invisible */
+.footer-cta,
+.site-footer,
+.section--dark {
+  --color-focus: var(--white);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -434,7 +443,7 @@ address { font-style: normal; }
 .card--link { position: relative; transition: box-shadow var(--transition), border-color var(--transition); }
 .card--link .card__title a::after { content: ""; position: absolute; inset: 0; }
 .card--link:hover { box-shadow: var(--shadow-md); border-color: var(--royal-50); }
-.card--link:focus-within { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+.card--link:has(a:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 .card--link .card__title a:focus-visible { outline: none; }
 
 .card__body { flex: 1; color: var(--color-text-muted); }
@@ -685,6 +694,7 @@ address { font-style: normal; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 48px;
   height: 48px;
   margin-right: calc(-1 * var(--space-2));
@@ -845,18 +855,24 @@ address { font-style: normal; }
   list-style: none;
 }
 
-.site-footer__list li + li { margin-top: var(--space-2); }
+.site-footer__list li + li { margin-top: var(--space-1); }
 
-.site-footer__list a {
-  display: inline-block;
-  padding-block: 2px;
+/* Footer links: comfortable tap targets (~44px tall) */
+.site-footer__list a,
+.legal-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   text-decoration: none;
 }
 
 .site-footer__list a:hover { text-decoration: underline; }
 
-.site-footer__contact a { text-decoration: none; }
-.site-footer__contact a:hover { text-decoration: underline; }
+.site-footer__contact {
+  margin: var(--space-2) 0 var(--space-3);
+}
+
+.site-footer__contact .site-footer__list a { font-size: var(--text-base); }
 
 .site-footer__brokerage {
   display: flex;
@@ -888,10 +904,12 @@ address { font-style: normal; }
 
 .site-footer__legal p { margin-bottom: var(--space-3); }
 
+.legal-links a { text-decoration: underline; }
+
 .legal-links {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2) var(--space-5);
+  gap: 0 var(--space-5);
   margin: 0 0 var(--space-3);
   padding: 0;
   list-style: none;
