@@ -8,7 +8,8 @@
     "images": "node scripts/optimize-images.mjs",
     "pdf": "python scripts/optimize-pdf.py",
     "validate": "node scripts/validate.mjs",
-    "set-domain": "node scripts/set-domain.mjs"
+    "set-domain": "node scripts/set-domain.mjs",
+    "brand": "node scripts/make-brand-assets.mjs"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
