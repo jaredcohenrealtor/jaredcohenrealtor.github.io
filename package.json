@@ -1,0 +1,18 @@
+{
+  "name": "jaredcohenrealtor-site",
+  "private": true,
+  "description": "Dev-only tooling for the static site. Nothing here is served to visitors.",
+  "type": "module",
+  "scripts": {
+    "serve": "browser-sync start --server --port 5500 --files \"**/*.html, assets/css/**, assets/js/**, partials/**\" --ignore \"node_modules/**\" --no-notify --no-open",
+    "images": "node scripts/optimize-images.mjs",
+    "pdf": "python scripts/optimize-pdf.py",
+    "validate": "node scripts/validate.mjs",
+    "set-domain": "node scripts/set-domain.mjs"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "html-validate": "^11.4.0",
+    "sharp": "^0.35.5"
+  }
+}
