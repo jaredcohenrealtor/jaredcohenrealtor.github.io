@@ -15,7 +15,7 @@
   "use strict";
 
   var WORKER_URL = "https://jared-realtor-leads.jaredcohenrealtor.workers.dev/";
-  var MIN_FILL_MS = 3000;
+  var MIN_FILL_MS = 1500;   // measured from the first interaction with a field
   var TIMEOUT_MS = 20000;
   var DEAL_TYPES = ["buyer", "seller", "buyer,seller", "renter"];
 
@@ -221,7 +221,9 @@
 
     var honeypot = form.querySelector('input[name="website"]');
     var started = Number(form.querySelector('input[name="form_started"]').value) || 0;
-    if ((honeypot && honeypot.value) || Date.now() - started < MIN_FILL_MS) {
+    // No interaction at all (fields filled by script), or submitted almost instantly
+    // after the first interaction, means it's very likely a bot.
+    if ((honeypot && honeypot.value) || !started || Date.now() - started < MIN_FILL_MS) {
       showSuccess(form);   // quietly drop likely spam
       return;
     }
@@ -253,15 +255,27 @@
       .finally(function () { if (timer) clearTimeout(timer); });
   }
 
+  function startTimer(e) {
+    var form = e.currentTarget;
+    var t = e.target;
+    if (!t.matches || !t.matches("input, select, textarea") || t.name === "website") return;
+    var started = form.querySelector('input[name="form_started"]');
+    if (started && !started.value) started.value = String(Date.now());
+  }
+
   // ---- Wire up -------------------------------------------------------------
   var forms = document.querySelectorAll("form[data-lead-form]");
   for (var i = 0; i < forms.length; i++) {
     var form = forms[i];
-    var started = form.querySelector('input[name="form_started"]');
-    if (started) started.value = String(Date.now());
+    // Spam timer starts at the visitor's first interaction with a field (not page
+    // load), so people using autofill aren't mistaken for bots.
+    form.addEventListener("focusin", startTimer);
+    form.addEventListener("input", startTimer);
 
-    // Re-check a field once the visitor leaves it, if it was already flagged
-    form.addEventListener("focusout", function (e) {
+    // Re-check an already-flagged field AS THE VISITOR TYPES, so its error clears
+    // before they reach the button. (Re-checking on blur removed the error during
+    // the click itself, shifting the button out from under the cursor.)
+    form.addEventListener("input", function (e) {
       if (e.target.getAttribute && e.target.getAttribute("aria-invalid") === "true") {
         checkField(e.currentTarget, e.target);
       }
