@@ -899,6 +899,19 @@ address { font-style: normal; }
 .logo-tile img { width: 150px; }
 .footer-exp-logo { width: 96px; }
 
+/* HUD Equal Housing Opportunity mark is black on white */
+.logo-tile--eho { padding: var(--space-1); }
+.logo-tile--eho img { width: 48px; }
+
+.site-footer__office p { margin-bottom: var(--space-1); }
+
+.mls-disclaimer {
+  margin-block: var(--space-4) var(--space-5);
+  max-width: 60rem;
+}
+
+.mls-disclaimer p { margin-bottom: 0; }
+
 .site-footer__legal {
   margin-top: var(--space-5);
   padding-top: var(--space-5);
@@ -969,6 +982,12 @@ address { font-style: normal; }
 
 .home-value__fallback { margin-top: var(--space-5); margin-bottom: 0; }
 .guides__more { margin-top: var(--space-6); margin-bottom: 0; }
+
+/* ---- legal pages (fair-housing, privacy, accessibility) ---------------- */
+.legal-page h1 { font-size: var(--text-2xl); }
+.legal-page__eho { width: 96px; margin-top: var(--space-6); }
+.legal-page__quote { margin: 0; }
+.legal-page address { margin-top: var(--space-4); }
 
 /* ---- about.html ------------------------------------------------------- */
 .about-towns { margin-block: var(--space-5) var(--space-6); }
