@@ -13,7 +13,16 @@
   <meta property="og:description" content="From Newton to the neighborhoods beyond. Local help buying and selling homes in Newton, Needham, Brookline, Waltham and nearby towns.">
   <meta property="og:url" content="https://jaredcohenrealtor.github.io/">
   <meta name="twitter:card" content="summary_large_image">
-  <!-- TODO(Phase 5): og:image + twitter:image -->
+  <meta property="og:image" content="https://jaredcohenrealtor.github.io/assets/images/brand/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Jared Cohen, MA REALTOR®: From Newton to the neighborhoods beyond — real estate done right.">
+  <meta name="twitter:image" content="https://jaredcohenrealtor.github.io/assets/images/brand/og-image.jpg">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/assets/images/brand/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/assets/images/brand/favicon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/assets/images/brand/apple-touch-icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +33,50 @@
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/guides-data.js" defer></script>
   <script src="/assets/js/guides-render.js" defer></script>
+
+  <!-- Structured data for search engines (schema.org RealEstateAgent).
+       Address = Castles Unlimited office (owner's choice; broker to confirm).
+       Service area = the 9 towns in CLAUDE.md. Domain is rewritten by `npm run set-domain`. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "@id": "https://jaredcohenrealtor.github.io/#agent",
+    "name": "Jared Cohen | MA REALTOR®",
+    "description": "Jared Cohen is a REALTOR® on the Castles Unlimited team, brokered by eXp Realty, helping buyers and sellers in Newton, MA and nearby towns.",
+    "url": "https://jaredcohenrealtor.github.io/",
+    "image": "https://jaredcohenrealtor.github.io/assets/images/headshots/headshot-800.webp",
+    "logo": "https://jaredcohenrealtor.github.io/assets/images/brand/favicon-192.png",
+    "telephone": "+1-617-658-3035",
+    "email": "jared.cohen@exprealty.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "837 Beacon Street",
+      "addressLocality": "Newton",
+      "addressRegion": "MA",
+      "postalCode": "02459",
+      "addressCountry": "US"
+    },
+    "areaServed": [
+      { "@type": "City", "name": "Newton, MA" },
+      { "@type": "City", "name": "Needham, MA" },
+      { "@type": "City", "name": "Brookline, MA" },
+      { "@type": "Place", "name": "Chestnut Hill, MA" },
+      { "@type": "City", "name": "Natick, MA" },
+      { "@type": "City", "name": "Waltham, MA" },
+      { "@type": "Place", "name": "Brighton, MA" },
+      { "@type": "Place", "name": "Allston, MA" },
+      { "@type": "City", "name": "Watertown, MA" }
+    ],
+    "memberOf": { "@type": "Organization", "name": "Castles Unlimited" },
+    "parentOrganization": { "@type": "Organization", "name": "eXp Realty" },
+    "sameAs": [
+      "https://www.instagram.com/jaredcohenrealtor",
+      "https://www.facebook.com/jaredcohenrealtor",
+      "https://www.tiktok.com/@jaredcohenrealtor"
+    ]
+  }
+  </script>
 </head>
 <body>
   <div data-include="header"></div>
