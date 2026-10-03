@@ -14,7 +14,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap">
   <link rel="stylesheet" href="/assets/css/styles.css">
 
   <script src="/assets/js/include.js" defer></script>
@@ -72,7 +72,8 @@
         <p class="text-muted">Headings use Playfair Display; body text uses Inter.</p>
         <div class="sg-block">
           <span class="eyebrow">Eyebrow label</span>
-          <p style="font-family:var(--font-heading);font-size:var(--text-3xl);line-height:1.2;font-weight:600;margin-bottom:var(--space-4)">From Newton to the neighborhoods beyond — real estate done right.</p>
+          <p style="font-family:var(--font-heading);font-size:var(--text-3xl);line-height:1.2;font-weight:600;margin-bottom:var(--space-4)">From Newton to the neighborhoods beyond — real estate <em>done right.</em></p>
+          <p class="text-muted">Italic accent: wrap a few words of an h1/h2 in <code>&lt;em&gt;</code> (Playfair italic). The words themselves never change.</p>
           <h3>Heading 3: Getting to know Newton's villages</h3>
           <h4>Heading 4: What to expect at closing</h4>
           <p class="lead">Lead paragraph: a slightly larger intro line used under section titles.</p>
@@ -113,14 +114,18 @@
         </div>
         <div class="grid grid--3">
           <article class="card card--link">
+            <div class="card__media">
+              <img src="/assets/images/places/stock-newton-centre-station-400.webp" width="800" height="500" loading="lazy" alt="">
+            </div>
             <p class="card__eyebrow">Guide · September 28, 2026</p>
             <h3 class="card__title"><a href="/resources.html">Newton Transportation Guide</a></h3>
-            <p class="card__body">Sample card text. Real guide cards are generated from guides-data.js.</p>
+            <p class="card__body">Linked card with an optional photo (<code>.card__media</code>). Real guide cards are generated from guides-data.js. It lifts on hover.</p>
             <p class="card__footer"><span class="link-arrow">Read the guide</span></p>
           </article>
-          <article class="card">
-            <h3 class="card__title">Plain card</h3>
-            <p class="card__body">A card without a link, for static information.</p>
+          <article class="card card--accent">
+            <span class="card__num" aria-hidden="true">01</span>
+            <h3 class="card__title">Numbered card</h3>
+            <p class="card__body"><code>.card--accent</code> + <code>.card__num</code>, for steps (About → "How I work"). A plain <code>.card</code> drops the number and the top rule.</p>
           </article>
           <article class="card">
             <h3 class="card__title">Service area chips</h3>
@@ -187,9 +192,116 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="sg-photos">
+    <section class="section" aria-labelledby="sg-heroes">
       <div class="container">
-        <h2 id="sg-photos">Headshots</h2>
+        <div class="section__header">
+          <h2 id="sg-heroes">Page tops</h2>
+          <p class="text-muted"><code>.hero</code> is the navy split with an arch photo standing on its bottom edge (Home, About, Contact; <code>.hero--compact</code> hides the photo on phones). <code>.page-hero</code> puts the headline over a dimmed decorative photo (Search Homes, Guides). Both fade and rise in once on load.</p>
+        </div>
+        <div class="page-hero sg-demo-hero">
+          <img class="page-hero__bg" src="/assets/images/places/staged-kitchen-panorama-800.webp" width="800" height="247" loading="lazy" alt="">
+          <div class="container page-hero__inner">
+            <span class="eyebrow">Page hero</span>
+            <p style="font-family:var(--font-heading);font-size:var(--text-3xl);font-weight:600;color:var(--white);margin-bottom:var(--space-3)">Headline over a photo</p>
+            <p class="lead">The photo is dimmed with navy so this text passes AA on any image.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee">
+      <div class="marquee__viewport" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Town ticker</span><span>Newton</span><span>Needham</span><span>Brookline</span><span>Chestnut Hill</span><span>Natick</span><span>Waltham</span><span>Brighton</span><span>Allston</span><span>Watertown</span>
+          <span>Town ticker</span><span>Newton</span><span>Needham</span><span>Brookline</span><span>Chestnut Hill</span><span>Natick</span><span>Waltham</span><span>Brighton</span><span>Allston</span><span>Watertown</span>
+        </div>
+      </div>
+      <button class="marquee__toggle" type="button" aria-pressed="false" hidden><span class="visually-hidden">Pause the moving list of towns</span></button>
+    </div>
+
+    <section class="section section--tint" aria-labelledby="sg-photo-cards">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="sg-photo-cards">Photo cards</h2>
+          <p class="text-muted"><code>.photo-cards</code> grid of <code>.photo-card</code>: a full-bleed photo with text over a navy fade; the title link covers the card. <code>--photo-pos</code> moves the crop. Stock photos here follow the mood-only rule.</p>
+        </div>
+        <div class="photo-cards">
+          <article class="photo-card">
+            <img class="photo-card__img" src="/assets/images/places/stock-colonial-autumn-800.webp" width="800" height="600" loading="lazy" alt="" style="--photo-pos: 70% 50%">
+            <h3 class="photo-card__title"><a href="/listings.html">Photo card title</a></h3>
+            <p class="photo-card__text">One or two lines of supporting text.</p>
+            <span class="photo-card__cta link-arrow" aria-hidden="true">Call to action</span>
+          </article>
+          <article class="photo-card">
+            <img class="photo-card__img" src="/assets/images/photos/jared-desk-800.webp" width="800" height="1067" loading="lazy" alt="" style="--photo-pos: 60% 40%">
+            <h3 class="photo-card__title"><a href="/resources.html">Another card</a></h3>
+            <p class="photo-card__text">Hover to see the lift and slow zoom.</p>
+            <span class="photo-card__cta link-arrow" aria-hidden="true">Call to action</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sg-frames">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="sg-frames">Photo frames</h2>
+          <p class="text-muted"><code>.frame</code> (4:3 by default; <code>--frame-ratio</code>, <code>--frame-pos</code>), <code>.frame--arch</code> (always 4:5), and <code>.cutout-arch</code> for transparent cut-outs. <code>.frame--narrow</code> caps the width.</p>
+        </div>
+        <div class="grid grid--3">
+          <figure class="frame">
+            <img src="/assets/images/places/stock-newton-centre-station-800.webp" width="800" height="533" loading="lazy" alt="A Green Line train at Newton Centre station">
+            <figcaption class="frame__caption">.frame with a caption</figcaption>
+          </figure>
+          <div class="frame frame--arch">
+            <img src="/assets/images/photos/jared-staircase-step-800.webp" width="800" height="1067" loading="lazy" alt="Jared on a curved staircase">
+          </div>
+          <div class="cutout-arch">
+            <img src="/assets/images/photos/jared-cutout-folder-400.webp" width="400" height="1070" loading="lazy" alt="Jared Cohen holding a folder">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint" aria-labelledby="sg-profile">
+      <div class="container">
+        <h2 id="sg-profile">Profile photo</h2>
+        <p class="text-muted"><code>.avatar</code> in a <code>.profile</code> row, or inside a <code>.profile-link</code> chip. It uses the older headshot on purpose: it's Jared's social-media profile photo, so it appears only in social and contact spots.</p>
+        <div class="stack">
+          <div class="profile">
+            <img class="avatar" src="/assets/images/headshots/headshot-400.webp" width="400" height="533" loading="lazy" alt="">
+            <p><strong>Jared Cohen, REALTOR®</strong><br><span class="text-muted">Castles Unlimited team, brokered by eXp Realty</span></p>
+          </div>
+          <a class="profile-link" href="https://www.instagram.com/jaredcohenrealtor" target="_blank" rel="noopener">
+            <img class="avatar" src="/assets/images/headshots/headshot-400.webp" width="400" height="533" loading="lazy" alt="">
+            <span class="profile-link__text"><strong>@jaredcohenrealtor</strong> <span class="link-arrow">on Instagram</span></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sg-motion">
+      <div class="container container--narrow">
+        <h2 id="sg-motion">Motion</h2>
+        <p>Add <code>data-reveal</code> to fade an element up as it scrolls into view (<code>="left"</code>, <code>="right"</code> or <code>="zoom"</code> for other directions), or <code>data-reveal-stagger</code> to a list so its items follow one after another. main.js runs it. Nothing is hidden without JavaScript, and visitors who ask for reduced motion see everything still. Hover effects (button lift, arrow nudge, card lift, photo zoom) are plain CSS.</p>
+        <ul class="chip-list" data-reveal-stagger>
+          <li class="chip chip--primary">Newton</li>
+          <li class="chip">Needham</li>
+          <li class="chip">Brookline</li>
+          <li class="chip">Chestnut Hill</li>
+          <li class="chip">Natick</li>
+          <li class="chip">Waltham</li>
+          <li class="chip">Brighton</li>
+          <li class="chip">Allston</li>
+          <li class="chip">Watertown</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section--tint" aria-labelledby="sg-photos">
+      <div class="container">
+        <h2 id="sg-photos">Original headshots</h2>
+        <p class="text-muted">The older headshot (social profile photo) and its cut-out. The cut-out is still used by the share image (scripts/brand/og-image.html).</p>
         <div class="grid grid--2">
           <figure>
             <img class="portrait" src="/assets/images/headshots/headshot-800.webp"

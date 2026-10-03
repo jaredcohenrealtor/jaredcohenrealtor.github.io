@@ -23,7 +23,8 @@ Always use the server rather than double-clicking an `.html` file, because the s
 | Add a new guide (PDF) | Ask Claude: `/add-guide path/to/file.pdf` |
 | Change a guide's title, date or description | `assets/js/guides-data.js` **and** that guide's page in `guides/` |
 | Add a new page | Ask Claude: `/new-page <name>` |
-| Swap a photo | Put the original in `assets/_source/`, list it in `scripts/optimize-images.mjs`, run `npm run images` |
+| Swap or add a photo | Put the original in `assets/_source/` (photos of me: `imagesOfMe/`, homes and places: `imagesOfProperties/`), list it in `scripts/optimize-images.mjs`, run `npm run images`. Stock (Pexels) photos are for mood only: never label one as a listing, a sale, or a town. |
+| Turn the scroll-in animation on or off for a block | Add or remove `data-reveal` on it (or `data-reveal-stagger` on a list). Visitors who turn on "reduce motion" never see animation. |
 | Change the domain (e.g. to a custom domain) | Edit `domain` in `site.config.json`, run `npm run set-domain`, then add the domain to the Cloudflare Worker's allowed origins |
 | Check everything before publishing | `npm run validate`, or ask Claude: `/check-site` |
 
