@@ -1,0 +1,15 @@
+# Local-only reference & Claude config (owner choice)
+docs
+.claude
+.mcp.json
+
+# Dev tooling
+node_modules/
+
+# Original, unoptimized assets (never served)
+assets/_source/
+
+# OS cruft
+Thumbs.db
+Desktop.ini
+.DS_Store
