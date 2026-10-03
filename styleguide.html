@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Style Guide | Jared Cohen, MA REALTOR®</title>
+  <meta name="description" content="Internal reference page showing the site's colors, type, and components.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@600;700&amp;display=swap">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+
+  <script src="/assets/js/include.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+</head>
+<body>
+  <div data-include="header"></div>
+  <noscript>
+    <div class="noscript-fallback">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/listings.html">Search Homes</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/resources.html">Guides</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <p>Jared Cohen, MA REALTOR® · Castles Unlimited team, brokered by eXp Realty · <a href="tel:+16176583035">617&#8209;658&#8209;3035</a> · <a href="mailto:jared.cohen@exprealty.com">jared.cohen@exprealty.com</a></p>
+      <!-- TODO(Phase 3): Equal Housing Opportunity statement, verbatim from the eXp reference site. -->
+    </div>
+  </noscript>
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <span class="eyebrow">Internal reference · not indexed</span>
+        <h1>Style guide</h1>
+        <p class="lead">Every color, type style, and component the site uses, on one page. Pages are built only from these pieces, so changing a token in <code>styles.css</code> updates the whole site.</p>
+      </div>
+    </section>
+
+    <section class="section section--tint" aria-labelledby="sg-colors">
+      <div class="container">
+        <h2 id="sg-colors">Colors: eXp Realty palette</h2>
+        <p class="text-muted">Navy and Royal Blue are the primary colors. The light tints are for backgrounds and borders only, never body text.</p>
+        <ul class="sg-swatches">
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#0c0f24"></div><div class="sg-swatch__meta">Dark Navy<br><code>#0c0f24</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#31303f"></div><div class="sg-swatch__meta">Navy 80%<br><code>#31303f</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#686672"></div><div class="sg-swatch__meta">Navy 50%<br><code>#686672</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#b5b3b9"></div><div class="sg-swatch__meta">Navy 20%<br><code>#b5b3b9</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#d4d3d6"></div><div class="sg-swatch__meta">Navy 10%<br><code>#d4d3d6</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#19469d"></div><div class="sg-swatch__meta">Royal Blue<br><code>#19469d</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#506caa"></div><div class="sg-swatch__meta">Royal 80%<br><code>#506caa</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#91a3c9"></div><div class="sg-swatch__meta">Royal 50%<br><code>#91a3c9</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#d3dae9"></div><div class="sg-swatch__meta">Royal 20%<br><code>#d3dae9</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#e9edf4"></div><div class="sg-swatch__meta">Royal 10%<br><code>#e9edf4</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#58595b"></div><div class="sg-swatch__meta">Dark Grey<br><code>#58595b</code></div></li>
+          <li class="sg-swatch"><div class="sg-swatch__color" style="background:#e2e3e4"></div><div class="sg-swatch__meta">Light Grey<br><code>#e2e3e4</code></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sg-type">
+      <div class="container container--narrow">
+        <h2 id="sg-type">Typography</h2>
+        <p class="text-muted">Headings use Playfair Display; body text uses Inter.</p>
+        <div class="sg-block">
+          <span class="eyebrow">Eyebrow label</span>
+          <p style="font-family:var(--font-heading);font-size:var(--text-3xl);line-height:1.2;font-weight:600;margin-bottom:var(--space-4)">From Newton to the neighborhoods beyond — real estate done right.</p>
+          <h3>Heading 3: Getting to know Newton's villages</h3>
+          <h4>Heading 4: What to expect at closing</h4>
+          <p class="lead">Lead paragraph: a slightly larger intro line used under section titles.</p>
+          <p>Body text: Newton is made up of thirteen villages, each with its own feel. From West Newton's commuter-rail access to the shops along Newton Centre, the right fit depends on how you live day to day. <a href="#sg-type">This is a text link.</a></p>
+          <p><a class="link-arrow" href="#sg-type">Arrow link</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint" aria-labelledby="sg-buttons">
+      <div class="container">
+        <h2 id="sg-buttons">Buttons</h2>
+        <div class="btn-group">
+          <a class="btn btn--primary" href="#sg-buttons">Primary action</a>
+          <a class="btn btn--secondary" href="#sg-buttons">Secondary action</a>
+          <button class="btn btn--primary" type="button" disabled>Disabled</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--dark" aria-labelledby="sg-dark">
+      <div class="container">
+        <span class="eyebrow">Dark section</span>
+        <h2 id="sg-dark">On a navy background</h2>
+        <p class="text-muted">Muted text on navy stays readable.</p>
+        <div class="btn-group">
+          <a class="btn btn--light" href="#sg-dark">Light button</a>
+          <a class="btn btn--ghost-light" href="#sg-dark">Outline button</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sg-cards">
+      <div class="container">
+        <div class="section__header">
+          <h2 id="sg-cards">Cards</h2>
+          <p class="text-muted">Used for guides and other link lists. The whole card is clickable.</p>
+        </div>
+        <div class="grid grid--3">
+          <article class="card card--link">
+            <p class="card__eyebrow">Guide · September 28, 2026</p>
+            <h3 class="card__title"><a href="/resources.html">Newton Transportation Guide</a></h3>
+            <p class="card__body">Sample card text. Real guide cards are generated from guides-data.js.</p>
+            <p class="card__footer"><span class="link-arrow">Read the guide</span></p>
+          </article>
+          <article class="card">
+            <h3 class="card__title">Plain card</h3>
+            <p class="card__body">A card without a link, for static information.</p>
+          </article>
+          <article class="card">
+            <h3 class="card__title">Service area chips</h3>
+            <ul class="chip-list">
+              <li class="chip chip--primary">Newton</li>
+              <li class="chip">Needham</li>
+              <li class="chip">Brookline</li>
+              <li class="chip">Chestnut Hill</li>
+              <li class="chip">Natick</li>
+              <li class="chip">Waltham</li>
+              <li class="chip">Brighton</li>
+              <li class="chip">Allston</li>
+              <li class="chip">Watertown</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint" aria-labelledby="sg-forms">
+      <div class="container container--narrow">
+        <h2 id="sg-forms">Form elements</h2>
+        <p class="text-muted">Display only. This sample form isn't connected to anything.</p>
+        <form class="form" action="#" novalidate onsubmit="return false">
+          <div class="form__row form__row--2">
+            <div class="field">
+              <label class="field__label" for="sg-first">First name</label>
+              <input class="field__input" id="sg-first" name="first_name" type="text" autocomplete="given-name">
+            </div>
+            <div class="field">
+              <label class="field__label" for="sg-last">Last name</label>
+              <input class="field__input" id="sg-last" name="last_name" type="text" autocomplete="family-name" aria-invalid="true" aria-describedby="sg-last-error">
+              <p class="field__error" id="sg-last-error">Please enter your last name.</p>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="sg-looking">I'm looking to… <span class="field__optional">(optional)</span></label>
+            <select class="field__select" id="sg-looking" name="looking_to">
+              <option value="">Choose one</option>
+              <option>Buy</option>
+              <option>Sell</option>
+              <option>Buy and sell</option>
+              <option>Rent</option>
+              <option>Just exploring</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field__label" for="sg-msg">Message</label>
+            <textarea class="field__textarea" id="sg-msg" name="message"></textarea>
+            <p class="field__hint">Hint text sits under a field.</p>
+          </div>
+          <div class="checkbox">
+            <input id="sg-consent" type="checkbox">
+            <label class="checkbox__label" for="sg-consent">Consent checkbox. The real forms use the exact consent text from the reference site.</label>
+          </div>
+          <div>
+            <button class="btn btn--primary" type="submit">Send message</button>
+          </div>
+        </form>
+        <div class="stack" style="margin-top:var(--space-6)">
+          <div class="alert alert--success" role="status"><p><strong>Thanks, your message is on its way.</strong> I'll be in touch soon.</p></div>
+          <div class="alert alert--error" role="status"><p><strong>Something went wrong.</strong> Please call or email me directly.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sg-photos">
+      <div class="container">
+        <h2 id="sg-photos">Headshots</h2>
+        <div class="grid grid--2">
+          <figure>
+            <img class="portrait" src="/assets/images/headshots/headshot-800.webp"
+                 srcset="/assets/images/headshots/headshot-400.webp 400w, /assets/images/headshots/headshot-800.webp 800w, /assets/images/headshots/headshot-1200.webp 1200w"
+                 sizes="(min-width: 40em) 26rem, 100vw" width="800" height="1067" loading="lazy"
+                 alt="Jared Cohen, smiling, in a dark suit and light blue tie">
+            <figcaption class="text-muted text-center">Original background</figcaption>
+          </figure>
+          <figure>
+            <div class="section--dark" style="border-radius:var(--radius-lg);padding-top:var(--space-6);max-width:26rem;margin-inline:auto">
+              <img class="portrait" src="/assets/images/headshots/headshot-transparent-800.webp"
+                   srcset="/assets/images/headshots/headshot-transparent-400.webp 400w, /assets/images/headshots/headshot-transparent-800.webp 800w, /assets/images/headshots/headshot-transparent-1200.webp 1200w"
+                   sizes="(min-width: 40em) 26rem, 100vw" width="800" height="1096" loading="lazy"
+                   alt="Jared Cohen, smiling, in a dark suit and light blue tie">
+            </div>
+            <figcaption class="text-muted text-center">Transparent cut-out on navy</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="footer"></div>
+</body>
+</html>
