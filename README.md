@@ -1,6 +1,6 @@
-# jaredcohenrealtor.com
+# www.jaredcohenrealtor.com
 
-Live at **https://jaredcohenrealtor.com** (served by GitHub Pages from this repo, `jaredcohenrealtor.github.io`).
+Live at **https://www.jaredcohenrealtor.com** (served by GitHub Pages from this repo, `jaredcohenrealtor.github.io`).
 
 Website for **Jared Cohen | MA REALTOR®**, Castles Unlimited team, brokered by eXp Realty.
 It's a plain static site (HTML, CSS and vanilla JS) hosted on GitHub Pages. There's no framework and no build step: every file is served exactly as it is.
