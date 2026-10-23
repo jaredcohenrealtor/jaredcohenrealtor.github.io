@@ -9,6 +9,7 @@
  *   slug         page address: /guides/<slug>.html
  *   title        guide title
  *   date         publish date, YYYY-MM-DD: the date PRINTED IN THE GUIDE
+ *                (YYYY-MM when the guide prints only a month; shown as "October 2026")
  *   description  one or two sentences shown on the guide cards
  *   pdf          file name in /assets/guides/
  *   image        optional card photo: a path in /assets/images/ WITHOUT the
@@ -17,6 +18,22 @@
  *                rule in CLAUDE.md. Leave it out and the card has no photo.
  */
 window.GUIDES = [
+  {
+    slug: "first-time-buyer-guide",
+    title: "First-Time Buyer Guide",
+    date: "2026-10",
+    description: "The key steps, forms, and deadlines for buying a first home in Massachusetts, from the first tour to keys, with Newton cost notes.",
+    pdf: "first-time-buyer-guide.pdf",
+    image: "photos/jared-folder-closeup"
+  },
+  {
+    slug: "before-you-tour-guide",
+    title: "Before You Tour Guide",
+    date: "2026-10",
+    description: "Questions to ask before you sign a buyer agreement, the Massachusetts relationship disclosure, and a showing scorecard for every home you tour.",
+    pdf: "before-you-tour-guide.pdf",
+    image: "photos/jared-front-walk"
+  },
   {
     slug: "newton-transportation-guide",
     title: "Newton Transportation Guide",

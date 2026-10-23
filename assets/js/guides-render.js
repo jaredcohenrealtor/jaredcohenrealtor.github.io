@@ -21,6 +21,15 @@
   var dateFormat = new Intl.DateTimeFormat("en-US", {
     year: "numeric", month: "long", day: "numeric", timeZone: "UTC"
   });
+  // A guide that prints only a month has a "YYYY-MM" date
+  var monthFormat = new Intl.DateTimeFormat("en-US", {
+    year: "numeric", month: "long", timeZone: "UTC"
+  });
+
+  function formatDate(date) {
+    if (date.length === 7) return monthFormat.format(new Date(date + "-01T00:00:00Z"));
+    return dateFormat.format(new Date(date + "T00:00:00Z"));
+  }
 
   function media(guide) {
     var base = "/assets/images/" + guide.image;
@@ -48,7 +57,7 @@
     meta.className = "card__eyebrow";
     var time = document.createElement("time");
     time.dateTime = guide.date;
-    time.textContent = dateFormat.format(new Date(guide.date + "T00:00:00Z"));
+    time.textContent = formatDate(guide.date);
     meta.append("Guide · ", time);
 
     var title = document.createElement("h" + level);
