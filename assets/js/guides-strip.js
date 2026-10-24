@@ -11,16 +11,20 @@
  *
  * Cards come from guides-data.js; adding a guide adds one card and nothing here
  * needs to change.
- *   - The strip always drifts slowly (SPEED_PX_PER_S) and loops seamlessly: copies
- *     of the set of cards follow the originals, and the position wraps back by
- *     exactly one set, so the join can't be seen. The copies are inert (no focus,
- *     hidden from assistive technology).
+ *   - The strip always drifts slowly (SPEED_PX_PER_S) at every width, including
+ *     when all the guides fit on screen, and loops seamlessly: copies of the set
+ *     of cards follow the originals, and the position wraps back by exactly one
+ *     set, so the join can't be seen. The copies are inert (no focus, hidden from
+ *     assistive technology).
  *   - It stops while the mouse pointer is over the strip, while a card or control
  *     has keyboard focus, and while the reader touches, swipes or scrolls it. It
  *     resumes RESUME_AFTER_MS after the last touch or scroll.
- *   - The Pause button stops it until Play is pressed; hover and touch can't resume it.
- *   - The arrows step one card at a time, and work under reduced motion too.
- *   - Under prefers-reduced-motion nothing moves by itself.
+ *   - The Pause button is shown at every width and stops the strip until Play is
+ *     pressed; hover and touch can't resume it.
+ *   - The arrows show only when the guides don't all fit on screen. They step one
+ *     card at a time, and work under reduced motion too.
+ *   - Under prefers-reduced-motion nothing moves by itself, and the Pause button
+ *     is hidden.
  */
 (function () {
   "use strict";
@@ -46,7 +50,7 @@
   var userPaused = false;        // the Pause button
   var hovered = false;           // a mouse pointer is over the strip
   var lastActivity = -Infinity;  // last touch, sideways wheel or reader scroll
-  var overflowing = false;       // the originals are wider than the track
+  var overflowing = false;       // the originals are wider than the track (arrows show)
   var setWidth = 0;              // distance from one copy of the set to the next
   var starts = [];               // each original card's offset within the set
   var pos = 0;                   // where the strip is; our own float, since scrollLeft rounds
@@ -78,12 +82,13 @@
     var clones = track.querySelectorAll("[data-clone]");
     for (var c = 0; c < clones.length; c++) clones[c].remove();
 
-    // Measure in the layout the reader sees: the arrow columns are part of it
+    // Measure in the layout the reader sees: the arrow columns are part of it.
+    // Only the originals count, so the arrows show exactly when they don't all fit.
     setArrows(true);
     var clientW = track.clientWidth;
     overflowing = track.scrollWidth - clientW > 2;
     var cards = originalCards();
-    if (!overflowing || !cards.length) {
+    if (!cards.length) {
       setWidth = 0;
       starts = [];
       pos = 0;
@@ -98,7 +103,7 @@
     starts = cards.map(function (card) { return card.offsetLeft - first.offsetLeft; });
 
     // Enough copies that the strip never runs out of cards, even for one guide
-    // on a phone, while it drifts or an arrow jumps ahead
+    // on a phone or all three on a wide desktop, while it drifts or an arrow jumps ahead
     var sets = 3 + Math.ceil((clientW + gap) / setWidth);
     for (var s = 1; s < sets; s++) {
       for (var i = 0; i < cards.length; i++) {
@@ -163,10 +168,10 @@
 
   function canDrift() {
     return !reducedMotion() && !userPaused && !hovered && !keyboardFocusInside() &&
-      !document.hidden && overflowing && now() - lastActivity >= RESUME_AFTER_MS;
+      !document.hidden && setWidth > 0 && now() - lastActivity >= RESUME_AFTER_MS;
   }
 
-  // The arrows sit beside the track (grid columns) only when the strip overflows
+  // The arrows sit beside the track (grid columns) only when the guides overflow
   function setArrows(show) {
     root.classList.toggle("is-scrolling", show);
     prev.hidden = !show;
@@ -174,11 +179,11 @@
   }
 
   function renderControls() {
-    var show = overflowing;
     var reduce = reducedMotion();
-    setArrows(show);
-    controls.hidden = !show || reduce;
-    pause.hidden = !show || reduce;   // nothing moves by itself under reduced motion
+    setArrows(overflowing);
+    // Pause shows at every width; nothing moves by itself under reduced motion, so it's hidden there
+    controls.hidden = reduce;
+    pause.hidden = reduce;
     pause.classList.toggle("is-paused", userPaused);
     pauseLabel.textContent = userPaused ? "Play" : "Pause";
     pause.setAttribute("aria-label", userPaused ? "Play guide rotation" : "Pause guide rotation");
@@ -188,7 +193,7 @@
     var dt = lastFrame ? Math.min(t - lastFrame, 100) : 0;
     lastFrame = t;
 
-    if (overflowing && setWidth) {
+    if (setWidth) {
       if (step) {
         var p = Math.min(1, (t - step.start) / step.dur);
         var eased = 1 - Math.pow(1 - p, 3);
