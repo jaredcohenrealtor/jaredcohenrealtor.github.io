@@ -1,23 +1,34 @@
 /*
- * Turns the homepage guide list into a scrolling strip (index.html, "Guides for
+ * Turns the homepage guide list into a continuous strip (index.html, "Guides for
  * every step"). Runs after guides-render.js has filled the track.
  *
  *   <div data-guides-strip>
- *     <div data-guides-list>…cards…</div>        (cards come from guides-data.js)
- *     <div data-guides-controls hidden>          (shown only when the strip scrolls)
- *       <button data-guides-prev> <button data-guides-pause> <button data-guides-next>
+ *     <div class="guides-strip__row">
+ *       <button data-guides-prev> <div data-guides-list>…cards…</div> <button data-guides-next>
+ *     </div>
+ *     <div data-guides-controls>
+ *       <button data-guides-pause> (visible label: Pause / Play)
  *
- * Adding a guide to guides-data.js adds one card; nothing here needs to change.
- *   - Swipe and keyboard scrolling are native (overflow + scroll-snap, in CSS).
- *   - Every 5 seconds the strip moves one card on and loops back to the start.
- *   - It pauses while the pointer is over the strip, while focus is on a card,
- *     and when the reader presses Pause (WCAG 2.2.2).
- *   - Under prefers-reduced-motion nothing moves by itself; the arrows still work.
+ * Cards come from guides-data.js; adding a guide adds one card and nothing here
+ * needs to change.
+ *   - The strip always drifts slowly (SPEED_PX_PER_S) and loops seamlessly: copies
+ *     of the set of cards follow the originals, and the position wraps back by
+ *     exactly one set, so the join can't be seen. The copies are inert (no focus,
+ *     hidden from assistive technology).
+ *   - It stops while the mouse pointer is over the strip, while a card or control
+ *     has keyboard focus, and while the reader touches, swipes or scrolls it. It
+ *     resumes RESUME_AFTER_MS after the last touch or scroll.
+ *   - The Pause button stops it until Play is pressed; hover and touch can't resume it.
+ *   - The arrows step one card at a time, and work under reduced motion too.
+ *   - Under prefers-reduced-motion nothing moves by itself.
  */
 (function () {
   "use strict";
 
-  var INTERVAL_MS = 5000;
+  var SPEED_PX_PER_S = 25;
+  var RESUME_AFTER_MS = 3000;
+  var STEP_MS = 450;
+  var SCROLL_SLACK_PX = 6;   // a scroll event this far from our own position is the reader
 
   var root = document.querySelector("[data-guides-strip]");
   if (!root) return;
@@ -27,92 +38,216 @@
   var next = root.querySelector("[data-guides-next]");
   var pause = root.querySelector("[data-guides-pause]");
   if (!track || !controls || !prev || !next || !pause) return;
+  var pauseLabel = pause.querySelector("[data-pause-label]");
 
-  var reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var userPaused = false;   // the Pause button
-  var hovered = false;      // pointer over the strip
-  var focusedInTrack = false;
+  var REDUCE_QUERY = "(prefers-reduced-motion: reduce)";
+  // A fresh query each time, so a change of the setting is never read from a stale object
+  function reducedMotion() { return window.matchMedia(REDUCE_QUERY).matches; }
+  var userPaused = false;        // the Pause button
+  var hovered = false;           // a mouse pointer is over the strip
+  var lastActivity = -Infinity;  // last touch, sideways wheel or reader scroll
+  var overflowing = false;       // the originals are wider than the track
+  var setWidth = 0;              // distance from one copy of the set to the next
+  var starts = [];               // each original card's offset within the set
+  var pos = 0;                   // where the strip is; our own float, since scrollLeft rounds
+  var step = null;               // { from, to, start, dur } while an arrow is animating
+  var lastFrame = 0;
+  var resizeQueued = false;
 
-  function maxScroll() {
-    return track.scrollWidth - track.clientWidth;
+  function now() { return performance.now(); }
+
+  function mod(n, m) { return ((n % m) + m) % m; }
+
+  function write(p) {
+    pos = p;
+    track.scrollLeft = p;
   }
 
-  function overflows() {
-    return maxScroll() > 2;
+  function originalCards() {
+    return Array.prototype.filter.call(track.children, function (el) {
+      return !el.hasAttribute("data-clone");
+    });
   }
 
-  // Scroll position of each card's left edge (offsetLeft is measured from the
-  // track, which is position: relative, and does not change while scrolling)
-  function cardStarts() {
-    var starts = [];
-    for (var i = 0; i < track.children.length; i++) starts.push(track.children[i].offsetLeft);
-    return starts;
-  }
+  // Builds the copies and measures one set. Called on load and after resizes.
+  function build() {
+    var current = track.scrollLeft;
+    var ratio = setWidth ? mod(current, setWidth) / setWidth : 0;
+    step = null;
 
-  function go(left, instant) {
-    var smooth = !instant && !reduceQuery.matches;
-    track.scrollTo({ left: left, behavior: smooth ? "smooth" : "auto" });
-  }
+    var clones = track.querySelectorAll("[data-clone]");
+    for (var c = 0; c < clones.length; c++) clones[c].remove();
 
-  function showNext() {
-    var max = maxScroll();
-    var x = track.scrollLeft;
-    if (x >= max - 2) return go(0, true);          // at the end: loop to the start
-    var starts = cardStarts();
-    for (var i = 0; i < starts.length; i++) {
-      if (starts[i] > x + 2) return go(Math.min(starts[i], max));
+    // Measure in the layout the reader sees: the arrow columns are part of it
+    setArrows(true);
+    var clientW = track.clientWidth;
+    overflowing = track.scrollWidth - clientW > 2;
+    var cards = originalCards();
+    if (!overflowing || !cards.length) {
+      setWidth = 0;
+      starts = [];
+      pos = 0;
+      track.scrollLeft = 0;
+      return;
     }
-    go(max);
-  }
 
-  function showPrev() {
-    var max = maxScroll();
-    var x = track.scrollLeft;
-    if (x <= 2) return go(max, true);              // at the start: loop to the end
-    var starts = cardStarts();
-    for (var i = starts.length - 1; i >= 0; i--) {
-      if (starts[i] < x - 2) return go(starts[i]);
+    var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    var first = cards[0];
+    var last = cards[cards.length - 1];
+    setWidth = last.offsetLeft + last.offsetWidth + gap - first.offsetLeft;
+    starts = cards.map(function (card) { return card.offsetLeft - first.offsetLeft; });
+
+    // Enough copies that the strip never runs out of cards, even for one guide
+    // on a phone, while it drifts or an arrow jumps ahead
+    var sets = 3 + Math.ceil((clientW + gap) / setWidth);
+    for (var s = 1; s < sets; s++) {
+      for (var i = 0; i < cards.length; i++) {
+        var copy = cards[i].cloneNode(true);
+        copy.setAttribute("data-clone", "");
+        copy.setAttribute("aria-hidden", "true");
+        copy.setAttribute("inert", "");
+        track.appendChild(copy);
+      }
     }
-    go(0);
+    write(ratio * setWidth);
   }
 
-  function canAutoAdvance() {
-    return !reduceQuery.matches && !userPaused && !hovered && !focusedInTrack &&
-      !document.hidden && overflows();
+  // The nearest card start after (or before) a position, within a few sets
+  function nextStop(from) {
+    var best = Infinity;
+    for (var m = 0; m < 4; m++) {
+      for (var i = 0; i < starts.length; i++) {
+        var v = starts[i] + m * setWidth;
+        if (v > from + 2 && v < best) best = v;
+      }
+    }
+    return best;
+  }
+
+  function prevStop(from) {
+    var best = -Infinity;
+    for (var m = 0; m < 4; m++) {
+      for (var i = 0; i < starts.length; i++) {
+        var v = starts[i] + m * setWidth;
+        if (v < from - 2 && v > best) best = v;
+      }
+    }
+    return best;
+  }
+
+  function stepBy(dir) {
+    if (!overflowing || !setWidth) return;
+    // Move into the middle band first (identical copies, so this can't be seen)
+    var from = mod(pos, setWidth) + setWidth;
+    // Land on a card edge at least half a card away, so every click is a real step
+    var card = starts.length > 1 ? starts[1] - starts[0] : setWidth;
+    var target = dir > 0 ? nextStop(from + card / 2) : prevStop(from - card / 2);
+    write(from);
+    if (reducedMotion()) {
+      write(mod(target, setWidth));
+      step = null;
+      return;
+    }
+    step = { from: from, to: target, start: now(), dur: STEP_MS };
+  }
+
+  function keyboardFocusInside() {
+    var active = document.activeElement;
+    if (!active || !root.contains(active)) return false;
+    try {
+      return active.matches(":focus-visible");
+    } catch (e) {
+      return true;
+    }
+  }
+
+  function canDrift() {
+    return !reducedMotion() && !userPaused && !hovered && !keyboardFocusInside() &&
+      !document.hidden && overflowing && now() - lastActivity >= RESUME_AFTER_MS;
+  }
+
+  // The arrows sit beside the track (grid columns) only when the strip overflows
+  function setArrows(show) {
+    root.classList.toggle("is-scrolling", show);
+    prev.hidden = !show;
+    next.hidden = !show;
   }
 
   function renderControls() {
-    var show = overflows();
-    controls.hidden = !show;
-    pause.hidden = !show || reduceQuery.matches;
+    var show = overflowing;
+    var reduce = reducedMotion();
+    setArrows(show);
+    controls.hidden = !show || reduce;
+    pause.hidden = !show || reduce;   // nothing moves by itself under reduced motion
     pause.classList.toggle("is-paused", userPaused);
+    pauseLabel.textContent = userPaused ? "Play" : "Pause";
     pause.setAttribute("aria-label", userPaused ? "Play guide rotation" : "Pause guide rotation");
   }
 
-  prev.addEventListener("click", showPrev);
-  next.addEventListener("click", showNext);
+  function frame(t) {
+    var dt = lastFrame ? Math.min(t - lastFrame, 100) : 0;
+    lastFrame = t;
+
+    if (overflowing && setWidth) {
+      if (step) {
+        var p = Math.min(1, (t - step.start) / step.dur);
+        var eased = 1 - Math.pow(1 - p, 3);
+        write(step.from + (step.to - step.from) * eased);
+        if (p >= 1) {
+          step = null;
+          write(mod(pos, setWidth));
+        }
+      } else if (canDrift()) {
+        write(mod(pos + SPEED_PX_PER_S * dt / 1000, setWidth));
+      } else {
+        pos = track.scrollLeft;   // paused, or the reader is moving the strip
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  prev.addEventListener("click", function () { stepBy(-1); });
+  next.addEventListener("click", function () { stepBy(1); });
 
   pause.addEventListener("click", function () {
     userPaused = !userPaused;
     renderControls();
   });
 
-  root.addEventListener("mouseenter", function () { hovered = true; });
-  root.addEventListener("mouseleave", function () { hovered = false; });
-
-  // Pause while a card (not an arrow button) has keyboard focus
-  track.addEventListener("focusin", function () { focusedInTrack = true; });
-  track.addEventListener("focusout", function (event) {
-    if (event.relatedTarget && track.contains(event.relatedTarget)) return;
-    focusedInTrack = false;
+  // Mouse only: a tap on a phone also fires pointer events, and must not count as hover
+  root.addEventListener("pointerenter", function (event) {
+    if (event.pointerType === "mouse") hovered = true;
+  });
+  root.addEventListener("pointerleave", function (event) {
+    if (event.pointerType === "mouse") hovered = false;
   });
 
-  window.addEventListener("resize", renderControls);
+  // Touch and sideways wheel are the reader moving the strip
+  function touched() { lastActivity = now(); }
+  track.addEventListener("touchstart", touched, { passive: true });
+  track.addEventListener("touchmove", touched, { passive: true });
+  track.addEventListener("wheel", function (event) {
+    if (Math.abs(event.deltaX) > 0) touched();
+  }, { passive: true });
+
+  // Any other scroll that isn't where we put the strip is the reader's
+  track.addEventListener("scroll", function () {
+    if (Math.abs(track.scrollLeft - pos) > SCROLL_SLACK_PX) touched();
+  }, { passive: true });
+
+  window.addEventListener("resize", function () {
+    if (resizeQueued) return;
+    resizeQueued = true;
+    requestAnimationFrame(function () {
+      resizeQueued = false;
+      build();
+      renderControls();
+    });
+  });
+  var reduceQuery = window.matchMedia(REDUCE_QUERY);
   if (reduceQuery.addEventListener) reduceQuery.addEventListener("change", renderControls);
 
+  build();
   renderControls();
-  // Arrows and rotation are the same whether 3 cards or 30 are in the track
-  window.setInterval(function () {
-    if (canAutoAdvance()) showNext();
-  }, INTERVAL_MS);
+  requestAnimationFrame(frame);
 })();

@@ -1779,25 +1779,38 @@ a.chip:focus-visible { outline-offset: 3px; }
   background: linear-gradient(to bottom, var(--white) 55%, var(--royal-10) 100%);
 }
 
-/* Local guides: intro above, then a strip of guide cards. Phones show one card
-   (the next peeks in), 40em+ two, 56em+ three. The strip scrolls natively
-   (swipe, keyboard, scrollbar-free); guides-strip.js adds the arrows, the
-   5-second rotation and the pause button. Adding a guide adds a card only. */
+/* Local guides: intro above, then a strip of guide cards that drifts slowly and
+   loops. Phones show one card (the next peeks in), 40em+ two, 56em+ three. The
+   arrows sit on the same row, left and right of the track, when the strip
+   overflows; the Pause button sits centered below. guides-strip.js does the
+   motion (requestAnimationFrame) and the pause rules. Adding a guide adds a
+   card only. */
 .guides-feature { display: grid; gap: var(--space-6); }
 .guides-feature .section__header { margin-bottom: 0; }
 .guides__more { margin-top: var(--space-4); margin-bottom: 0; }
 
 .guides-strip { position: relative; min-width: 0; }
 
+.guides-strip__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--space-3);
+}
+.guides-strip.is-scrolling .guides-strip__row {
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+}
+
 .guides-strip__track {
-  position: relative;               /* offsetLeft of each card = its scroll position */
+  position: relative;               /* offsetLeft of each card = its position in the set */
+  min-width: 0;
   display: flex;
   gap: var(--space-5);
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;            /* the arrows and swipe do the work */
-  padding-block: var(--space-2) var(--space-5);   /* room for the hover lift and shadow */
+  scroll-behavior: auto;            /* the script moves it frame by frame */
+  scrollbar-width: none;            /* the arrows, swipe and the drift do the work */
+  padding-block: var(--space-4);    /* equal room above and below, for the hover lift and shadow */
 }
 .guides-strip__track::-webkit-scrollbar { display: none; }
 
@@ -1805,7 +1818,6 @@ a.chip:focus-visible { outline-offset: 3px; }
   flex: 0 0 82%;
   min-width: 0;
   height: auto;                     /* let the flex row stretch every card to the tallest */
-  scroll-snap-align: start;
 }
 
 @media (min-width: 40em) {
@@ -1820,8 +1832,7 @@ a.chip:focus-visible { outline-offset: 3px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 /* Round arrow and pause buttons (44px+ tap targets) */
@@ -1851,6 +1862,21 @@ a.chip:focus-visible { outline-offset: 3px; }
 
 .carousel-btn:hover { background: var(--royal); color: var(--white); }
 .carousel-btn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+/* The Pause button: a pill with a visible Pause / Play label (still 48px tall) */
+.carousel-btn--text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: auto;
+  min-width: 48px;
+  padding: 0 var(--space-5) 0 var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1;
+}
+.carousel-btn--text svg { flex: none; }
 
 /* The pause button shows a play triangle while rotation is paused */
 .carousel-btn .icon-play { display: none; }
