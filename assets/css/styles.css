@@ -334,7 +334,8 @@ address { font-style: normal; }
 }
 
 .section--pattern .split > :first-child,
-.section--pattern .towns > :not(.town-tiles) {
+.section--pattern .towns > :not(.town-tiles),
+.section--pattern .section__header {
   width: fit-content;
   max-width: 100%;
   background: var(--white);
@@ -1766,6 +1767,17 @@ a.chip:focus-visible { outline-offset: 3px; }
    content; keep the follow-up line close rather than adding more space. */
 .home-value__card { margin-block: var(--space-5) var(--space-4); padding: var(--space-4) var(--space-4) 0; }
 .home-value__fallback { margin-bottom: 0; }
+
+/* Property search under the hero: the card sits just below the navy band.
+   The hero already has bottom padding, so trim the section's top padding. */
+.home-search { padding-top: var(--space-6); }
+
+/* Search section: fade from white into the pale royal tint at the bottom, so it
+   reads as its own block before the white "Where I work" section below. The
+   text halos stay white, which is fine because the fade only starts lower down. */
+.home-search {
+  background: linear-gradient(to bottom, var(--white) 55%, var(--royal-10) 100%);
+}
 
 /* Local guides: intro on the left, cards on the right; one guide fills the
    column, more share it */
