@@ -34,6 +34,7 @@
   <script src="/assets/js/analytics.js" defer></script>
   <script src="/assets/js/guides-data.js" defer></script>
   <script src="/assets/js/guides-render.js" defer></script>
+  <script src="/assets/js/embeds.js" defer></script>
 
   <!-- Structured data for search engines (schema.org RealEstateAgent).
        Address = Castles Unlimited office (owner's choice; broker to confirm).
@@ -130,6 +131,33 @@
                  fetchpriority="high" alt="Jared Cohen, REALTOR®, smiling and holding a leather folder in a bright living room">
           </div>
           <p class="hero__badge"><strong>Jared Cohen, REALTOR®</strong><span>Castles Unlimited team, brokered by eXp Realty</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Property search: a second copy of the listings.html search widget. embeds.js copies
+         ONE of the two templates below into the slot: wide at 1000px+, narrow below. -->
+    <section class="section section--pattern home-search" aria-labelledby="search-title">
+      <div class="container">
+        <div class="section__header" data-reveal>
+          <h2 id="search-title">Search homes in Newton and the <em>neighborhoods beyond</em></h2>
+          <p class="text-muted">Browse listings by town, price, and home type. Pick a town below to see what's available right now.</p>
+        </div>
+        <div class="embed-card">
+          <div class="embed embed--search" data-embed="home-search" id="home-search"></div>
+
+          <!-- BoldTrail widgets: copied VERBATIM from docs/boldtrail-embeds.md.
+               Only additions: a title attribute and loading="lazy" (below the fold). -->
+          <template id="home-search-narrow">
+            <!-- Property Search Widget -->
+            <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
+            <iframe style="width:280px; height:680px;" src="https://jaredcohen.exprealty.com/embed.php" allowtransparency="true" frameBorder="0" title="Property search" loading="lazy"> </iframe>
+          </template>
+          <template id="home-search-wide">
+            <!-- Website/Search Widget -->
+            <!-- [html-validate-disable-next no-unknown-elements, no-deprecated-attr, attr-case] -->
+            <iframe style="width: 960px; height:300px;" src="https://jaredcohen.exprealty.com/wide.php" allowtransparency="true" frameBorder="0" title="Property search" loading="lazy"> </iframe>
+          </template>
         </div>
       </div>
     </section>
