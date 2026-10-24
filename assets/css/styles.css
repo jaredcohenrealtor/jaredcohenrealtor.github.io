@@ -1779,16 +1779,109 @@ a.chip:focus-visible { outline-offset: 3px; }
   background: linear-gradient(to bottom, var(--white) 55%, var(--royal-10) 100%);
 }
 
-/* Local guides: intro on the left, cards on the right; one guide fills the
-   column, more share it */
-.guides-feature { display: grid; gap: var(--space-6); align-items: start; }
+/* Local guides: intro above, then a strip of guide cards that drifts slowly and
+   loops. Phones show one card (the next peeks in), 40em+ two, 56em+ three. The
+   arrows sit on the same row, left and right of the track, when the strip
+   overflows; the Pause button sits centered below. guides-strip.js does the
+   motion (requestAnimationFrame) and the pause rules. Adding a guide adds a
+   card only. */
+.guides-feature { display: grid; gap: var(--space-6); }
 .guides-feature .section__header { margin-bottom: 0; }
-.guides-feature__list { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
 .guides__more { margin-top: var(--space-4); margin-bottom: 0; }
 
-@media (min-width: 56em) {
-  .guides-feature { grid-template-columns: 2fr 3fr; gap: var(--space-8); }
+.guides-strip { position: relative; min-width: 0; }
+
+.guides-strip__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--space-3);
 }
+.guides-strip.is-scrolling .guides-strip__row {
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+}
+
+.guides-strip__track {
+  position: relative;               /* offsetLeft of each card = its position in the set */
+  min-width: 0;
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: auto;            /* the script moves it frame by frame */
+  scrollbar-width: none;            /* the arrows, swipe and the drift do the work */
+  padding-block: var(--space-4);    /* equal room above and below, for the hover lift and shadow */
+}
+.guides-strip__track::-webkit-scrollbar { display: none; }
+
+.guides-strip__track > * {
+  flex: 0 0 82%;
+  min-width: 0;
+  height: auto;                     /* let the flex row stretch every card to the tallest */
+}
+
+@media (min-width: 40em) {
+  .guides-strip__track > * { flex-basis: calc((100% - var(--space-5)) / 2); }
+}
+
+@media (min-width: 56em) {
+  .guides-strip__track > * { flex-basis: calc((100% - 2 * var(--space-5)) / 3); }
+}
+
+.guides-strip__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-2);
+}
+
+/* Round arrow and pause buttons (44px+ tap targets) */
+.carousel-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 2px solid var(--royal);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--royal);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.carousel-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.carousel-btn:hover { background: var(--royal); color: var(--white); }
+.carousel-btn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+/* The Pause button: a pill with a visible Pause / Play label (still 48px tall) */
+.carousel-btn--text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: auto;
+  min-width: 48px;
+  padding: 0 var(--space-5) 0 var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1;
+}
+.carousel-btn--text svg { flex: none; }
+
+/* The pause button shows a play triangle while rotation is paused */
+.carousel-btn .icon-play { display: none; }
+.carousel-btn.is-paused .icon-play { display: block; }
+.carousel-btn.is-paused .icon-pause { display: none; }
 
 .instagram__profile { margin-top: var(--space-5); }
 
