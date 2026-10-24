@@ -34,6 +34,9 @@ const JOBS = [
   { src: "_source/imagesOfMe/IMG_9903.jpg", out: "images/photos/jared-front-door", widths: [400, 800, 1200], quality: 68 },
   { src: "_source/imagesOfMe/IMG_9909.jpg", out: "images/photos/jared-brick-house", widths: [400, 800, 1200], quality: 68 },
   { src: "_source/imagesOfMe/IMG_9932.jpg", out: "images/photos/jared-folder", widths: [400, 800, 1200] },
+  // Guide card photos (16:10 crops): First-Time Buyer Guide, Before You Tour Guide
+  { src: "_source/imagesOfMe/IMG_9933.jpg", out: "images/photos/jared-folder-closeup", widths: [400, 800], crop: { left: 0.14, top: 0.1, width: 0.8, height: 0.375 } },
+  { src: "_source/imagesOfMe/IMG_9899.jpg", out: "images/photos/jared-front-walk", widths: [400, 800], crop: { left: 0.07, top: 0.41, width: 0.85, height: 0.3984 } },
   // Transparent cut-outs of Jared (for colored panels: 404 page, homepage About band, footer CTA)
   { src: "_source/imagesOfMe/IMG_9887.jpg - Edited.png", out: "images/photos/jared-cutout-welcome", widths: [400, 800] },
   { src: "_source/imagesOfMe/IMG_9939.jpg - Edited.png", out: "images/photos/jared-cutout-folder", widths: [400, 800] },
