@@ -34,6 +34,7 @@
   <script src="/assets/js/analytics.js" defer></script>
   <script src="/assets/js/guides-data.js" defer></script>
   <script src="/assets/js/guides-render.js" defer></script>
+  <script src="/assets/js/guides-strip.js" defer></script>
   <script src="/assets/js/embeds.js" defer></script>
 
   <!-- Structured data for search engines (schema.org RealEstateAgent).
@@ -277,12 +278,25 @@
           <p class="text-muted">Free, practical guides covering the questions that come up when you're buying, selling, or settling in, in Newton and beyond.</p>
           <p class="guides__more"><a class="link-arrow" href="/resources.html">See all guides</a></p>
         </div>
-        <div>
-          <div class="guides-feature__list" data-guides-list data-limit="4" data-reveal-stagger></div>
-          <noscript>
-            <p>See every guide on the <a href="/resources.html">guides page</a>.</p>
-          </noscript>
+        <div class="guides-strip" data-guides-strip>
+          <!-- Cards are rendered from guides-data.js; add a guide there, not here -->
+          <div class="guides-strip__track" data-guides-list data-reveal-stagger></div>
+          <div class="guides-strip__controls" data-guides-controls hidden>
+            <button type="button" class="carousel-btn" data-guides-prev aria-label="Show previous guides">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg>
+            </button>
+            <button type="button" class="carousel-btn" data-guides-pause aria-label="Pause guide rotation" hidden>
+              <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5v14M15 5v14"/></svg>
+              <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5l11 7-11 7z"/></svg>
+            </button>
+            <button type="button" class="carousel-btn" data-guides-next aria-label="Show next guides">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
         </div>
+        <noscript>
+          <p>See every guide on the <a href="/resources.html">guides page</a>.</p>
+        </noscript>
       </div>
     </section>
 

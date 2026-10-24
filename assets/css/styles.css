@@ -1779,16 +1779,83 @@ a.chip:focus-visible { outline-offset: 3px; }
   background: linear-gradient(to bottom, var(--white) 55%, var(--royal-10) 100%);
 }
 
-/* Local guides: intro on the left, cards on the right; one guide fills the
-   column, more share it */
-.guides-feature { display: grid; gap: var(--space-6); align-items: start; }
+/* Local guides: intro above, then a strip of guide cards. Phones show one card
+   (the next peeks in), 40em+ two, 56em+ three. The strip scrolls natively
+   (swipe, keyboard, scrollbar-free); guides-strip.js adds the arrows, the
+   5-second rotation and the pause button. Adding a guide adds a card only. */
+.guides-feature { display: grid; gap: var(--space-6); }
 .guides-feature .section__header { margin-bottom: 0; }
-.guides-feature__list { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
 .guides__more { margin-top: var(--space-4); margin-bottom: 0; }
 
-@media (min-width: 56em) {
-  .guides-feature { grid-template-columns: 2fr 3fr; gap: var(--space-8); }
+.guides-strip { position: relative; min-width: 0; }
+
+.guides-strip__track {
+  position: relative;               /* offsetLeft of each card = its scroll position */
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;            /* the arrows and swipe do the work */
+  padding-block: var(--space-2) var(--space-5);   /* room for the hover lift and shadow */
 }
+.guides-strip__track::-webkit-scrollbar { display: none; }
+
+.guides-strip__track > * {
+  flex: 0 0 82%;
+  min-width: 0;
+  height: auto;                     /* let the flex row stretch every card to the tallest */
+  scroll-snap-align: start;
+}
+
+@media (min-width: 40em) {
+  .guides-strip__track > * { flex-basis: calc((100% - var(--space-5)) / 2); }
+}
+
+@media (min-width: 56em) {
+  .guides-strip__track > * { flex-basis: calc((100% - 2 * var(--space-5)) / 3); }
+}
+
+.guides-strip__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+/* Round arrow and pause buttons (44px+ tap targets) */
+.carousel-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 2px solid var(--royal);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--royal);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.carousel-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.carousel-btn:hover { background: var(--royal); color: var(--white); }
+.carousel-btn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+/* The pause button shows a play triangle while rotation is paused */
+.carousel-btn .icon-play { display: none; }
+.carousel-btn.is-paused .icon-play { display: block; }
+.carousel-btn.is-paused .icon-pause { display: none; }
 
 .instagram__profile { margin-top: var(--space-5); }
 
