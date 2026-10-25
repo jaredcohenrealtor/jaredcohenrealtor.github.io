@@ -11,20 +11,23 @@
  *
  * Cards come from guides-data.js; adding a guide adds one card and nothing here
  * needs to change.
- *   - The strip always drifts slowly (SPEED_PX_PER_S) at every width, including
- *     when all the guides fit on screen, and loops seamlessly: copies of the set
- *     of cards follow the originals, and the position wraps back by exactly one
- *     set, so the join can't be seen. The copies are inert (no focus, hidden from
- *     assistive technology).
+ *   - Only when the guides overflow (more cards than fit on screen) does the strip
+ *     drift slowly (SPEED_PX_PER_S) and loop seamlessly: copies of the set of
+ *     cards follow the originals, and the position wraps back by exactly one set,
+ *     so the join can't be seen. The copies are inert (no focus, hidden from
+ *     assistive technology). When all the guides fit, no copies are made and the
+ *     strip sits still.
  *   - It stops while the mouse pointer is over the strip, while a card or control
  *     has keyboard focus, and while the reader touches, swipes or scrolls it. It
  *     resumes RESUME_AFTER_MS after the last touch or scroll.
- *   - The Pause button is shown at every width and stops the strip until Play is
- *     pressed; hover and touch can't resume it.
+ *   - The Pause button is shown only when the strip overflows, and stops the strip
+ *     until Play is pressed; hover and touch can't resume it.
  *   - The arrows show only when the guides don't all fit on screen. They step one
  *     card at a time, and work under reduced motion too.
  *   - Under prefers-reduced-motion nothing moves by itself, and the Pause button
  *     is hidden.
+ *   - Resizing re-checks the fit: a wide window stops the strip and hides the
+ *     controls, a narrow one brings them back.
  */
 (function () {
   "use strict";
@@ -88,7 +91,8 @@
     var clientW = track.clientWidth;
     overflowing = track.scrollWidth - clientW > 2;
     var cards = originalCards();
-    if (!cards.length) {
+    // Everything fits (or there is nothing to show): no copies, no motion, sit still
+    if (!cards.length || !overflowing) {
       setWidth = 0;
       starts = [];
       pos = 0;
@@ -168,7 +172,7 @@
 
   function canDrift() {
     return !reducedMotion() && !userPaused && !hovered && !keyboardFocusInside() &&
-      !document.hidden && setWidth > 0 && now() - lastActivity >= RESUME_AFTER_MS;
+      !document.hidden && overflowing && setWidth > 0 && now() - lastActivity >= RESUME_AFTER_MS;
   }
 
   // The arrows sit beside the track (grid columns) only when the guides overflow
@@ -181,9 +185,9 @@
   function renderControls() {
     var reduce = reducedMotion();
     setArrows(overflowing);
-    // Pause shows at every width; nothing moves by itself under reduced motion, so it's hidden there
-    controls.hidden = reduce;
-    pause.hidden = reduce;
+    // Pause shows only when the strip overflows (it's the only thing that moves); hidden under reduced motion too
+    controls.hidden = reduce || !overflowing;
+    pause.hidden = reduce || !overflowing;
     pause.classList.toggle("is-paused", userPaused);
     pauseLabel.textContent = userPaused ? "Play" : "Pause";
     pause.setAttribute("aria-label", userPaused ? "Play guide rotation" : "Pause guide rotation");
