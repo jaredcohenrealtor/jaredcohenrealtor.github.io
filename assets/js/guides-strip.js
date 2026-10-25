@@ -14,9 +14,11 @@
  *   - Only when the guides overflow (more cards than fit on screen) does the strip
  *     drift slowly (SPEED_PX_PER_S) and loop seamlessly: copies of the set of
  *     cards follow the originals, and the position wraps back by exactly one set,
- *     so the join can't be seen. The copies are inert (no focus, hidden from
- *     assistive technology). When all the guides fit, no copies are made and the
- *     strip sits still.
+ *     so the join can't be seen. The copies look and click like the originals
+ *     (hover, lift, photo zoom, and a click opens the same guide), but their links
+ *     and controls get tabindex -1 and their wrapper gets aria-hidden, so Tab only
+ *     reaches the original cards and screen readers skip the duplicates. When all
+ *     the guides fit, no copies are made and the strip sits still.
  *   - It stops while the mouse pointer is over the strip, while a card or control
  *     has keyboard focus, and while the reader touches, swipes or scrolls it. It
  *     resumes RESUME_AFTER_MS after the last touch or scroll.
@@ -114,7 +116,9 @@
         var copy = cards[i].cloneNode(true);
         copy.setAttribute("data-clone", "");
         copy.setAttribute("aria-hidden", "true");
-        copy.setAttribute("inert", "");
+        // Out of the Tab order (the originals stay reachable); mouse and touch still work
+        var focusable = copy.querySelectorAll("a, button, input, select, textarea, [tabindex]");
+        for (var f = 0; f < focusable.length; f++) focusable[f].setAttribute("tabindex", "-1");
         track.appendChild(copy);
       }
     }
