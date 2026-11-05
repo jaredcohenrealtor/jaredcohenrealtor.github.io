@@ -19,6 +19,14 @@
  */
 window.GUIDES = [
   {
+    slug: "newton-property-tax-worksheet",
+    title: "Newton Property Tax Worksheet",
+    date: "2026-10",
+    description: "How Newton property tax is figured, when the quarterly bills and the abatement deadline arrive, and fill-in pages for a home's tax math and a first-year budget.",
+    pdf: "newton-property-tax-worksheet.pdf",
+    image: "photos/jared-desk-signing"
+  },
+  {
     slug: "first-time-buyer-guide",
     title: "First-Time Buyer Guide",
     date: "2026-10",
