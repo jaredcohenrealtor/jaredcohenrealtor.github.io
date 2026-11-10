@@ -19,6 +19,14 @@
  */
 window.GUIDES = [
   {
+    slug: "first-showing-field-guide",
+    title: "First Showing Field Guide",
+    date: "2026-11",
+    description: "A room-by-room route for any showing or open house, what's usually cosmetic versus worth asking an inspector about, a car debrief, and questions to ask before you leave.",
+    pdf: "first-showing-field-guide.pdf",
+    image: "photos/jared-staircase-card"
+  },
+  {
     slug: "newton-property-tax-worksheet",
     title: "Newton Property Tax Worksheet",
     date: "2026-10",
