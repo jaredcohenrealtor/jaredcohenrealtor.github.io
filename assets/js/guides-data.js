@@ -24,7 +24,7 @@ window.GUIDES = [
     date: "2026-11",
     description: "Documents to request, questions to ask, and a side-by-side cost worksheet for comparing a Newton condo with a single-family home, plus what lenders typically look at.",
     pdf: "newton-condo-checklist.pdf",
-    image: "photos/jared-living-room-card"
+    image: "photos/jared-front-entry-card"
   },
   {
     slug: "first-showing-field-guide",

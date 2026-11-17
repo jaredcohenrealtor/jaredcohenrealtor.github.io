@@ -38,7 +38,7 @@ const JOBS = [
   { src: "_source/imagesOfMe/IMG_9933.jpg", out: "images/photos/jared-folder-closeup", widths: [400, 800], crop: { left: 0.14, top: 0.1, width: 0.8, height: 0.375 } },
   { src: "_source/imagesOfMe/IMG_9899.jpg", out: "images/photos/jared-front-walk", widths: [400, 800], crop: { left: 0.07, top: 0.41, width: 0.85, height: 0.3984 } },
   { src: "_source/imagesOfMe/IMG_9891.jpg", out: "images/photos/jared-staircase-card", widths: [400, 800], crop: { left: 0, top: 0.18, width: 1, height: 0.46875 } },
-  { src: "_source/imagesOfMe/IMG_9931.jpg", out: "images/photos/jared-living-room-card", widths: [400, 800], crop: { left: 0, top: 0.09, width: 1, height: 0.46875 } },
+  { src: "_source/imagesOfMe/jared-front-entry-card.jpg", out: "images/photos/jared-front-entry-card", widths: [400, 800] }, // still from Jared's walkthrough video, already 16:10
   // Transparent cut-outs of Jared (for colored panels: 404 page, homepage About band, footer CTA)
   { src: "_source/imagesOfMe/IMG_9887.jpg - Edited.png", out: "images/photos/jared-cutout-welcome", widths: [400, 800] },
   { src: "_source/imagesOfMe/IMG_9939.jpg - Edited.png", out: "images/photos/jared-cutout-folder", widths: [400, 800] },
